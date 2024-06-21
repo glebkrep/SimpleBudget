@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_preferences_header">SETTINGS</string>
+    <string name="feature_preferences_enable_comments">Enable comments</string>
+    <string name="feature_preferences_btn_change_billing">Current billing date</string>
+    <string name="feature_preferences_btn_change_budget">Current budget</string>
+</resources>

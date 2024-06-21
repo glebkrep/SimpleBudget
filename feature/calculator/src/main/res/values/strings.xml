@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="feature_calculator_saved_good">Congratulations! You saved</string>
+    <string name="feature_calculator_saved_bad">You did not manage to save anything this month! :c</string>
+    <string name="feature_calculator_btn_change_billing_date">Click here to change billing date</string>
+    <string name="feature_calculator_total_left">%1$s left</string>
+    <string name="feature_calculator_days_left">for %1$s days</string>
+    <string name="feature_calculator_increase_daily">Increase Daily</string>
+    <string name="feature_calculator_increase_today">Increase Today</string>
+    <string name="feature_calculator_from_to"><![CDATA[%1$s -> %2$s]]></string>
+    <string name="feature_calculator_delete">delete</string>
+    <string name="feature_calculator_days">%1$s days</string>
+    <string name="feature_calculator_delete1">delete</string>
+    <string name="feature_calculator_total">TOTAL</string>
+    <string name="feature_calculator_daily">DAILY</string>
+    <string name="feature_calculator_today">TODAY</string>
+    <string name="feature_calculator_header_increase">INCREASE</string>
+    <string name="feature_calculator_header_finish">THE END</string>
+</resources>

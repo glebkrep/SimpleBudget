@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+echo "Running pre-commit check..."
+OUTPUT="/tmp/pre-commit-check-$(date +%s)"
+echo "Running lint check..."
+./gradlew lint > "$OUTPUT"
+EXIT_CODE=$?
+if [ $EXIT_CODE -ne 0 ]; then
+  cat "$OUTPUT"
+  rm "$OUTPUT"
+  echo "***********************************************"
+  echo "               lint failed                     "
+  echo " Please fix the above issues before committing "
+  echo "***********************************************"
+  exit $EXIT_CODE
+fi
+echo "Running detekt check..."
+./gradlew detekt reportMerge --continue > "$OUTPUT"
+EXIT_CODE=$?
+if [ $EXIT_CODE -ne 0 ]; then
+  cat "$OUTPUT"
+  rm "$OUTPUT"
+  echo "***********************************************"
+  echo "               detekt failed                   "
+  echo " Please fix the above issues before committing "
+  echo "***********************************************"
+  exit $EXIT_CODE
+fi
+echo "Running unit tests..."
+./gradlew test > "$OUTPUT"
+EXIT_CODE=$?
+if [ $EXIT_CODE -ne 0 ]; then
+  cat "$OUTPUT"
+  rm "$OUTPUT"
+  echo "***********************************************"
+  echo "               unit tests failed               "
+  echo " Please fix the above issues before committing "
+  echo "***********************************************"
+  exit $EXIT_CODE
+fi
+# echo "Running connected tests..."
+#./gradlew connectedAndroidTest
+#EXIT_CODE=$?
+#if [ $EXIT_CODE -ne 0 ]; then
+#  cat $OUTPUT
+#  rm $OUTPUT
+#  echo "***********************************************"
+#  echo "               android tests failed            "
+#  echo " Please fix the above issues before committing "
+#  echo "***********************************************"
+#  exit $EXIT_CODE
+#fi
+rm "$OUTPUT"

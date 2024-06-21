@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option java_package = "com.glebkrep.simplebudget";
+option java_multiple_files = true;
+
+message BudgetDataProto {
+  double todayBudget = 1;
+  double dailyBudget = 2;
+  double totalLeft = 3;
+  double billingTimestamp = 4;
+  double lastLoginTimestamp = 5;
+  double lastBillingUpdateTimestamp = 6;
+}
