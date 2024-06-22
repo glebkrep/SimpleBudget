@@ -11,7 +11,8 @@ class TestConvertStringToDoubleSmartUseCase {
         val useCase = ConvertStringToDoubleSmartUseCase()
         val input = "27942.42"
         val result = useCase.invoke(input)
-        assertEquals(27942.42, result)
+//        assertEquals(27942.42, result)
+        assertEquals(12.1, result)
         assertNotEquals(27942.41, result)
     }
 
