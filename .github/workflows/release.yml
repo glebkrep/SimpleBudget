@@ -1,9 +1,9 @@
 name: Generate release APK and AAB
 run-name: Build release files
 on:
-  workflow_run:
-    workflows: [ Code quality check ]
-    types: [ completed ]
+  push:
+    #    workflows: [ Code quality check ]
+    #    types: [ completed ]
     branches:
       - release/*
       - workflows
