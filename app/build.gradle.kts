@@ -20,12 +20,14 @@ android {
         }
     }
 
-    val keystorePropertiesFile = rootProject.file("keystore.properties")
-    val keystoreProperties = Properties()
-    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
 
     signingConfigs {
         create("release") {
+            val keystorePropertiesFile = rootProject.file("keystore.properties")
+            val keystoreProperties = Properties()
+            keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
             storeFile = file(keystoreProperties["storeFile"].toString())
             storePassword = keystoreProperties["storePassword"].toString()
             keyAlias = keystoreProperties["keyAlias"].toString()
