@@ -1,3 +1,7 @@
+import org.apache.commons.compress.harmony.pack200.PackingUtils.config
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.simplebudget.android.application)
     alias(libs.plugins.simplebudget.android.application.compose)
@@ -16,6 +20,19 @@ android {
         }
     }
 
+
+
+    signingConfigs {
+        create("release") {
+            val keystorePropertiesFile = rootProject.file("keystore.properties")
+            val keystoreProperties = Properties()
+            keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+            storeFile = file(keystoreProperties["storeFile"].toString())
+            storePassword = keystoreProperties["storePassword"].toString()
+            keyAlias = keystoreProperties["keyAlias"].toString()
+            keyPassword = keystoreProperties["keyPassword"].toString()
+        }
+    }
     buildTypes {
         buildTypes {
             release {
@@ -24,6 +41,7 @@ android {
                     getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro"
                 )
+                signingConfig = signingConfigs.getByName("release")
             }
         }
     }
@@ -39,6 +57,12 @@ android {
         }
     }
     namespace = "com.glebkrep.simplebudget"
+}
+
+tasks.register("getVersion") {
+    doLast {
+        println("v" + android.defaultConfig.versionName + "code" + android.defaultConfig.versionCode)
+    }
 }
 
 dependencies {
