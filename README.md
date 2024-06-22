@@ -1,4 +1,5 @@
-<img src="docs/icon.png" alt='Simple Budget application logo'/>
+<div align="center">
+<img src="docs/icon.png" alt='Simple Budget application logo' width="200"/>
 
 # Simple Budget for Android
 
@@ -6,4 +7,4 @@ Simple Budget is a budget application for Android. It allows you to track your e
 your remaining balance equally divided for each day. It is simple and easy to use
 application that helps you start managing your finances.
 
-<img src="docs/screenshots.png" alt='Simple Budget screenshots'/>
+<img src="docs/screenshots.png" alt='Simple Budget screenshots' />
