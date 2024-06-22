@@ -27,6 +27,7 @@ fun PreferencesScreenRoute(
     val action by viewModel.action.observeAsState()
 
     val lintTest = " "
+    val lintTest2 = " "
 
     LaunchedEffect(key1 = action) {
         when (action) {
