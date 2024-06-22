@@ -18,6 +18,11 @@ jobs:
         with:
           cache-disabled: true
 
+      - name: Generate keystore.properties
+        run: |
+          cat <<EOF > keystore.properties
+          EOF
+
       - name: Lint
         shell: bash
         run: ./gradlew lint
