@@ -26,10 +26,6 @@ fun PreferencesScreenRoute(
     val state by viewModel.state.observeAsState()
     val action by viewModel.action.observeAsState()
 
-    val lintTest = " "
-    val lintTest2 = " "
-    val lintTest3 = " "
-
     LaunchedEffect(key1 = action) {
         when (action) {
             PreferencesAction.GoBack -> goBack()
