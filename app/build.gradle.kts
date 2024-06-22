@@ -61,7 +61,7 @@ android {
 
 tasks.register("getVersion") {
     doLast {
-        println("v" + android.defaultConfig.versionName + "(" + android.defaultConfig.versionCode + ")")
+        println("v" + android.defaultConfig.versionName + "code" + android.defaultConfig.versionCode)
     }
 }
 
