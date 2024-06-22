@@ -34,6 +34,7 @@ jobs:
           # The format below works for the Gradle Checkstyle plugin with default configurations
           reports: |
             build/reports/detekt/merge.xml
+            **/build/reports/lint-results-debug.xml
 
       - name: Unit tests
         shell: bash
