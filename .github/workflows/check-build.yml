@@ -57,6 +57,11 @@ jobs:
         with:
           cache-disabled: true
 
+      - name: Generate keystore.properties
+        run: |
+          cat <<EOF > keystore.properties
+          EOF
+
       - name: Unit tests
         shell: bash
         run: ./gradlew test
