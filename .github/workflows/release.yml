@@ -6,7 +6,6 @@ on:
     #    types: [ completed ]
     branches:
       - release/*
-      - workflows
 #  workflow_run:
 #    branches:
 #      - release/*
