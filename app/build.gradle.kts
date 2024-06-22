@@ -1,3 +1,7 @@
+import org.apache.commons.compress.harmony.pack200.PackingUtils.config
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.simplebudget.android.application)
     alias(libs.plugins.simplebudget.android.application.compose)
@@ -16,6 +20,18 @@ android {
         }
     }
 
+    val keystorePropertiesFile = rootProject.file("keystore.properties")
+    val keystoreProperties = Properties()
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+
+    signingConfigs {
+        create("release") {
+            storeFile = file(keystoreProperties["storeFile"].toString())
+            storePassword = keystoreProperties["storePassword"].toString()
+            keyAlias = keystoreProperties["keyAlias"].toString()
+            keyPassword = keystoreProperties["keyPassword"].toString()
+        }
+    }
     buildTypes {
         buildTypes {
             release {
@@ -39,6 +55,12 @@ android {
         }
     }
     namespace = "com.glebkrep.simplebudget"
+}
+
+tasks.register("getVersion") {
+    doLast {
+        println("v" + android.defaultConfig.versionName + "(" + android.defaultConfig.versionCode + ")")
+    }
 }
 
 dependencies {
