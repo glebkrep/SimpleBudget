@@ -121,56 +121,54 @@ fun BudgetText(
     modifier: Modifier = Modifier
 ) {
 
-    var animationVisibility by remember {
+    var bottomValueVisibility by remember {
         mutableStateOf(false)
     }
-    var animationText by remember {
+    var bottomValueText by remember {
         mutableStateOf("")
     }
-
-    LaunchedEffect(diff) {
-        if (diff != null) {
-            animationText = diff
-            animationVisibility = true
-        } else {
-            animationVisibility = false
-        }
+    var bottomValueColor by remember {
+        mutableStateOf(DefaultColors.GoodGreen)
     }
 
-    val moneyTextStyle = MaterialTheme.typography.titleLarge
+    LaunchedEffect(diff, newBudget) {
+        when {
+            diff == null && newBudget == null -> {
+                bottomValueVisibility = false
+            }
+
+            newBudget != null -> {
+                bottomValueColor = if (newBudget.toDouble() > oldBudget.toDouble()) {
+                    DefaultColors.GoodGreen
+                } else DefaultColors.BadRed
+                bottomValueText = newBudget
+                bottomValueVisibility = true
+            }
+
+            diff != null -> {
+                bottomValueColor =
+                    if (diff.contains("+")) DefaultColors.GoodGreen else DefaultColors.BadRed
+                bottomValueText = diff
+                bottomValueVisibility = true
+            }
+        }
+    }
 
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         SimpleBudgetViews.SimpleBudgetText(
             title, color = MaterialTheme.colorScheme.primary,
             textStyle = MaterialTheme.typography.headlineSmall
         )
-        //todo animation makes divider jump back and forth
-        if (newBudget == null) {
+        SimpleBudgetAnimatedText(
+            doubleValue = oldBudget,
+            color = MaterialTheme.colorScheme.onBackground,
+            textStyle = MaterialTheme.typography.titleLarge
+        )
+        AnimatedVisibility(visible = bottomValueVisibility, enter = fadeIn(initialAlpha = 1f)) {
             SimpleBudgetViews.SimpleBudgetText(
-                oldBudget,
-                color = MaterialTheme.colorScheme.onBackground,
-                textStyle = moneyTextStyle
-            )
-            AnimatedVisibility(visible = animationVisibility, enter = fadeIn(initialAlpha = 1f)) {
-                SimpleBudgetViews.SimpleBudgetText(
-                    animationText,
-                    color = if (animationText.contains("+")) DefaultColors.GoodGreen else DefaultColors.BadRed,
-                    textStyle = moneyTextStyle
-                )
-            }
-        } else {
-            SimpleBudgetViews.SimpleBudgetText(
-                text = oldBudget, strikethrough = true,
-                color = DefaultColors.WhiteText,
-                textStyle = moneyTextStyle
-            )
-
-            SimpleBudgetViews.SimpleBudgetText(
-                text = "$newBudget",
-                color = if (newBudget.toDouble() > oldBudget.toDouble()) {
-                    DefaultColors.GoodGreen
-                } else DefaultColors.BadRed,
-                textStyle = moneyTextStyle
+                bottomValueText,
+                color = bottomValueColor,
+                textStyle = MaterialTheme.typography.titleLarge
             )
         }
     }
