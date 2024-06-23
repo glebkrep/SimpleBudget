@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 interface RecentTransactionsRepository {
     suspend fun getRecentTransactionsFlow(): Flow<List<RecentTransactionEntity>>
 
+    suspend fun getTotalNumberOfRecentTransactionsFlow(): Flow<Int>
+
     suspend fun getTransactionById(id: Int): RecentTransactionEntity?
 
     suspend fun addRecent(recentTransaction: RecentTransactionEntity): Long

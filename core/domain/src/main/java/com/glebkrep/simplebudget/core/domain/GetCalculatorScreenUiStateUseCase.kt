@@ -38,8 +38,9 @@ class GetCalculatorScreenUiStateUseCase @Inject constructor(
             calculatorInputRepository.getCalculatorInput(),
             budgetRepository.getBudgetData(),
             preferencesRepository.getPreferences(),
-            recentTransactionsRepository.getRecentTransactionsFlow()
-        ) { calculatorInput, budgetData, preferences, recentTransactions ->
+            recentTransactionsRepository.getRecentTransactionsFlow(),
+            recentTransactionsRepository.getTotalNumberOfRecentTransactionsFlow(),
+        ) { calculatorInput, budgetData, preferences, recentTransactions, numberOfTransactions ->
             return@combine when {
                 getDayDiffFromTimestampUseCase(
                     firstTimestamp = budgetData.billingTimestamp,
@@ -64,7 +65,8 @@ class GetCalculatorScreenUiStateUseCase @Inject constructor(
                         budgetData = budgetData,
                         calculatorInput = calculatorInput,
                         recentTransactions = recentTransactions,
-                        preferences = preferences
+                        preferences = preferences,
+                        numberOfRecentTransactions = numberOfTransactions
                     )
                 }
 
@@ -98,6 +100,7 @@ class GetCalculatorScreenUiStateUseCase @Inject constructor(
         budgetData: BudgetData,
         calculatorInput: String,
         recentTransactions: List<RecentTransactionEntity>,
+        numberOfRecentTransactions: Int,
         preferences: AppPreferences
     ): CalculatorScreenState.Default {
         val newBudgeData = createUpdatedBudgetDataUseCase(
@@ -111,7 +114,8 @@ class GetCalculatorScreenUiStateUseCase @Inject constructor(
             calculatorInput = calculatorInput,
             recentTransaction = recentTransactions,
             newBudgetData = newBudgeData,
-            preferences = preferences
+            preferences = preferences,
+            numberOfRecentTransactions = numberOfRecentTransactions
         )
         return CalculatorScreenState.Default(
             newUiState

@@ -17,11 +17,13 @@ class CreateBudgetUiStateUseCase @Inject constructor(
     private val convertTimestampToPrettyDateUseCase: ConvertTimestampToPrettyDateUseCase,
 ) {
 
+    @Suppress("LongParameterList")
     suspend operator fun invoke(
         oldBudgetData: BudgetData,
         calculatorInput: String,
         recentTransaction: List<RecentTransactionEntity>,
         newBudgetData: BudgetData,
+        numberOfRecentTransactions: Int,
         preferences: AppPreferences
     ): BudgetUiState {
         val daysToBilling = getDayDiffFromTimestampUseCase(
@@ -57,7 +59,8 @@ class CreateBudgetUiStateUseCase @Inject constructor(
                     oldBudgetData.lastBillingUpdateTimestamp
                 )
             },
-            areCommentsEnabled = preferences.isCommentsEnabled ?: true
+            areCommentsEnabled = preferences.isCommentsEnabled ?: true,
+            totalNumberOfRecentTransactions = numberOfRecentTransactions
         )
     }
 
