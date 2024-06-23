@@ -29,7 +29,7 @@ class RecentTransactionsLocalDataSource
         recentTransactionDao.deleteById(id)
     }
 
-    suspend fun getAllItemsFlow(): Flow<List<RecentTransactionEntity>> =
+    fun getAllItemsFlow(): Flow<List<RecentTransactionEntity>> =
         recentTransactionDao.getAllLatestFirstFlow().flowOn(ioDispatcher)
 
     suspend fun getById(id: Int): RecentTransactionEntity? = withContext(ioDispatcher) {

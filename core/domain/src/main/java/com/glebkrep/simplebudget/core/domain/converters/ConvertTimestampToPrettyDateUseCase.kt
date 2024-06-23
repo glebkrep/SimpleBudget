@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class ConvertTimestampToPrettyDateUseCase @Inject constructor() {
 
-    suspend operator fun invoke(
+    operator fun invoke(
         timestamp: Long,
         needTime: Boolean,
         currentTimestamp: Long = System.currentTimeMillis(),

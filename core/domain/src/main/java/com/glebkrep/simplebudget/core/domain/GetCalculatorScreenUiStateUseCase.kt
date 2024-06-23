@@ -73,7 +73,7 @@ class GetCalculatorScreenUiStateUseCase @Inject constructor(
         }
     }
 
-    private suspend fun suggestUpdateBillingDate(budgetData: BudgetData): CalculatorScreenState.BadBillingDate {
+    private fun suggestUpdateBillingDate(budgetData: BudgetData): CalculatorScreenState.BadBillingDate {
         return CalculatorScreenState.BadBillingDate(
             convertStringToPrettyStringUseCase(
                 budgetData.totalLeft.toString()
@@ -89,7 +89,7 @@ class GetCalculatorScreenUiStateUseCase @Inject constructor(
         budgetRepository.setBudgetData(newBudgetData)
     }
 
-    private suspend fun nothing(
+    private fun nothing(
         budgetData: BudgetData,
         calculatorInput: String,
         recentTransactions: List<RecentTransactionEntity>,
@@ -113,7 +113,7 @@ class GetCalculatorScreenUiStateUseCase @Inject constructor(
         )
     }
 
-    private suspend fun suggestIncreaseDailyOrTotal(
+    private fun suggestIncreaseDailyOrTotal(
         budgetData: BudgetData,
         currentTimestamp: Long
     ): CalculatorScreenState.AskedToUpdateDailyOrTodayBudget {

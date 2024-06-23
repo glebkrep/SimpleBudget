@@ -3,7 +3,7 @@ package com.glebkrep.simplebudget.core.domain.converters
 import javax.inject.Inject
 
 class ConvertTimestampToDayNumberUseCase @Inject constructor() {
-    suspend operator fun invoke(timestamp: Long): Int {
+    operator fun invoke(timestamp: Long): Int {
         return (timestamp / DAY_IN_MILLIS).toInt()
     }
 

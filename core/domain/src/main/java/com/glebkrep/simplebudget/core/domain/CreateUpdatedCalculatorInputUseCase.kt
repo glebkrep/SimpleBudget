@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 class CreateUpdatedCalculatorInputUseCase @Inject constructor(
 ) {
-    suspend operator fun invoke(
+    operator fun invoke(
         calculatorInput: String,
         newButton: CalculatorButton
     ): String {

@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class ConvertStringToPrettyStringUseCase @Inject constructor() {
 
-    suspend operator fun invoke(input: String): String {
+    operator fun invoke(input: String): String {
         return input.pretty
     }
 

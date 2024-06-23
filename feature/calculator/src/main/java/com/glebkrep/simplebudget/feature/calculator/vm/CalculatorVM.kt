@@ -34,8 +34,8 @@ class CalculatorVM @Inject constructor(
     val diffAnimationState: LiveData<DiffAnimationState> = _diffAnimationState
 
     init {
-        val diffCalculator = DiffCalculator(prettyStringUseCase)
         viewModelScope.launch {
+            val diffCalculator = DiffCalculator(prettyStringUseCase)
             getCalculatorScreenUiStateUseCase().collect { data ->
                 data?.let {
                     if (it is CalculatorScreenState.Default) {

@@ -8,7 +8,7 @@ internal class DiffCalculator(prettyStringUseCase: ConvertStringToPrettyStringUs
     private var todayDiffCalculator = OneDiffCalculator(prettyStringUseCase)
     private var dailyDiffCalculator = OneDiffCalculator(prettyStringUseCase)
 
-    suspend fun getDiff(
+    fun getDiff(
         totalBudget: String,
         dailyBudget: String,
         todayBudget: String,
@@ -27,7 +27,7 @@ internal class DiffCalculator(prettyStringUseCase: ConvertStringToPrettyStringUs
         private var cachedPreviousValue: String? = null
         private var cachedPreviousDiff: String? = null
         private var cachedPreviousDiffExpiryTime: Long = 0
-        suspend fun getDiff(newValue: String): String? {
+        fun getDiff(newValue: String): String? {
             val previousValue = cachedPreviousValue
             val previousDiff = cachedPreviousDiff
             val previousDiffExpiryTime = cachedPreviousDiffExpiryTime

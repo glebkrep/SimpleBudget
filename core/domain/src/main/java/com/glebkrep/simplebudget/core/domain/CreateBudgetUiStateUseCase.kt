@@ -17,7 +17,7 @@ class CreateBudgetUiStateUseCase @Inject constructor(
     private val convertTimestampToPrettyDateUseCase: ConvertTimestampToPrettyDateUseCase,
 ) {
 
-    suspend operator fun invoke(
+    operator fun invoke(
         oldBudgetData: BudgetData,
         calculatorInput: String,
         recentTransaction: List<RecentTransactionEntity>,
@@ -61,7 +61,7 @@ class CreateBudgetUiStateUseCase @Inject constructor(
         )
     }
 
-    private suspend fun recentTransactionToUiRecent(
+    private fun recentTransactionToUiRecent(
         recentTransaction: RecentTransactionEntity,
         lastBillingUpdateTimestamp: Long
     ): UiRecentTransaction {

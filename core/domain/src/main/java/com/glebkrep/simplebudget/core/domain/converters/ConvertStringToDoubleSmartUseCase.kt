@@ -4,7 +4,7 @@ import javax.inject.Inject
 
 class ConvertStringToDoubleSmartUseCase @Inject constructor() {
 
-    suspend operator fun invoke(input: String): Double {
+    operator fun invoke(input: String): Double {
         return input.smartToDouble()
     }
 

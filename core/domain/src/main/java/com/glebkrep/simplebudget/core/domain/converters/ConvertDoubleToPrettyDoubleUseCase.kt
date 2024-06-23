@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class ConvertDoubleToPrettyDoubleUseCase @Inject constructor() {
 
-    suspend operator fun invoke(float: Double): Double {
+    operator fun invoke(float: Double): Double {
         return float.pretty
     }
 

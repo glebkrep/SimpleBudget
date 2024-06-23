@@ -13,7 +13,7 @@ class CreateUpdatedBudgetDataUseCase @Inject constructor(
     private val convertStringToDoubleSmartUseCase: ConvertStringToDoubleSmartUseCase,
 ) {
 
-    suspend operator fun invoke(
+    operator fun invoke(
         operation: BudgetDataOperations,
         budgetData: BudgetData
     ): BudgetData {
@@ -57,7 +57,7 @@ class CreateUpdatedBudgetDataUseCase @Inject constructor(
         }
     }
 
-    private suspend fun BudgetData.transferToToday(): BudgetData {
+    private fun BudgetData.transferToToday(): BudgetData {
         val daysToBilling =
             convertTimestampToDayNumberUseCase(this.billingTimestamp) - convertTimestampToDayNumberUseCase(
                 System.currentTimeMillis()
@@ -74,7 +74,7 @@ class CreateUpdatedBudgetDataUseCase @Inject constructor(
         )
     }
 
-    private suspend fun BudgetData.handleNormalCalculatorInput(
+    private fun BudgetData.handleNormalCalculatorInput(
         calculatorInput: Double
     ): BudgetData {
         val daysToBilling =
@@ -122,7 +122,7 @@ class CreateUpdatedBudgetDataUseCase @Inject constructor(
         }
     }
 
-    private suspend fun BudgetData.handlePlusCalculatorInput(
+    private fun BudgetData.handlePlusCalculatorInput(
         calculatorInput: Double
     ): BudgetData {
         return if (this.dailyBudget < this.todayBudget + calculatorInput) {
@@ -140,7 +140,7 @@ class CreateUpdatedBudgetDataUseCase @Inject constructor(
         }
     }
 
-    private suspend fun BudgetData.transferLeftoverToDaily(): BudgetData {
+    private fun BudgetData.transferLeftoverToDaily(): BudgetData {
         val newBudget = this.setNewBudget(this.totalLeft)
         return this.copy(
             lastLoginTimestamp = System.currentTimeMillis(),
@@ -149,7 +149,7 @@ class CreateUpdatedBudgetDataUseCase @Inject constructor(
         )
     }
 
-    private suspend fun BudgetData.setNewBudget(budget: Double): BudgetData {
+    private fun BudgetData.setNewBudget(budget: Double): BudgetData {
         val daysToBilling =
             convertTimestampToDayNumberUseCase(this.billingTimestamp) - convertTimestampToDayNumberUseCase(
                 System.currentTimeMillis()
@@ -168,7 +168,7 @@ class CreateUpdatedBudgetDataUseCase @Inject constructor(
         )
     }
 
-    private suspend fun BudgetData.setNewBillingDate(billingTimestamp: Long): BudgetData {
+    private fun BudgetData.setNewBillingDate(billingTimestamp: Long): BudgetData {
         val daysToBilling =
             convertTimestampToDayNumberUseCase(billingTimestamp) - convertTimestampToDayNumberUseCase(
                 System.currentTimeMillis()
