@@ -227,7 +227,8 @@ object SimpleBudgetViews {
                 .padding(DefaultPadding.BIG),
             colors = CardDefaults.cardColors().copy(
                 containerColor = cardBackground
-            ), onClick = onClick
+            ),
+            onClick = onClick
         ) {
             Column(
                 Modifier
@@ -240,7 +241,8 @@ object SimpleBudgetViews {
                     text = text, color = textColor,
                     maxLines = 4,
                     textStyle = MaterialTheme.typography.headlineSmall,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(DefaultPadding.BIG)
                 )
             }
         }

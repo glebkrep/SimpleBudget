@@ -61,7 +61,7 @@ fun CalculatorChooseIncreasePage(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().padding(horizontal = DefaultPadding.LARGE)
         ) {
 
             SimpleBudgetViews.SimpleBudgetCardButton(

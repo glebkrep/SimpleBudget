@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -74,7 +75,7 @@ fun CalculatorBadBillingDatePage(
             SimpleBudgetViews.SimpleBudgetCardButton(
                 text = stringResource(R.string.feature_calculator_btn_change_billing_date),
                 cardBackground = MaterialTheme.colorScheme.primary,
-                modifier = Modifier,
+                modifier = Modifier.padding(horizontal = DefaultPadding.EXTRA_LARGE),
                 onClick = {
                     onEvent.invoke(CalculatorEvent.OnSettingsClicked)
                 },
