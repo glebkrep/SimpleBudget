@@ -116,10 +116,16 @@ class GetCalculatorScreenUiStateUseCase @Inject constructor(
     private suspend fun suggestIncreaseDailyOrTotal(
         budgetData: BudgetData,
         currentTimestamp: Long
-    ): CalculatorScreenState.AskedToUpdateDailyOrTodayBudget {
+    ): CalculatorScreenState {
         val daysLeft =
             convertTimestampToDayNumberUseCase(budgetData.billingTimestamp) -
                     convertTimestampToDayNumberUseCase(currentTimestamp) + 1
+        if (budgetData.todayBudget == 0.0) {
+            return CalculatorScreenState.AskedToStartNewDay(
+                budgetLeft = convertStringToPrettyStringUseCase(budgetData.totalLeft.toString()),
+                daysLeft = daysLeft.toString()
+            )
+        }
         val budgetDataIncreaseDaily = createUpdatedBudgetDataUseCase.invoke(
             operation = BudgetDataOperations.TransferLeftoverTodayToDaily,
             budgetData = budgetData

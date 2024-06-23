@@ -9,5 +9,8 @@ sealed class CalculatorScreenState {
         val daysLeft: String
     ) : CalculatorScreenState()
 
+    data class AskedToStartNewDay(val budgetLeft: String, val daysLeft: String) :
+        CalculatorScreenState()
+
     data class BadBillingDate(val budgetLeft: String) : CalculatorScreenState()
 }
