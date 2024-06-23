@@ -75,7 +75,9 @@ class CalculatorVM @Inject constructor(
                     handleCalculatorInputUseCase(CalculatorButton.SAVE_CHANGE, event.comment)
                 }
 
-                is CalculatorEvent.SelectIncreaseDaily, is CalculatorEvent.SelectIncreaseToday -> {
+                is CalculatorEvent.SelectIncreaseDaily,
+                is CalculatorEvent.SelectIncreaseToday,
+                is CalculatorEvent.SelectStartNextDay -> {
                     handleCalculatorDateRelatedEventUseCase(event)
                 }
 

@@ -7,6 +7,7 @@ sealed class CalculatorEvent {
     data class CommitTransaction(val input: String, val comment: String?) : CalculatorEvent()
     data object SelectIncreaseDaily : CalculatorEvent()
     data object SelectIncreaseToday : CalculatorEvent()
+    data object SelectStartNextDay : CalculatorEvent()
     data object OnSettingsClicked : CalculatorEvent()
 
 

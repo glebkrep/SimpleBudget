@@ -16,4 +16,6 @@
     <string name="feature_calculator_today">TODAY</string>
     <string name="feature_calculator_header_increase">INCREASE</string>
     <string name="feature_calculator_header_finish">THE END</string>
+    <string name="feature_calculator_start_next_day">Start next day</string>
+    <string name="feature_calculator_new_day">NEW DAY</string>
 </resources>
