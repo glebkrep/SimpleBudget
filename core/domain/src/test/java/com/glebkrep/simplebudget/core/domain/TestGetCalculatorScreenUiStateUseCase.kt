@@ -15,11 +15,8 @@ import com.glebkrep.simplebudget.model.AppPreferences
 import com.glebkrep.simplebudget.model.BudgetData
 import io.mockk.coEvery
 import io.mockk.coJustRun
-import io.mockk.every
-import io.mockk.justRun
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
@@ -61,7 +58,7 @@ class TestGetCalculatorScreenUiStateUseCase {
         }
 
         val recentTransactionRepository = mockk<RecentTransactionsRepository>()
-        coEvery { recentTransactionRepository.getRecentTransactionsFlow() } returns flow {
+        coEvery { recentTransactionRepository.getRecentTransactions() } returns flow {
             emit(
                 listOf(
                     RecentTransactionEntity(

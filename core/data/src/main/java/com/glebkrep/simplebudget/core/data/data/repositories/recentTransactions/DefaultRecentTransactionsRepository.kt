@@ -15,8 +15,8 @@ internal class DefaultRecentTransactionsRepository
     @Dispatcher(SimpleBudgetDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : RecentTransactionsRepository {
 
-    override fun getRecentTransactionsFlow(): Flow<List<RecentTransactionEntity>> =
-        localDataSource.getAllItemsFlow().flowOn(ioDispatcher)
+    override fun getRecentTransactions(): Flow<List<RecentTransactionEntity>> =
+        localDataSource.getAllItems().flowOn(ioDispatcher)
 
 
     override suspend fun getTransactionById(id: Int): RecentTransactionEntity? =

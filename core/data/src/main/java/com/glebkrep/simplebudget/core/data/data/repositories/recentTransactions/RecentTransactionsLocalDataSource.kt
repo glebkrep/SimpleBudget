@@ -29,8 +29,8 @@ class RecentTransactionsLocalDataSource
         recentTransactionDao.deleteById(id)
     }
 
-    fun getAllItemsFlow(): Flow<List<RecentTransactionEntity>> =
-        recentTransactionDao.getAllLatestFirstFlow().flowOn(ioDispatcher)
+    fun getAllItems(): Flow<List<RecentTransactionEntity>> =
+        recentTransactionDao.getAllLatestFirst().flowOn(ioDispatcher)
 
     suspend fun getById(id: Int): RecentTransactionEntity? = withContext(ioDispatcher) {
         recentTransactionDao.getById(id)

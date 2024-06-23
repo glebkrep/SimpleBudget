@@ -17,7 +17,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class GetCalculatorScreenUiStateUseCase @Inject constructor(
@@ -38,7 +37,7 @@ class GetCalculatorScreenUiStateUseCase @Inject constructor(
         calculatorInputRepository.getCalculatorInput(),
         budgetRepository.getBudgetData(),
         preferencesRepository.getPreferences(),
-        recentTransactionsRepository.getRecentTransactionsFlow()
+        recentTransactionsRepository.getRecentTransactions()
     ) { calculatorInput, budgetData, preferences, recentTransactions ->
         val todayDay = convertTimestampToDayNumberUseCase(currentTimestamp)
         val lastRunDay = convertTimestampToDayNumberUseCase(budgetData.lastLoginTimestamp)

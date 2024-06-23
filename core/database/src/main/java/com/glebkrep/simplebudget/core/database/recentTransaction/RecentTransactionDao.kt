@@ -13,7 +13,7 @@ interface RecentTransactionDao {
     fun insert(recentTransaction: RecentTransactionEntity): Long
 
     @Query("SELECT * FROM recents order by date desc")
-    fun getAllLatestFirstFlow(): Flow<List<RecentTransactionEntity>>
+    fun getAllLatestFirst(): Flow<List<RecentTransactionEntity>>
 
     @Query("DELETE FROM recents WHERE id=:deleteId")
     fun deleteById(deleteId: Int)
