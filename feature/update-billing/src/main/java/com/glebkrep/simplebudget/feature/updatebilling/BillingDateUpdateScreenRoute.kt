@@ -47,7 +47,7 @@ fun BillingDateUpdateScreen(
 }
 
 @Composable
-fun BillingDateUpdateScreen(
+internal fun BillingDateUpdateScreen(
     state: BillingDateUpdateState?,
     onEvent: (BillingDateUpdateEvent) -> Unit,
 ) {

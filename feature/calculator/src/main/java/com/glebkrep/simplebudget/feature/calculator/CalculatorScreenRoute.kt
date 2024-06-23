@@ -55,7 +55,7 @@ fun CalculatorScreenRoute(
 }
 
 @Composable
-fun CalculatorScreen(
+internal fun CalculatorScreen(
     state: CalculatorScreenState?,
     animationData: DiffAnimationState?,
     oneEvent: (CalculatorEvent) -> (Unit),

@@ -22,7 +22,7 @@ import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.feature.calculator.R
 
 @Composable
-fun CalculatorBadBillingDatePage(
+internal fun CalculatorBadBillingDatePage(
     remainingBudget: String,
     onEvent: (CalculatorEvent) -> (Unit),
 ) {
@@ -88,7 +88,7 @@ fun CalculatorBadBillingDatePage(
 
 @Composable
 @Preview
-fun CalculatorBadBillingDateScreenPreview() {
+private fun CalculatorBadBillingDateScreenPreview() {
     SimpleBudgetTheme {
         CalculatorBadBillingDatePage(
             remainingBudget = "1245.05",
@@ -99,7 +99,7 @@ fun CalculatorBadBillingDateScreenPreview() {
 
 @Composable
 @Preview
-fun CalculatorBadBillingDateNothingSavedScreenPreview() {
+private fun CalculatorBadBillingDateNothingSavedScreenPreview() {
     SimpleBudgetTheme {
         CalculatorBadBillingDatePage(
             remainingBudget = "0",

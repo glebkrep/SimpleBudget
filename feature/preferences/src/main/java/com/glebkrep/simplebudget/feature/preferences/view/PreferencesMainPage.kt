@@ -21,7 +21,7 @@ import com.glebkrep.simplebudget.feature.preferences.vm.PreferencesEvent
 import com.glebkrep.simplebudget.feature.preferences.vm.PreferencesState
 
 @Composable
-fun PreferencesMainPage(
+internal fun PreferencesMainPage(
     state: PreferencesState.Display,
     onNewEvent: (PreferencesEvent) -> Unit
 ) {
@@ -106,7 +106,7 @@ private fun BoxItem(modifier: Modifier, bigText: String, smallText: String, onCl
 
 @Preview
 @Composable
-fun PreferencesMainPagePreview() {
+private fun PreferencesMainPagePreview() {
     SimpleBudgetTheme {
         Column(
             Modifier

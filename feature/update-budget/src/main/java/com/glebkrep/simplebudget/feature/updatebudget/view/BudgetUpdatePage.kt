@@ -22,7 +22,7 @@ import com.glebkrep.simplebudget.feature.updatebudget.vm.BudgetUpdateState
 import com.glebkrep.simplebudget.model.CalculatorButton
 
 @Composable
-fun BudgetUpdatePage(
+internal fun BudgetUpdatePage(
     state: BudgetUpdateState.BudgetInput,
     onEvent: (BudgetUpdateEvent) -> (Unit)
 ) {
@@ -107,7 +107,7 @@ fun BudgetUpdatePage(
 
 @Composable
 @Preview
-fun BudgetUpdatePagePreview() {
+private fun BudgetUpdatePagePreview() {
     SimpleBudgetTheme {
         BudgetUpdatePage(state = BudgetUpdateState.BudgetInput(
             currentInput = "123.33",

@@ -47,7 +47,7 @@ fun BudgetUpdateScreenRoute(
 }
 
 @Composable
-fun BudgetUpdateScreen(
+internal fun BudgetUpdateScreen(
     state: BudgetUpdateState?,
     onEvent: (BudgetUpdateEvent) -> Unit
 ) {

@@ -54,7 +54,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.android.awaitFrame
 
 @Composable
-fun CalculatorMainPage(
+internal fun CalculatorMainPage(
     budgetUiState: BudgetUiState,
     diffAnimationState: DiffAnimationState?,
     onEvent: (CalculatorEvent) -> (Unit)
@@ -153,7 +153,7 @@ fun CalculatorMainPage(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RecentTransactionView(
+internal fun RecentTransactionView(
     recentTransaction: UiRecentTransaction,
     index: Int,
     onEvent: (CalculatorEvent) -> Unit
@@ -284,7 +284,7 @@ fun RecentTransactionView(
 
 @Preview(showBackground = true)
 @Composable
-fun CalculatorScreenPreview() {
+private fun CalculatorScreenPreview() {
     SimpleBudgetTheme {
         Column(Modifier.fillMaxSize()) {
             CalculatorMainPage(

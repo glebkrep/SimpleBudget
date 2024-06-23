@@ -42,7 +42,7 @@ fun PreferencesScreenRoute(
 }
 
 @Composable
-fun PreferencesScreen(
+internal fun PreferencesScreen(
     state: PreferencesState?,
     onEvent: (PreferencesEvent) -> (Unit),
 ) {

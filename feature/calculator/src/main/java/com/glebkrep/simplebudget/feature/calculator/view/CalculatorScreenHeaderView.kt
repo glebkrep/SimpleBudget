@@ -35,7 +35,7 @@ import com.glebkrep.simplebudget.feature.calculator.vm.DiffAnimationState
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun CalculatorScreenHeaderView(
+internal fun CalculatorScreenHeaderView(
     budgetData: BudgetUiState,
     diffAnimationState: DiffAnimationState?,
     onEvent: (CalculatorEvent) -> (Unit),
@@ -114,7 +114,7 @@ fun CalculatorScreenHeaderView(
 }
 
 @Composable
-fun BudgetText(
+internal fun BudgetText(
     title: String,
     newBudget: String?,
     oldBudget: String,
@@ -178,7 +178,7 @@ fun BudgetText(
 
 @Composable
 @Preview
-fun CalculatorScreenHeaderViewPreview() {
+private fun CalculatorScreenHeaderViewPreview() {
     SimpleBudgetTheme {
         CalculatorScreenHeaderView(
             budgetData = BudgetUiState(

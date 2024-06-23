@@ -28,7 +28,7 @@ import java.time.temporal.ChronoUnit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BillingDateUpdatePage(
+internal fun BillingDateUpdatePage(
     state: BillingDateUpdateState.DatePicker,
     onEvent: (BillingDateUpdateEvent) -> (Unit)
 ) {
@@ -79,7 +79,7 @@ fun BillingDateUpdatePage(
 
 @Composable
 @Preview
-fun BillingDateUpdatePagePreview() {
+private fun BillingDateUpdatePagePreview() {
     SimpleBudgetTheme {
         BillingDateUpdatePage(
             state = BillingDateUpdateState.DatePicker(

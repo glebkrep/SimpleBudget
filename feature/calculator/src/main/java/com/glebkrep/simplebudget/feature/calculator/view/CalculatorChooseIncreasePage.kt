@@ -20,7 +20,7 @@ import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.feature.calculator.R
 
 @Composable
-fun CalculatorChooseIncreasePage(
+internal fun CalculatorChooseIncreasePage(
     budgetLeft: String,
     daysLeft: String,
     dailyFromTo: Pair<String, String>,
@@ -100,7 +100,7 @@ fun CalculatorChooseIncreasePage(
 
 @Preview(showBackground = true)
 @Composable
-fun CalculatorChooseIncreaseScreenPreview() {
+private fun CalculatorChooseIncreaseScreenPreview() {
     SimpleBudgetTheme {
         Column(Modifier.fillMaxSize()) {
             CalculatorChooseIncreasePage(
