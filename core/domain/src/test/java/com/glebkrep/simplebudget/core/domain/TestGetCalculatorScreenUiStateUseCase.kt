@@ -73,6 +73,9 @@ class TestGetCalculatorScreenUiStateUseCase {
                 )
             )
         }
+        coEvery { recentTransactionRepository.getTotalNumberOfRecentTransactionsFlow() } returns flow {
+            emit(1)
+        }
 
         val preferenceRepository = mockk<PreferencesRepository>()
         coEvery { preferenceRepository.getPreferences() } returns flow {

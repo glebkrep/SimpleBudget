@@ -12,7 +12,7 @@ interface RecentTransactionDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(recentTransaction: RecentTransactionEntity): Long
 
-    @Query("SELECT * FROM recents order by date desc")
+    @Query("SELECT * FROM recents order by date desc limit 100")
     fun getAllLatestFirstFlow(): Flow<List<RecentTransactionEntity>>
 
     @Query("DELETE FROM recents WHERE id=:deleteId")
@@ -23,4 +23,7 @@ interface RecentTransactionDao {
 
     @Query("SELECT * FROM recents where id=:id limit 1")
     suspend fun getById(id: Int): RecentTransactionEntity?
+
+    @Query("SELECT COUNT(*) FROM recents")
+    fun getTotalNumberOfItems(): Flow<Int>
 }

@@ -190,7 +190,8 @@ fun CalculatorScreenHeaderViewPreview() {
                 oldTodayBudget = "10",
                 areCommentsEnabled = false,
                 currentInput = "",
-                recentTransactions = listOf()
+                recentTransactions = listOf(),
+                totalNumberOfRecentTransactions = 0
             ),
             diffAnimationState = DiffAnimationState(
                 totalDiff = "+100",
