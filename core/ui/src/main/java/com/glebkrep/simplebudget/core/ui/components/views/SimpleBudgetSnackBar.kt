@@ -20,7 +20,7 @@ fun SimpleBudgetSnackBar(snackbarData: SnackbarData) {
     Snackbar(
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         contentColor = LocalContentColor.current,
-        modifier = Modifier.padding(DefaultPadding.BIGGER_PADDING)
+        modifier = Modifier.padding(DefaultPadding.BIG)
     ) {
         Row(modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer)) {
             SimpleBudgetViews.SimpleBudgetText(text = snackbarData.visuals.message)

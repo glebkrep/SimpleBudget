@@ -45,9 +45,9 @@ fun CalculatorScreenHeaderView(
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                top = DefaultPadding.DEFAULT_PADDING,
-                start = DefaultPadding.DEFAULT_PADDING,
-                end = DefaultPadding.DEFAULT_PADDING
+                top = DefaultPadding.DEFAULT,
+                start = DefaultPadding.DEFAULT,
+                end = DefaultPadding.DEFAULT
             )
     ) {
         ConstraintLayout(modifier = modifier.fillMaxWidth()) {
@@ -60,8 +60,8 @@ fun CalculatorScreenHeaderView(
                 },
                 tint = DefaultColors.LightGrayText,
                 modifier = Modifier.constrainAs(settingsButton) {
-                    end.linkTo(parent.end, DefaultPadding.DEFAULT_PADDING)
-                    top.linkTo(parent.top, DefaultPadding.DEFAULT_PADDING)
+                    end.linkTo(parent.end, DefaultPadding.DEFAULT)
+                    top.linkTo(parent.top, DefaultPadding.DEFAULT)
                 }
             )
             SimpleBudgetViews.SimpleBudgetText(
@@ -71,9 +71,9 @@ fun CalculatorScreenHeaderView(
                 ),
                 color = DefaultColors.LightGrayText,
                 modifier = Modifier.constrainAs(daysBlock) {
-                    start.linkTo(parent.start, DefaultPadding.DEFAULT_PADDING)
+                    start.linkTo(parent.start, DefaultPadding.DEFAULT)
                     top.linkTo(settingsButton.top)
-                    end.linkTo(parent.end, DefaultPadding.DEFAULT_PADDING)
+                    end.linkTo(parent.end, DefaultPadding.DEFAULT)
                     width = Dimension.wrapContent
                 },
                 textStyle = MaterialTheme.typography.bodyLarge
@@ -81,7 +81,7 @@ fun CalculatorScreenHeaderView(
         }
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.padding(vertical = DefaultPadding.DEFAULT_PADDING)
+            modifier = Modifier.padding(vertical = DefaultPadding.DEFAULT)
         ) {
             BudgetText(
                 title = stringResource(R.string.feature_calculator_total),
@@ -106,7 +106,7 @@ fun CalculatorScreenHeaderView(
             )
         }
         HorizontalDivider(
-            modifier = Modifier.padding(top = DefaultPadding.DEFAULT_PADDING),
+            modifier = Modifier.padding(top = DefaultPadding.DEFAULT),
             color = MaterialTheme.colorScheme.onPrimaryContainer
         )
     }

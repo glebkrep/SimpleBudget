@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -28,19 +27,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.glebkrep.simplebudget.core.ui.R
 import com.glebkrep.simplebudget.core.ui.components.ComposeUtils
 import com.glebkrep.simplebudget.core.ui.components.clickableWithRipple
 import com.glebkrep.simplebudget.core.ui.components.onTouchHeldWithRipple
-import com.glebkrep.simplebudget.core.ui.theme.DefaultColors
 import com.glebkrep.simplebudget.core.ui.theme.DefaultPadding
+import com.glebkrep.simplebudget.core.ui.theme.DefaultValues
 import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.core.ui.theme.WithLocalRippleAlpha
 import com.glebkrep.simplebudget.model.CalculatorButton
@@ -79,9 +76,9 @@ fun CalculatorView(
     ConstraintLayout(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
         val (calculatorBlock, inputBlock) = createRefs()
         val inputBlockModifier = Modifier.constrainAs(inputBlock) {
-            start.linkTo(parent.start, DefaultPadding.BIGGER_PADDING)
-            end.linkTo(parent.end, DefaultPadding.BIGGER_PADDING)
-            top.linkTo(parent.top, DefaultPadding.DEFAULT_PADDING)
+            start.linkTo(parent.start, DefaultPadding.BIG)
+            end.linkTo(parent.end, DefaultPadding.BIG)
+            top.linkTo(parent.top, DefaultPadding.DEFAULT)
             width = Dimension.fillToConstraints
             height = Dimension.wrapContent
         }
@@ -186,7 +183,7 @@ fun CalculatorView(
                         isButtonEnabled = true,
                         modifier = Modifier
                             .weight(1f)
-                            .height(64.dp),
+                            .height(DefaultValues.SAVE_BUTTON_SIZE),
                         onClick = {
                             onCommitTransaction(
                                 calculatorInput,
@@ -353,8 +350,8 @@ fun CalculatorButtonView(
             modifier = modifier
                 .fillMaxSize()
                 .padding(
-                    horizontal = DefaultPadding.DEFAULT_PADDING,
-                    vertical = DefaultPadding.BIGGER_PADDING
+                    horizontal = DefaultPadding.DEFAULT,
+                    vertical = DefaultPadding.BIG
                 ),
             colors = CardDefaults.cardColors().copy(
                 containerColor = backgroundColor

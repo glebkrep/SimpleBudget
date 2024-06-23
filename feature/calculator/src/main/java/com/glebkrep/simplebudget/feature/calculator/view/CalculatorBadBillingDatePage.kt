@@ -1,7 +1,6 @@
 package com.glebkrep.simplebudget.feature.calculator.view
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -48,8 +47,8 @@ fun CalculatorBadBillingDatePage(
             Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = DefaultPadding.BIGGER_PADDING,
-                    vertical = DefaultPadding.BIG_PADDING
+                    horizontal = DefaultPadding.BIG,
+                    vertical = DefaultPadding.LARGE
                 ), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             SimpleBudgetViews.SimpleBudgetText(
