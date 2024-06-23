@@ -9,17 +9,14 @@ import com.glebkrep.simplebudget.core.database.recentTransaction.RecentTransacti
 import com.glebkrep.simplebudget.core.domain.converters.ConvertDoubleToPrettyDoubleUseCase
 import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToDoubleSmartUseCase
 import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToPrettyStringUseCase
-import com.glebkrep.simplebudget.core.domain.converters.ConvertTimestampToDayNumberUseCase
+import com.glebkrep.simplebudget.core.domain.converters.GetDayDiffFromTimestampUseCase
 import com.glebkrep.simplebudget.core.domain.converters.ConvertTimestampToPrettyDateUseCase
 import com.glebkrep.simplebudget.model.AppPreferences
 import com.glebkrep.simplebudget.model.BudgetData
 import io.mockk.coEvery
 import io.mockk.coJustRun
-import io.mockk.every
-import io.mockk.justRun
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
@@ -85,13 +82,13 @@ class TestGetCalculatorScreenUiStateUseCase {
             recentTransactionsRepository = recentTransactionRepository,
             createBudgetUiStateUseCase = CreateBudgetUiStateUseCase(
                 convertStringToPrettyStringUseCase = ConvertStringToPrettyStringUseCase(),
-                convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase(),
+                getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase(),
                 convertTimestampToPrettyDateUseCase = ConvertTimestampToPrettyDateUseCase()
             ),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase(),
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase(),
             convertStringToPrettyStringUseCase = ConvertStringToPrettyStringUseCase(),
             createUpdatedBudgetDataUseCase = CreateUpdatedBudgetDataUseCase(
-                convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase(),
+                getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase(),
                 convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
                 convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase()
             ),
