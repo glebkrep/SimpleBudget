@@ -18,6 +18,8 @@ internal class DefaultRecentTransactionsRepository
     override fun getRecentTransactions(): Flow<List<RecentTransactionEntity>> =
         localDataSource.getAllItems().flowOn(ioDispatcher)
 
+    override fun getTotalNumberOfRecentTransactionsFlow(): Flow<Int> =
+        localDataSource.getTotalNumberOfItems().flowOn(ioDispatcher)
 
     override suspend fun getTransactionById(id: Int): RecentTransactionEntity? =
         withContext(ioDispatcher) {

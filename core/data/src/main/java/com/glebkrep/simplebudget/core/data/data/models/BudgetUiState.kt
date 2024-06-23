@@ -19,5 +19,6 @@ data class BudgetUiState(
 
     val areCommentsEnabled: Boolean,
 
+    val totalNumberOfRecentTransactions: Int,
     val recentTransactions: ImmutableList<UiRecentTransaction>,
 )

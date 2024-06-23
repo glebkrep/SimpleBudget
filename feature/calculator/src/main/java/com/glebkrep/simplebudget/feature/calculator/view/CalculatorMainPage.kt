@@ -64,9 +64,9 @@ internal fun CalculatorMainPage(
         mutableIntStateOf(0)
     }
 
-    LaunchedEffect(budgetUiState.recentTransactions) {
+    LaunchedEffect(budgetUiState.totalNumberOfRecentTransactions) {
         awaitFrame()
-        val newListSize = budgetUiState.recentTransactions.size
+        val newListSize = budgetUiState.totalNumberOfRecentTransactions
         if (lastDrawnListSize > newListSize) {
             lastDrawnListSize = newListSize
             return@LaunchedEffect
@@ -115,8 +115,8 @@ internal fun CalculatorMainPage(
             state = listState
         ) {
             items(
-                budgetUiState.recentTransactions,
-                { listItem: UiRecentTransaction -> listItem.id }) { item ->
+                items = budgetUiState.recentTransactions,
+                key = { listItem: UiRecentTransaction -> listItem.id }) { item ->
                 RecentTransactionView(recentTransaction = item, index = item.id) {
                     onEvent.invoke(it)
                 }
@@ -168,7 +168,7 @@ internal fun RecentTransactionView(
             onEvent.invoke(CalculatorEvent.DeleteRecent(index))
         }
     }
-    //todo rework list item size not to use constant
+
     val cardModifier = Modifier
         .fillMaxWidth()
         .padding(
@@ -325,6 +325,7 @@ private fun CalculatorScreenPreview() {
                             "20:12 April, 10 2024"
                         ),
                     ),
+                    totalNumberOfRecentTransactions = 5,
                     areCommentsEnabled = true
                 ),
                 diffAnimationState = null,

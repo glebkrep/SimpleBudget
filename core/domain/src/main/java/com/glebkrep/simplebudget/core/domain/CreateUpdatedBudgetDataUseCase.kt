@@ -3,12 +3,12 @@ package com.glebkrep.simplebudget.core.domain
 import com.glebkrep.simplebudget.core.data.data.models.BudgetDataOperations
 import com.glebkrep.simplebudget.core.domain.converters.ConvertDoubleToPrettyDoubleUseCase
 import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToDoubleSmartUseCase
-import com.glebkrep.simplebudget.core.domain.converters.ConvertTimestampToDayNumberUseCase
+import com.glebkrep.simplebudget.core.domain.converters.GetDayDiffFromTimestampUseCase
 import com.glebkrep.simplebudget.model.BudgetData
 import javax.inject.Inject
 
 class CreateUpdatedBudgetDataUseCase @Inject constructor(
-    private val convertTimestampToDayNumberUseCase: ConvertTimestampToDayNumberUseCase,
+    private val getDayDiffFromTimestampUseCase: GetDayDiffFromTimestampUseCase,
     private val convertDoubleToPrettyDoubleUseCase: ConvertDoubleToPrettyDoubleUseCase,
     private val convertStringToDoubleSmartUseCase: ConvertStringToDoubleSmartUseCase,
 ) {
@@ -58,10 +58,10 @@ class CreateUpdatedBudgetDataUseCase @Inject constructor(
     }
 
     private fun BudgetData.transferToToday(): BudgetData {
-        val daysToBilling =
-            convertTimestampToDayNumberUseCase(this.billingTimestamp) - convertTimestampToDayNumberUseCase(
-                System.currentTimeMillis()
-            )
+        val daysToBilling = getDayDiffFromTimestampUseCase(
+            firstTimestamp = System.currentTimeMillis(),
+            secondTimestamp = this.billingTimestamp
+        )
         val neededBudget = this.dailyBudget * daysToBilling
         val freeBudget = this.totalLeft - neededBudget
         val newDaily = if (daysToBilling == 0) {
@@ -77,10 +77,10 @@ class CreateUpdatedBudgetDataUseCase @Inject constructor(
     private fun BudgetData.handleNormalCalculatorInput(
         calculatorInput: Double
     ): BudgetData {
-        val daysToBilling =
-            convertTimestampToDayNumberUseCase(this.billingTimestamp) - convertTimestampToDayNumberUseCase(
-                System.currentTimeMillis()
-            )
+        val daysToBilling = getDayDiffFromTimestampUseCase(
+            firstTimestamp = System.currentTimeMillis(),
+            secondTimestamp = this.billingTimestamp
+        )
         return when {
             this.totalLeft <= calculatorInput -> {
                 this.copy(
@@ -150,10 +150,10 @@ class CreateUpdatedBudgetDataUseCase @Inject constructor(
     }
 
     private fun BudgetData.setNewBudget(budget: Double): BudgetData {
-        val daysToBilling =
-            convertTimestampToDayNumberUseCase(this.billingTimestamp) - convertTimestampToDayNumberUseCase(
-                System.currentTimeMillis()
-            )
+        val daysToBilling = getDayDiffFromTimestampUseCase(
+            firstTimestamp = System.currentTimeMillis(),
+            secondTimestamp = this.billingTimestamp
+        )
 
         val newDailyBudget =
             convertDoubleToPrettyDoubleUseCase((budget / (daysToBilling + 1)))
@@ -169,11 +169,10 @@ class CreateUpdatedBudgetDataUseCase @Inject constructor(
     }
 
     private fun BudgetData.setNewBillingDate(billingTimestamp: Long): BudgetData {
-        val daysToBilling =
-            convertTimestampToDayNumberUseCase(billingTimestamp) - convertTimestampToDayNumberUseCase(
-                System.currentTimeMillis()
-            )
-
+        val daysToBilling = getDayDiffFromTimestampUseCase(
+            firstTimestamp = System.currentTimeMillis(),
+            secondTimestamp = billingTimestamp
+        )
         val newDailyBudget =
             convertDoubleToPrettyDoubleUseCase((this.totalLeft / (daysToBilling + 1)))
 

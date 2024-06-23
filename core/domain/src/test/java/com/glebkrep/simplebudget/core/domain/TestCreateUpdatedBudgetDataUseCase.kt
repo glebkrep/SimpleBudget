@@ -3,7 +3,7 @@ package com.glebkrep.simplebudget.core.domain
 import com.glebkrep.simplebudget.core.data.data.models.BudgetDataOperations
 import com.glebkrep.simplebudget.core.domain.converters.ConvertDoubleToPrettyDoubleUseCase
 import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToDoubleSmartUseCase
-import com.glebkrep.simplebudget.core.domain.converters.ConvertTimestampToDayNumberUseCase
+import com.glebkrep.simplebudget.core.domain.converters.GetDayDiffFromTimestampUseCase
 import com.glebkrep.simplebudget.model.BudgetData
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
@@ -19,7 +19,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -49,7 +49,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -79,11 +79,12 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
+        // todo: rewrite so that this test doesn't depend on the current timezone
         val billingTimeStamp = currentTime
-            .plus(1, ChronoUnit.HOURS)
+            .plus(1, ChronoUnit.MILLIS)
         val budgetData = BudgetData(
             todayBudget = 0.0,
             dailyBudget = 0.0,
@@ -109,11 +110,12 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
+        // todo: rewrite so that this test doesn't depend on the current timezone
         val billingTimeStamp = currentTime
-            .plus(1, ChronoUnit.HOURS)
+            .plus(1, ChronoUnit.MILLIS)
         val budgetData = BudgetData(
             todayBudget = 0.0,
             dailyBudget = 0.0,
@@ -140,7 +142,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -171,7 +173,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -201,7 +203,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -231,7 +233,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -262,7 +264,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -292,7 +294,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -322,7 +324,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -352,7 +354,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -382,7 +384,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -413,7 +415,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -444,7 +446,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -475,7 +477,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -506,7 +508,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -537,7 +539,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -568,7 +570,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -599,7 +601,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -630,7 +632,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
@@ -661,7 +663,7 @@ class TestCreateUpdatedBudgetDataUseCase {
         val useCase = CreateUpdatedBudgetDataUseCase(
             convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
             convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            convertTimestampToDayNumberUseCase = ConvertTimestampToDayNumberUseCase()
+            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
         )
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime

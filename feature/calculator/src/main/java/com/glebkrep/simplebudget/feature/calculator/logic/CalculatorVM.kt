@@ -39,11 +39,6 @@ class CalculatorVM @Inject constructor(
             getCalculatorScreenUiStateUseCase().collect { data ->
                 data?.let {
                     if (it is CalculatorScreenState.Default) {
-                        Logger.log(
-                            "new budget data: ${it.budgetUiState.oldDailyBudget}\n" +
-                                    "${it.budgetUiState.oldTodayBudget}\n" +
-                                    it.budgetUiState.oldMoneyLeft
-                        )
                         postAnimationState(
                             diffCalculator.getDiff(
                                 totalBudget = it.budgetUiState.oldMoneyLeft,
@@ -80,7 +75,9 @@ class CalculatorVM @Inject constructor(
                     handleCalculatorInputUseCase(CalculatorButton.SAVE_CHANGE, event.comment)
                 }
 
-                is CalculatorEvent.SelectIncreaseDaily, is CalculatorEvent.SelectIncreaseToday -> {
+                is CalculatorEvent.SelectIncreaseDaily,
+                is CalculatorEvent.SelectIncreaseToday,
+                is CalculatorEvent.SelectStartNextDay -> {
                     handleCalculatorDateRelatedEventUseCase(event)
                 }
 

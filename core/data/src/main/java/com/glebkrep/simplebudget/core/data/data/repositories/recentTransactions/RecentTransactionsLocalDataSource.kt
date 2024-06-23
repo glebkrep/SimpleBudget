@@ -32,6 +32,8 @@ class RecentTransactionsLocalDataSource
     fun getAllItems(): Flow<List<RecentTransactionEntity>> =
         recentTransactionDao.getAllLatestFirst().flowOn(ioDispatcher)
 
+    fun getTotalNumberOfItems(): Flow<Int> = recentTransactionDao.getTotalNumberOfItems()
+
     suspend fun getById(id: Int): RecentTransactionEntity? = withContext(ioDispatcher) {
         recentTransactionDao.getById(id)
     }
