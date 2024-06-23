@@ -3,8 +3,8 @@ package com.glebkrep.simplebudget.feature.preferences.logic
 import androidx.lifecycle.viewModelScope
 import com.glebkrep.simplebudget.core.data.data.repositories.budgetData.BudgetRepository
 import com.glebkrep.simplebudget.core.data.data.repositories.preferences.PreferencesRepository
-import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToPrettyStringUseCase
-import com.glebkrep.simplebudget.core.domain.converters.ConvertTimestampToPrettyDateUseCase
+import com.glebkrep.simplebudget.core.domain.toPrettyDate
+import com.glebkrep.simplebudget.core.domain.toPrettyString
 import com.glebkrep.simplebudget.core.ui.AbstractScreenVM
 import com.glebkrep.simplebudget.model.AppPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +17,6 @@ import javax.inject.Inject
 class PreferencesVM @Inject constructor(
     private val budgetRepository: BudgetRepository,
     private val preferencesRepository: PreferencesRepository,
-    private val convertStringToPrettyStringUseCase: ConvertStringToPrettyStringUseCase,
-    private val convertTimestampToPrettyDateUseCase: ConvertTimestampToPrettyDateUseCase,
 ) :
     AbstractScreenVM<PreferencesEvent, PreferencesState, PreferencesAction>(PreferencesAction.None) {
 
@@ -28,14 +26,12 @@ class PreferencesVM @Inject constructor(
                 budgetRepository.getBudgetData(),
                 preferencesRepository.getPreferences()
             ) { budgetData, preferences ->
+
                 val newState =
                     PreferencesState.Display(
                         isCommentsEnabled = preferences.isCommentsEnabled,
-                        currentBillingDatePretty = convertTimestampToPrettyDateUseCase(
-                            timestamp = budgetData.billingTimestamp,
-                            needTime = false
-                        ),
-                        currentBudgetPretty = convertStringToPrettyStringUseCase(budgetData.totalLeft.toString())
+                        currentBillingDatePretty = budgetData.billingTimestamp.toPrettyDate(needTime = false),
+                        currentBudgetPretty = budgetData.totalLeft.toPrettyString()
                     )
                 postState(newState)
             }.collect()

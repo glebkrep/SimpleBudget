@@ -1,9 +1,7 @@
 package com.glebkrep.simplebudget.core.domain
 
 import com.glebkrep.simplebudget.core.data.data.models.BudgetDataOperations
-import com.glebkrep.simplebudget.core.domain.converters.ConvertDoubleToPrettyDoubleUseCase
-import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToDoubleSmartUseCase
-import com.glebkrep.simplebudget.core.domain.converters.GetDayDiffFromTimestampUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.CreateUpdatedBudgetDataUseCase
 import com.glebkrep.simplebudget.model.BudgetData
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
@@ -16,11 +14,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `new total budget 1`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(1, ChronoUnit.DAYS)
@@ -46,11 +40,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `new total budget 2`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(30, ChronoUnit.DAYS)
@@ -76,11 +66,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `new total budget 3`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         // todo: rewrite so that this test doesn't depend on the current timezone
         val billingTimeStamp = currentTime
@@ -107,11 +93,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `new total budget 4`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         // todo: rewrite so that this test doesn't depend on the current timezone
         val billingTimeStamp = currentTime
@@ -139,11 +121,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `new billing date 1`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(30, ChronoUnit.DAYS)
@@ -170,11 +148,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `transfer leftover to today 1`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(2, ChronoUnit.DAYS)
@@ -200,11 +174,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `transfer leftover to today 2`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(2, ChronoUnit.DAYS)
@@ -230,11 +200,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `transfer leftover to today 3`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(0, ChronoUnit.DAYS)
@@ -261,11 +227,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `transfer leftover to daily 1`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(2, ChronoUnit.DAYS)
@@ -291,11 +253,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `transfer leftover to daily 2`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(30, ChronoUnit.DAYS)
@@ -321,11 +279,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `transfer leftover to daily 3`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(2, ChronoUnit.DAYS)
@@ -351,11 +305,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `transfer leftover to daily 4`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(0, ChronoUnit.DAYS)
@@ -381,11 +331,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `handle calculator input plus 1`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(2, ChronoUnit.DAYS)
@@ -412,11 +358,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `handle calculator input plus 2`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(2, ChronoUnit.DAYS)
@@ -443,11 +385,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `handle calculator input plus 3`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(2, ChronoUnit.DAYS)
@@ -474,11 +412,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `handle calculator input plus 4`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(2, ChronoUnit.DAYS)
@@ -505,11 +439,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `handle calculator input minus 1`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(2, ChronoUnit.DAYS)
@@ -536,11 +466,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `handle calculator input minus 2`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(2, ChronoUnit.DAYS)
@@ -567,11 +493,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `handle calculator input minus 3`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(2, ChronoUnit.DAYS)
@@ -598,11 +520,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `handle calculator input minus 4`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(2, ChronoUnit.DAYS)
@@ -629,11 +547,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `handle calculator input minus 5`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(0, ChronoUnit.DAYS)
@@ -660,11 +574,7 @@ class TestCreateUpdatedBudgetDataUseCase {
 
     @Test
     fun `handle calculator input minus 6`() = runBlocking {
-        val useCase = CreateUpdatedBudgetDataUseCase(
-            convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-            convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase(),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase()
-        )
+        val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
         val billingTimeStamp = currentTime
             .plus(0, ChronoUnit.DAYS)

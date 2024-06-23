@@ -1,4 +1,4 @@
-package com.glebkrep.simplebudget.core.domain
+package com.glebkrep.simplebudget.core.domain.usecases
 
 import com.glebkrep.simplebudget.core.common.Dispatcher
 import com.glebkrep.simplebudget.core.common.SimpleBudgetDispatcher

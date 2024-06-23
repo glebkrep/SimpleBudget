@@ -1,10 +1,10 @@
-package com.glebkrep.simplebudget.core.domain
+package com.glebkrep.simplebudget.core.domain.usecases
 
 import com.glebkrep.simplebudget.core.data.data.models.BudgetUiState
 import com.glebkrep.simplebudget.core.database.recentTransaction.RecentTransactionEntity
-import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToPrettyStringUseCase
-import com.glebkrep.simplebudget.core.domain.converters.ConvertTimestampToPrettyDateUseCase
-import com.glebkrep.simplebudget.core.domain.converters.GetDayDiffFromTimestampUseCase
+import com.glebkrep.simplebudget.core.domain.dayDiffTo
+import com.glebkrep.simplebudget.core.domain.toPrettyDate
+import com.glebkrep.simplebudget.core.domain.toPrettyString
 import com.glebkrep.simplebudget.model.AppPreferences
 import com.glebkrep.simplebudget.model.BudgetData
 import com.glebkrep.simplebudget.model.UiRecentTransaction
@@ -12,11 +12,7 @@ import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 
 
-class CreateBudgetUiStateUseCase @Inject constructor(
-    private val getDayDiffFromTimestampUseCase: GetDayDiffFromTimestampUseCase,
-    private val convertStringToPrettyStringUseCase: ConvertStringToPrettyStringUseCase,
-    private val convertTimestampToPrettyDateUseCase: ConvertTimestampToPrettyDateUseCase,
-) {
+class CreateBudgetUiStateUseCase @Inject constructor() {
 
     @Suppress("LongParameterList")
     operator fun invoke(
@@ -27,33 +23,29 @@ class CreateBudgetUiStateUseCase @Inject constructor(
         numberOfRecentTransactions: Int,
         preferences: AppPreferences
     ): BudgetUiState {
-        val daysToBilling = getDayDiffFromTimestampUseCase(
-            firstTimestamp = System.currentTimeMillis(),
-            secondTimestamp = newBudgetData.billingTimestamp
-        ) + 1
+        val daysToBilling = System.currentTimeMillis().dayDiffTo(newBudgetData.billingTimestamp) + 1
         val isDailyBudgetUpdated = oldBudgetData.dailyBudget != newBudgetData.dailyBudget
         val isTodayBudgetUpdated = oldBudgetData.todayBudget != newBudgetData.todayBudget
         val isTotalBudgetUpdated = oldBudgetData.totalLeft != newBudgetData.totalLeft
 
         return BudgetUiState(
             currentInput = calculatorInput,
+            oldTodayBudget = oldBudgetData.todayBudget.toPrettyString(),
+            newTodayBudget = if (isTodayBudgetUpdated)
+                newBudgetData.todayBudget.toPrettyString()
+            else null,
 
-            oldTodayBudget = convertStringToPrettyStringUseCase(oldBudgetData.todayBudget.toString()),
-            newTodayBudget = if (isTodayBudgetUpdated) convertStringToPrettyStringUseCase(
-                newBudgetData.todayBudget.toString()
-            ) else null,
+            oldDailyBudget = oldBudgetData.dailyBudget.toPrettyString(),
+            newDailyBudget = if (isDailyBudgetUpdated)
+                newBudgetData.dailyBudget.toPrettyString()
+            else null,
 
-            oldDailyBudget = convertStringToPrettyStringUseCase(oldBudgetData.dailyBudget.toString()),
-            newDailyBudget = if (isDailyBudgetUpdated) convertStringToPrettyStringUseCase(
-                newBudgetData.dailyBudget.toString()
-            ) else null,
+            oldMoneyLeft = oldBudgetData.totalLeft.toPrettyString(),
+            newMoneyLeft = if (isTotalBudgetUpdated)
+                newBudgetData.totalLeft.toPrettyString()
+            else null,
 
-            oldMoneyLeft = convertStringToPrettyStringUseCase(oldBudgetData.totalLeft.toString()),
-            newMoneyLeft = if (isTotalBudgetUpdated) convertStringToPrettyStringUseCase(
-                newBudgetData.totalLeft.toString()
-            ) else null,
-
-            daysUntilBilling = convertStringToPrettyStringUseCase(daysToBilling.toString()),
+            daysUntilBilling = daysToBilling.toString(),
             recentTransactions = recentTransaction.map {
                 recentTransactionToUiRecent(
                     it,
@@ -72,14 +64,9 @@ class CreateBudgetUiStateUseCase @Inject constructor(
         return UiRecentTransaction(
             id = recentTransaction.uid,
             prettyValue = "${if (recentTransaction.isPlusOperation) "+" else ""}${
-                convertStringToPrettyStringUseCase(
-                    recentTransaction.sum.toString()
-                )
+                recentTransaction.sum.toPrettyString()
             }",
-            prettyDate = convertTimestampToPrettyDateUseCase(
-                timestamp = recentTransaction.date,
-                needTime = true
-            ),
+            prettyDate = recentTransaction.date.toPrettyDate(needTime = true),
             comment = recentTransaction.comment,
             isInBillingPeriod = lastBillingUpdateTimestamp < recentTransaction.date,
             isPlusOperation = recentTransaction.isPlusOperation

@@ -6,11 +6,9 @@ import com.glebkrep.simplebudget.core.data.data.repositories.calculatorInput.Cal
 import com.glebkrep.simplebudget.core.data.data.repositories.preferences.PreferencesRepository
 import com.glebkrep.simplebudget.core.data.data.repositories.recentTransactions.RecentTransactionsRepository
 import com.glebkrep.simplebudget.core.database.recentTransaction.RecentTransactionEntity
-import com.glebkrep.simplebudget.core.domain.converters.ConvertDoubleToPrettyDoubleUseCase
-import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToDoubleSmartUseCase
-import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToPrettyStringUseCase
-import com.glebkrep.simplebudget.core.domain.converters.GetDayDiffFromTimestampUseCase
-import com.glebkrep.simplebudget.core.domain.converters.ConvertTimestampToPrettyDateUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.CreateBudgetUiStateUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.CreateUpdatedBudgetDataUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.GetCalculatorScreenUiStateUseCase
 import com.glebkrep.simplebudget.model.AppPreferences
 import com.glebkrep.simplebudget.model.BudgetData
 import io.mockk.coEvery
@@ -84,18 +82,8 @@ class TestGetCalculatorScreenUiStateUseCase {
             budgetRepository = budgetRepository,
             calculatorInputRepository = calculatorInputRepository,
             recentTransactionsRepository = recentTransactionRepository,
-            createBudgetUiStateUseCase = CreateBudgetUiStateUseCase(
-                convertStringToPrettyStringUseCase = ConvertStringToPrettyStringUseCase(),
-                getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase(),
-                convertTimestampToPrettyDateUseCase = ConvertTimestampToPrettyDateUseCase()
-            ),
-            getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase(),
-            convertStringToPrettyStringUseCase = ConvertStringToPrettyStringUseCase(),
-            createUpdatedBudgetDataUseCase = CreateUpdatedBudgetDataUseCase(
-                getDayDiffFromTimestampUseCase = GetDayDiffFromTimestampUseCase(),
-                convertDoubleToPrettyDoubleUseCase = ConvertDoubleToPrettyDoubleUseCase(),
-                convertStringToDoubleSmartUseCase = ConvertStringToDoubleSmartUseCase()
-            ),
+            createBudgetUiStateUseCase = CreateBudgetUiStateUseCase(),
+            createUpdatedBudgetDataUseCase = CreateUpdatedBudgetDataUseCase(),
             defaultDispatcher = Dispatchers.Default,
             preferencesRepository = preferenceRepository
         )

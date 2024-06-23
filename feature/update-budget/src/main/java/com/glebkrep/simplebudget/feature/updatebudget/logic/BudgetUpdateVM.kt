@@ -4,9 +4,9 @@ import androidx.lifecycle.viewModelScope
 import com.glebkrep.simplebudget.core.data.data.models.BudgetDataOperations
 import com.glebkrep.simplebudget.core.data.data.repositories.budgetData.BudgetRepository
 import com.glebkrep.simplebudget.core.data.data.repositories.calculatorInput.CalculatorInputRepository
-import com.glebkrep.simplebudget.core.domain.CreateUpdatedBudgetDataUseCase
-import com.glebkrep.simplebudget.core.domain.CreateUpdatedCalculatorInputUseCase
-import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToPrettyStringUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.CreateUpdatedBudgetDataUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.CreateUpdatedCalculatorInputUseCase
+import com.glebkrep.simplebudget.core.domain.toPrettyString
 import com.glebkrep.simplebudget.core.ui.AbstractScreenVM
 import com.glebkrep.simplebudget.model.CalculatorButton
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +22,6 @@ class BudgetUpdateVM @Inject constructor(
     private val calculatorInputRepository: CalculatorInputRepository,
     private val createUpdatedCalculatorInputUseCase: CreateUpdatedCalculatorInputUseCase,
     private val createUpdatedBudgetDataUseCase: CreateUpdatedBudgetDataUseCase,
-    private val convertStringToPrettyStringUseCase: ConvertStringToPrettyStringUseCase,
 ) :
     AbstractScreenVM<BudgetUpdateEvent, BudgetUpdateState, BudgetUpdateAction>(BudgetUpdateAction.None) {
 
@@ -32,7 +31,7 @@ class BudgetUpdateVM @Inject constructor(
                 budgetRepository.getBudgetData(),
                 calculatorInputRepository.getCalculatorInput()
             ) { budgetData, calculatorInput ->
-                val oldBudget = convertStringToPrettyStringUseCase(budgetData.totalLeft.toString())
+                val oldBudget = budgetData.totalLeft.toPrettyString()
                 postState(
                     BudgetUpdateState.BudgetInput(
                         currentInput = calculatorInput,

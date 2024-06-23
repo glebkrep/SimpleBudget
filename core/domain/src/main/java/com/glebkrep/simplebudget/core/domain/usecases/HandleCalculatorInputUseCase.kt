@@ -1,4 +1,4 @@
-package com.glebkrep.simplebudget.core.domain
+package com.glebkrep.simplebudget.core.domain.usecases
 
 import com.glebkrep.simplebudget.core.common.Dispatcher
 import com.glebkrep.simplebudget.core.common.SimpleBudgetDispatcher
@@ -7,7 +7,7 @@ import com.glebkrep.simplebudget.core.data.data.repositories.budgetData.BudgetRe
 import com.glebkrep.simplebudget.core.data.data.repositories.calculatorInput.CalculatorInputRepository
 import com.glebkrep.simplebudget.core.data.data.repositories.recentTransactions.RecentTransactionsRepository
 import com.glebkrep.simplebudget.core.database.recentTransaction.RecentTransactionEntity
-import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToDoubleSmartUseCase
+import com.glebkrep.simplebudget.core.domain.smartToDouble
 import com.glebkrep.simplebudget.model.CalculatorButton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
@@ -21,7 +21,6 @@ class HandleCalculatorInputUseCase @Inject constructor(
     private val recentTransactionsRepository: RecentTransactionsRepository,
     private val createUpdatedBudgetDataUseCase: CreateUpdatedBudgetDataUseCase,
     private val createUpdatedCalculatorInputUseCase: CreateUpdatedCalculatorInputUseCase,
-    private val convertStringToDoubleSmartUseCase: ConvertStringToDoubleSmartUseCase,
     @Dispatcher(SimpleBudgetDispatcher.Default) private val defaultDispatcher: CoroutineDispatcher
 ) {
     suspend operator fun invoke(
@@ -66,7 +65,7 @@ class HandleCalculatorInputUseCase @Inject constructor(
         recentTransactionsRepository.addRecent(
             RecentTransactionEntity(
                 date = System.currentTimeMillis(),
-                sum = convertStringToDoubleSmartUseCase(currentInput),
+                sum = currentInput.smartToDouble(),
                 isPlusOperation = currentInput.contains("+"),
                 comment = comment
             )

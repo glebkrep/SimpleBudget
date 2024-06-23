@@ -1,4 +1,4 @@
-package com.glebkrep.simplebudget.core.domain
+package com.glebkrep.simplebudget.core.domain.usecases
 
 import com.glebkrep.simplebudget.model.CalculatorButton
 import javax.inject.Inject

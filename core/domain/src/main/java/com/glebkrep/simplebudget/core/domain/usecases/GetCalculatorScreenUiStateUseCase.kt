@@ -1,4 +1,4 @@
-package com.glebkrep.simplebudget.core.domain
+package com.glebkrep.simplebudget.core.domain.usecases
 
 import com.glebkrep.simplebudget.core.common.Dispatcher
 import com.glebkrep.simplebudget.core.common.SimpleBudgetDispatcher
@@ -9,8 +9,8 @@ import com.glebkrep.simplebudget.core.data.data.repositories.calculatorInput.Cal
 import com.glebkrep.simplebudget.core.data.data.repositories.preferences.PreferencesRepository
 import com.glebkrep.simplebudget.core.data.data.repositories.recentTransactions.RecentTransactionsRepository
 import com.glebkrep.simplebudget.core.database.recentTransaction.RecentTransactionEntity
-import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToPrettyStringUseCase
-import com.glebkrep.simplebudget.core.domain.converters.GetDayDiffFromTimestampUseCase
+import com.glebkrep.simplebudget.core.domain.dayDiffTo
+import com.glebkrep.simplebudget.core.domain.toPrettyString
 import com.glebkrep.simplebudget.model.AppPreferences
 import com.glebkrep.simplebudget.model.BudgetData
 import kotlinx.coroutines.CoroutineDispatcher
@@ -25,8 +25,6 @@ class GetCalculatorScreenUiStateUseCase @Inject constructor(
     private val calculatorInputRepository: CalculatorInputRepository,
     private val recentTransactionsRepository: RecentTransactionsRepository,
     private val createBudgetUiStateUseCase: CreateBudgetUiStateUseCase,
-    private val getDayDiffFromTimestampUseCase: GetDayDiffFromTimestampUseCase,
-    private val convertStringToPrettyStringUseCase: ConvertStringToPrettyStringUseCase,
     private val createUpdatedBudgetDataUseCase: CreateUpdatedBudgetDataUseCase,
     @Dispatcher(SimpleBudgetDispatcher.Default) private val defaultDispatcher: CoroutineDispatcher
 ) {
@@ -41,25 +39,17 @@ class GetCalculatorScreenUiStateUseCase @Inject constructor(
         recentTransactionsRepository.getTotalNumberOfRecentTransactionsFlow(),
     ) { calculatorInput, budgetData, preferences, recentTransactions, numberOfTransactions ->
         return@combine when {
-            getDayDiffFromTimestampUseCase(
-                firstTimestamp = budgetData.billingTimestamp,
-                secondTimestamp = currentTimestamp
-            ) > 0 -> {
+
+            budgetData.billingTimestamp.dayDiffTo(currentTimestamp) > 0 -> {
                 suggestUpdateBillingDate(budgetData = budgetData)
             }
 
-            getDayDiffFromTimestampUseCase(
-                firstTimestamp = currentTimestamp,
-                secondTimestamp = budgetData.lastLoginTimestamp
-            ) > 0 -> {
+            currentTimestamp.dayDiffTo(budgetData.lastLoginTimestamp) > 0 -> {
                 forceBudgetUpdate(budgetData = budgetData)
                 null
             }
 
-            getDayDiffFromTimestampUseCase(
-                firstTimestamp = currentTimestamp,
-                secondTimestamp = budgetData.lastLoginTimestamp
-            ) == 0 -> {
+            currentTimestamp.dayDiffTo(budgetData.lastLoginTimestamp) == 0 -> {
                 nothing(
                     budgetData = budgetData,
                     calculatorInput = calculatorInput,
@@ -80,9 +70,7 @@ class GetCalculatorScreenUiStateUseCase @Inject constructor(
 
     private fun suggestUpdateBillingDate(budgetData: BudgetData): CalculatorScreenState.BadBillingDate {
         return CalculatorScreenState.BadBillingDate(
-            convertStringToPrettyStringUseCase(
-                budgetData.totalLeft.toString()
-            )
+            budgetData.totalLeft.toPrettyString(),
         )
     }
 
@@ -124,13 +112,10 @@ class GetCalculatorScreenUiStateUseCase @Inject constructor(
         budgetData: BudgetData,
         currentTimestamp: Long
     ): CalculatorScreenState {
-        val daysLeft = getDayDiffFromTimestampUseCase(
-            firstTimestamp = currentTimestamp,
-            budgetData.billingTimestamp
-        ) + 1
+        val daysLeft = currentTimestamp.dayDiffTo(budgetData.billingTimestamp) + 1
         if (budgetData.todayBudget == 0.0) {
             return CalculatorScreenState.AskedToStartNewDay(
-                budgetLeft = convertStringToPrettyStringUseCase(budgetData.totalLeft.toString()),
+                budgetLeft = budgetData.totalLeft.toPrettyString(),
                 daysLeft = daysLeft.toString()
             )
         }
@@ -144,14 +129,14 @@ class GetCalculatorScreenUiStateUseCase @Inject constructor(
         )
         return CalculatorScreenState.AskedToUpdateDailyOrTodayBudget(
             dailyFromTo = Pair(
-                first = convertStringToPrettyStringUseCase(budgetData.dailyBudget.toString()),
-                second = convertStringToPrettyStringUseCase(budgetDataIncreaseDaily.dailyBudget.toString())
+                first = budgetData.dailyBudget.toPrettyString(),
+                second = budgetDataIncreaseDaily.dailyBudget.toPrettyString()
             ),
             todayFromTo = Pair(
-                first = convertStringToPrettyStringUseCase(budgetData.dailyBudget.toString()),
-                second = convertStringToPrettyStringUseCase(budgetDataIncreaseToday.todayBudget.toString())
+                first = budgetData.dailyBudget.toPrettyString(),
+                second = budgetDataIncreaseToday.todayBudget.toPrettyString()
             ),
-            budgetLeft = convertStringToPrettyStringUseCase(budgetData.totalLeft.toString()),
+            budgetLeft = budgetData.totalLeft.toPrettyString(),
             daysLeft = (daysLeft).toString()
         )
     }

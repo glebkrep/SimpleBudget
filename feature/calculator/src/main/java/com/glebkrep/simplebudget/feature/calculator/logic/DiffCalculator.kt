@@ -1,12 +1,13 @@
 package com.glebkrep.simplebudget.feature.calculator.logic
 
-import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToPrettyStringUseCase
+import com.glebkrep.simplebudget.core.domain.rounded
 
-internal class DiffCalculator(prettyStringUseCase: ConvertStringToPrettyStringUseCase) {
 
-    private val totalDiffCalculator = OneDiffCalculator(prettyStringUseCase)
-    private val todayDiffCalculator = OneDiffCalculator(prettyStringUseCase)
-    private val dailyDiffCalculator = OneDiffCalculator(prettyStringUseCase)
+internal class DiffCalculator {
+
+    private val totalDiffCalculator = OneDiffCalculator()
+    private val todayDiffCalculator = OneDiffCalculator()
+    private val dailyDiffCalculator = OneDiffCalculator()
 
     fun getDiff(
         totalBudget: String,
@@ -23,7 +24,7 @@ internal class DiffCalculator(prettyStringUseCase: ConvertStringToPrettyStringUs
         )
     }
 
-    private inner class OneDiffCalculator(private val prettyStringUseCase: ConvertStringToPrettyStringUseCase) {
+    private inner class OneDiffCalculator {
         private var cachedPreviousValue: String? = null
         private var cachedPreviousDiff: String? = null
         private var cachedPreviousDiffExpiryTime: Long = 0
@@ -40,7 +41,7 @@ internal class DiffCalculator(prettyStringUseCase: ConvertStringToPrettyStringUs
                 previousValue != newValue -> {
                     val diffString = newValue.toDouble() - previousValue.toDouble()
                     val diffPretty =
-                        "${if (diffString > 0) "+" else ""}${prettyStringUseCase.invoke(diffString.toString())}"
+                        "${if (diffString > 0) "+" else ""}${diffString.rounded}"
                     cachedPreviousValue = newValue
                     cachedPreviousDiff = diffPretty
                     cachedPreviousDiffExpiryTime = System.currentTimeMillis() + DIFF_EXPIRY_TIME

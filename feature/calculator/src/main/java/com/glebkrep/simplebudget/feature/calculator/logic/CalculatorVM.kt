@@ -3,14 +3,12 @@ package com.glebkrep.simplebudget.feature.calculator.logic
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.glebkrep.simplebudget.core.common.Logger
 import com.glebkrep.simplebudget.core.data.data.models.CalculatorEvent
 import com.glebkrep.simplebudget.core.data.data.models.CalculatorScreenState
-import com.glebkrep.simplebudget.core.domain.GetCalculatorScreenUiStateUseCase
-import com.glebkrep.simplebudget.core.domain.HandleCalculatorDateRelatedEventUseCase
-import com.glebkrep.simplebudget.core.domain.HandleCalculatorInputUseCase
-import com.glebkrep.simplebudget.core.domain.RemoveRecentTransactionUseCase
-import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToPrettyStringUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.GetCalculatorScreenUiStateUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.HandleCalculatorDateRelatedEventUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.HandleCalculatorInputUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.RemoveRecentTransactionUseCase
 import com.glebkrep.simplebudget.core.ui.AbstractScreenVM
 import com.glebkrep.simplebudget.model.CalculatorButton
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,7 +23,6 @@ class CalculatorVM @Inject constructor(
     private val handleCalculatorInputUseCase: HandleCalculatorInputUseCase,
     private val removeRecentTransaction: RemoveRecentTransactionUseCase,
     private val handleCalculatorDateRelatedEventUseCase: HandleCalculatorDateRelatedEventUseCase,
-    private val prettyStringUseCase: ConvertStringToPrettyStringUseCase
 ) :
     AbstractScreenVM<CalculatorEvent, CalculatorScreenState, CalculatorAction>(
         CalculatorAction.None
@@ -35,7 +32,7 @@ class CalculatorVM @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val diffCalculator = DiffCalculator(prettyStringUseCase)
+            val diffCalculator = DiffCalculator()
             getCalculatorScreenUiStateUseCase().collect { data ->
                 data?.let {
                     if (it is CalculatorScreenState.Default) {
