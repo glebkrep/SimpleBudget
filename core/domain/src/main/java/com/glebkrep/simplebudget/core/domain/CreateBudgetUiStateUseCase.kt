@@ -3,7 +3,7 @@ package com.glebkrep.simplebudget.core.domain
 import com.glebkrep.simplebudget.core.data.data.models.BudgetUiState
 import com.glebkrep.simplebudget.core.database.recentTransaction.RecentTransactionEntity
 import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToPrettyStringUseCase
-import com.glebkrep.simplebudget.core.domain.converters.ConvertTimestampToDayNumberUseCase
+import com.glebkrep.simplebudget.core.domain.converters.GetDayDiffFromTimestampUseCase
 import com.glebkrep.simplebudget.core.domain.converters.ConvertTimestampToPrettyDateUseCase
 import com.glebkrep.simplebudget.model.AppPreferences
 import com.glebkrep.simplebudget.model.BudgetData
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 
 class CreateBudgetUiStateUseCase @Inject constructor(
-    private val convertTimestampToDayNumberUseCase: ConvertTimestampToDayNumberUseCase,
+    private val getDayDiffFromTimestampUseCase: GetDayDiffFromTimestampUseCase,
     private val convertStringToPrettyStringUseCase: ConvertStringToPrettyStringUseCase,
     private val convertTimestampToPrettyDateUseCase: ConvertTimestampToPrettyDateUseCase,
 ) {
@@ -24,10 +24,10 @@ class CreateBudgetUiStateUseCase @Inject constructor(
         newBudgetData: BudgetData,
         preferences: AppPreferences
     ): BudgetUiState {
-        val daysToBilling =
-            convertTimestampToDayNumberUseCase(newBudgetData.billingTimestamp) - convertTimestampToDayNumberUseCase(
-                System.currentTimeMillis()
-            ) + 1
+        val daysToBilling = getDayDiffFromTimestampUseCase(
+            firstTimestamp = System.currentTimeMillis(),
+            secondTimestamp = newBudgetData.billingTimestamp
+        ) + 1
         val isDailyBudgetUpdated = oldBudgetData.dailyBudget != newBudgetData.dailyBudget
         val isTodayBudgetUpdated = oldBudgetData.todayBudget != newBudgetData.todayBudget
         val isTotalBudgetUpdated = oldBudgetData.totalLeft != newBudgetData.totalLeft
