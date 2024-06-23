@@ -5,6 +5,7 @@ import com.glebkrep.simplebudget.core.common.SimpleBudgetDispatcher
 import com.glebkrep.simplebudget.core.database.recentTransaction.RecentTransactionEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -14,10 +15,8 @@ internal class DefaultRecentTransactionsRepository
     @Dispatcher(SimpleBudgetDispatcher.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : RecentTransactionsRepository {
 
-    override suspend fun getRecentTransactionsFlow(): Flow<List<RecentTransactionEntity>> =
-        withContext(ioDispatcher) {
-            localDataSource.getAllItemsFlow()
-        }
+    override fun getRecentTransactionsFlow(): Flow<List<RecentTransactionEntity>> =
+        localDataSource.getAllItemsFlow().flowOn(ioDispatcher)
 
 
     override suspend fun getTransactionById(id: Int): RecentTransactionEntity? =

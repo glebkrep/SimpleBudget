@@ -16,6 +16,7 @@ import com.glebkrep.simplebudget.model.BudgetData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -31,47 +32,45 @@ class GetCalculatorScreenUiStateUseCase @Inject constructor(
     @Dispatcher(SimpleBudgetDispatcher.Default) private val defaultDispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(
+    operator fun invoke(
         currentTimestamp: Long = System.currentTimeMillis()
-    ): Flow<CalculatorScreenState?> = withContext(defaultDispatcher) {
-        return@withContext combine(
-            calculatorInputRepository.getCalculatorInput(),
-            budgetRepository.getBudgetData(),
-            preferencesRepository.getPreferences(),
-            recentTransactionsRepository.getRecentTransactionsFlow()
-        ) { calculatorInput, budgetData, preferences, recentTransactions ->
-            val todayDay = convertTimestampToDayNumberUseCase(currentTimestamp)
-            val lastRunDay = convertTimestampToDayNumberUseCase(budgetData.lastLoginTimestamp)
-            val billingDay = convertTimestampToDayNumberUseCase(budgetData.billingTimestamp)
+    ): Flow<CalculatorScreenState?> = combine(
+        calculatorInputRepository.getCalculatorInput(),
+        budgetRepository.getBudgetData(),
+        preferencesRepository.getPreferences(),
+        recentTransactionsRepository.getRecentTransactionsFlow()
+    ) { calculatorInput, budgetData, preferences, recentTransactions ->
+        val todayDay = convertTimestampToDayNumberUseCase(currentTimestamp)
+        val lastRunDay = convertTimestampToDayNumberUseCase(budgetData.lastLoginTimestamp)
+        val billingDay = convertTimestampToDayNumberUseCase(budgetData.billingTimestamp)
 
-            return@combine when {
-                todayDay > billingDay -> {
-                    suggestUpdateBillingDate(budgetData = budgetData)
-                }
+        return@combine when {
+            todayDay > billingDay -> {
+                suggestUpdateBillingDate(budgetData = budgetData)
+            }
 
-                todayDay < lastRunDay -> {
-                    forceBudgetUpdate(budgetData = budgetData)
-                    null
-                }
+            todayDay < lastRunDay -> {
+                forceBudgetUpdate(budgetData = budgetData)
+                null
+            }
 
-                todayDay == lastRunDay -> {
-                    nothing(
-                        budgetData = budgetData,
-                        calculatorInput = calculatorInput,
-                        recentTransactions = recentTransactions,
-                        preferences = preferences
-                    )
-                }
+            todayDay == lastRunDay -> {
+                nothing(
+                    budgetData = budgetData,
+                    calculatorInput = calculatorInput,
+                    recentTransactions = recentTransactions,
+                    preferences = preferences
+                )
+            }
 
-                else -> {
-                    suggestIncreaseDailyOrTotal(
-                        budgetData = budgetData,
-                        currentTimestamp = currentTimestamp
-                    )
-                }
+            else -> {
+                suggestIncreaseDailyOrTotal(
+                    budgetData = budgetData,
+                    currentTimestamp = currentTimestamp
+                )
             }
         }
-    }
+    }.flowOn(defaultDispatcher)
 
     private fun suggestUpdateBillingDate(budgetData: BudgetData): CalculatorScreenState.BadBillingDate {
         return CalculatorScreenState.BadBillingDate(

@@ -76,7 +76,7 @@ class TestGetCalculatorScreenUiStateUseCase {
 
         val preferenceRepository = mockk<PreferencesRepository>()
         coEvery { preferenceRepository.getPreferences() } returns flow {
-            emit(AppPreferences())
+            emit(AppPreferences(isCommentsEnabled = true))
         }
 
         return GetCalculatorScreenUiStateUseCase(

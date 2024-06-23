@@ -4,6 +4,6 @@ import com.glebkrep.simplebudget.model.BudgetData
 import kotlinx.coroutines.flow.Flow
 
 interface BudgetRepository {
-    suspend fun getBudgetData(): Flow<BudgetData>
+    fun getBudgetData(): Flow<BudgetData>
     suspend fun setBudgetData(budgetData: BudgetData)
 }

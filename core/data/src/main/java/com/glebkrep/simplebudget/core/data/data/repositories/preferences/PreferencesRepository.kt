@@ -4,6 +4,6 @@ import com.glebkrep.simplebudget.model.AppPreferences
 import kotlinx.coroutines.flow.Flow
 
 interface PreferencesRepository {
-    suspend fun getPreferences(): Flow<AppPreferences>
+    fun getPreferences(): Flow<AppPreferences>
     suspend fun setPreferences(appPreferences: AppPreferences)
 }

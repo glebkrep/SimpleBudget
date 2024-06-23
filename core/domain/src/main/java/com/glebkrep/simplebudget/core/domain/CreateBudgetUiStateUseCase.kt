@@ -57,7 +57,7 @@ class CreateBudgetUiStateUseCase @Inject constructor(
                     oldBudgetData.lastBillingUpdateTimestamp
                 )
             },
-            areCommentsEnabled = preferences.isCommentsEnabled ?: true
+            areCommentsEnabled = preferences.isCommentsEnabled
         )
     }
 

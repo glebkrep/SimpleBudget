@@ -6,7 +6,7 @@ import javax.inject.Inject
 internal class DefaultCalculatorInputRepository
 @Inject constructor(private val calculatorInputMemoryDataSource: CalculatorInputMemoryDataSource) :
     CalculatorInputRepository {
-    override suspend fun getCalculatorInput(): Flow<String> {
+    override fun getCalculatorInput(): Flow<String> {
         return calculatorInputMemoryDataSource.getInput()
     }
 

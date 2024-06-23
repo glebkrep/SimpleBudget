@@ -30,7 +30,7 @@ class PreferencesVM @Inject constructor(
             ) { budgetData, preferences ->
                 val newState =
                     PreferencesState.Display(
-                        isCommentsEnabled = preferences.isCommentsEnabled!!,
+                        isCommentsEnabled = preferences.isCommentsEnabled,
                         currentBillingDatePretty = convertTimestampToPrettyDateUseCase(
                             timestamp = budgetData.billingTimestamp,
                             needTime = false

@@ -29,7 +29,7 @@ jobs:
 
       - name: Detekt
         shell: bash
-        run: ./gradlew detekt reportMerge --continue
+        run: ./gradlew detektDebug reportMerge --continue
 
       - name: Publish Lint and Detekt reports
         uses: Juuxel/publish-checkstyle-report@v1

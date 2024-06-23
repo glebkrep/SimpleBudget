@@ -251,7 +251,7 @@ fun RecentTransactionView(
                         width = Dimension.fillToConstraints
                     }) {
                         SimpleBudgetViews.SimpleBudgetText(
-                            text = recentTransaction.comment ?: "",
+                            text = recentTransaction.comment.orEmpty(),
                             color = commentColor,
                             textStyle = MaterialTheme.typography.titleLarge
                         )

@@ -16,27 +16,27 @@ abstract class AbstractPageVM<EVENT, STATE, ACTION>(private val defAction: ACTIO
     val action: LiveData<ACTION> = _action
 
     protected fun postAction(action: ACTION) {
-        _action.postValue(action!!)
+        this@AbstractPageVM._action.postValue(action)
         viewModelScope.launch {
             delay(POST_ACTION_DELAY)
-            _action.postValue(defAction!!)
+            this@AbstractPageVM._action.postValue(defAction)
         }
     }
 
     protected fun getCurrentState(): STATE? {
-        return _state.value
+        return this@AbstractPageVM._state.value
     }
 
     protected fun getCurrentStateNotNull(): STATE {
-        return _state.value
+        return this@AbstractPageVM._state.value
             ?: error("Current state is not expected to be null")
     }
 
     protected fun postState(state: STATE) {
-        _state.postValue(state!!)
+        this@AbstractPageVM._state.postValue(state)
     }
 
-    internal companion object{
+    internal companion object {
         private const val POST_ACTION_DELAY = 100L
     }
 }

@@ -4,9 +4,9 @@ import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToPrettyStr
 
 internal class DiffCalculator(prettyStringUseCase: ConvertStringToPrettyStringUseCase) {
 
-    private var totalDiffCalculator = OneDiffCalculator(prettyStringUseCase)
-    private var todayDiffCalculator = OneDiffCalculator(prettyStringUseCase)
-    private var dailyDiffCalculator = OneDiffCalculator(prettyStringUseCase)
+    private val totalDiffCalculator = OneDiffCalculator(prettyStringUseCase)
+    private val todayDiffCalculator = OneDiffCalculator(prettyStringUseCase)
+    private val dailyDiffCalculator = OneDiffCalculator(prettyStringUseCase)
 
     fun getDiff(
         totalBudget: String,
