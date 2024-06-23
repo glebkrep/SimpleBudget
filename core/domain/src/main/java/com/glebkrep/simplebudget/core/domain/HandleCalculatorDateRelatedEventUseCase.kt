@@ -32,8 +32,15 @@ class HandleCalculatorDateRelatedEventUseCase @Inject constructor(
                 )
             }
 
+            CalculatorEvent.SelectStartNextDay -> {
+                createUpdatedBudgetDataUseCase(
+                    budgetData = currentBudgetData,
+                    operation = BudgetDataOperations.TransferLeftoverTodayToToday
+                )
+            }
+
             else -> {
-                currentBudgetData
+                throw UnsupportedOperationException("Unsupported operation: $calculatorEvent")
             }
         }
         budgetDataRepository.setBudgetData(newBudgetData)

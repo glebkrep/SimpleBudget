@@ -25,6 +25,7 @@ import java.math.BigDecimal
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import kotlin.test.assertEquals
+import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
 class TestGetCalculatorScreenUiStateUseCase {
@@ -116,7 +117,7 @@ class TestGetCalculatorScreenUiStateUseCase {
             currentTimestamp = currentTime.toEpochMilli()
         ).first()
 
-        assertTrue(result is CalculatorScreenState.AskedToUpdateDailyOrTodayBudget)
+        assertIs<CalculatorScreenState.AskedToUpdateDailyOrTodayBudget>(result)
         assertEquals("10", result.dailyFromTo.first)
         assertEquals("12.5", result.dailyFromTo.second)
         assertEquals("10", result.todayFromTo.first)
@@ -144,7 +145,7 @@ class TestGetCalculatorScreenUiStateUseCase {
             currentTimestamp = currentTime.toEpochMilli()
         ).first()
 
-        assertTrue(result is CalculatorScreenState.AskedToUpdateDailyOrTodayBudget)
+        assertIs<CalculatorScreenState.AskedToUpdateDailyOrTodayBudget>(result)
         assertEquals("10", result.dailyFromTo.first)
         assertEquals("25", result.dailyFromTo.second)
         assertEquals("10", result.todayFromTo.first)
@@ -173,7 +174,7 @@ class TestGetCalculatorScreenUiStateUseCase {
         ).first()
 
         println(result.toString())
-        assertTrue(result is CalculatorScreenState.BadBillingDate)
+        assertIs<CalculatorScreenState.BadBillingDate>(result)
         assertEquals("25", result.budgetLeft)
     }
 
@@ -197,7 +198,7 @@ class TestGetCalculatorScreenUiStateUseCase {
         ).first()
 
         println(result.toString())
-        assertTrue(result is CalculatorScreenState.BadBillingDate)
+        assertIs<CalculatorScreenState.BadBillingDate>(result)
         assertEquals("25", result.budgetLeft)
     }
 
@@ -223,7 +224,7 @@ class TestGetCalculatorScreenUiStateUseCase {
         ).first()
 
         println(result.toString())
-        assertTrue(result is CalculatorScreenState.Default)
+        assertIs<CalculatorScreenState.Default>(result)
         assertEquals(calculatorInput, result.budgetUiState.currentInput)
     }
 
@@ -249,7 +250,7 @@ class TestGetCalculatorScreenUiStateUseCase {
         ).first()
 
         println(result.toString())
-        assertTrue(result is CalculatorScreenState.Default)
+        assertIs<CalculatorScreenState.Default>(result)
         assertEquals(calculatorInput, result.budgetUiState.currentInput)
         assertEquals(
             BigDecimal(10000025.0).toPlainString(),
@@ -279,7 +280,7 @@ class TestGetCalculatorScreenUiStateUseCase {
         ).first()
 
         println(result.toString())
-        assertTrue(result is CalculatorScreenState.Default)
+        assertIs<CalculatorScreenState.Default>(result)
         assertEquals(calculatorInput, result.budgetUiState.currentInput)
         assertEquals(
             "0",
@@ -310,5 +311,29 @@ class TestGetCalculatorScreenUiStateUseCase {
 
         println(result.toString())
         assertTrue(result == null)
+    }
+
+    @Test
+    fun `suggest start new day 1`() = runBlocking {
+        val currentTime = Instant.now()
+        val billingTime = currentTime.plus(1, ChronoUnit.SECONDS)
+        val lastLoginTime = currentTime.minus(1, ChronoUnit.DAYS)
+
+        val useCase = getGetCalculatorScreenUiStateUseCase(
+            calculatorInput = "123",
+            todayBudget = 0.0,
+            dailyBudget = 10.0,
+            totalBudget = 25.0,
+            billingTime = billingTime,
+            lastLoginTime = lastLoginTime
+        )
+
+        val result = useCase.invoke(
+            currentTimestamp = currentTime.toEpochMilli()
+        ).first()
+
+        assertIs<CalculatorScreenState.AskedToStartNewDay>(result)
+        assertEquals("1", result.daysLeft)
+        assertEquals("25", result.budgetLeft)
     }
 }
