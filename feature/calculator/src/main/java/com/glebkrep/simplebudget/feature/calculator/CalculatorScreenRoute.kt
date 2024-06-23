@@ -18,9 +18,9 @@ import com.glebkrep.simplebudget.core.ui.components.ComposeUtils.performClickVib
 import com.glebkrep.simplebudget.feature.calculator.view.CalculatorBadBillingDatePage
 import com.glebkrep.simplebudget.feature.calculator.view.CalculatorChooseIncreasePage
 import com.glebkrep.simplebudget.feature.calculator.view.CalculatorMainPage
-import com.glebkrep.simplebudget.feature.calculator.vm.CalculatorAction
-import com.glebkrep.simplebudget.feature.calculator.vm.CalculatorVM
-import com.glebkrep.simplebudget.feature.calculator.vm.DiffAnimationState
+import com.glebkrep.simplebudget.feature.calculator.logic.CalculatorAction
+import com.glebkrep.simplebudget.feature.calculator.logic.CalculatorVM
+import com.glebkrep.simplebudget.feature.calculator.logic.DiffAnimationState
 
 @Composable
 fun CalculatorScreenRoute(

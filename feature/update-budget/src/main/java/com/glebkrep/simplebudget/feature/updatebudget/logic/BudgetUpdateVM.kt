@@ -1,4 +1,4 @@
-package com.glebkrep.simplebudget.feature.updatebudget.vm
+package com.glebkrep.simplebudget.feature.updatebudget.logic
 
 import androidx.lifecycle.viewModelScope
 import com.glebkrep.simplebudget.core.data.data.models.BudgetDataOperations
@@ -7,7 +7,7 @@ import com.glebkrep.simplebudget.core.data.data.repositories.calculatorInput.Cal
 import com.glebkrep.simplebudget.core.domain.CreateUpdatedBudgetDataUseCase
 import com.glebkrep.simplebudget.core.domain.CreateUpdatedCalculatorInputUseCase
 import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToPrettyStringUseCase
-import com.glebkrep.simplebudget.core.ui.AbstractPageVM
+import com.glebkrep.simplebudget.core.ui.AbstractScreenVM
 import com.glebkrep.simplebudget.model.CalculatorButton
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -24,7 +24,7 @@ class BudgetUpdateVM @Inject constructor(
     private val createUpdatedBudgetDataUseCase: CreateUpdatedBudgetDataUseCase,
     private val convertStringToPrettyStringUseCase: ConvertStringToPrettyStringUseCase,
 ) :
-    AbstractPageVM<BudgetUpdateEvent, BudgetUpdateState, BudgetUpdateAction>(BudgetUpdateAction.None) {
+    AbstractScreenVM<BudgetUpdateEvent, BudgetUpdateState, BudgetUpdateAction>(BudgetUpdateAction.None) {
 
     init {
         viewModelScope.launch {

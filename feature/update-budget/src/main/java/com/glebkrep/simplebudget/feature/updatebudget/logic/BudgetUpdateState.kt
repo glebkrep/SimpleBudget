@@ -1,4 +1,4 @@
-package com.glebkrep.simplebudget.feature.updatebudget.vm
+package com.glebkrep.simplebudget.feature.updatebudget.logic
 
 sealed class BudgetUpdateState {
     data class BudgetInput(

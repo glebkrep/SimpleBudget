@@ -20,8 +20,8 @@ import com.glebkrep.simplebudget.core.ui.theme.DefaultPadding
 import com.glebkrep.simplebudget.core.ui.theme.DefaultValues
 import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.feature.update_billing.R
-import com.glebkrep.simplebudget.feature.updatebilling.vm.BillingDateUpdateEvent
-import com.glebkrep.simplebudget.feature.updatebilling.vm.BillingDateUpdateState
+import com.glebkrep.simplebudget.feature.updatebilling.logic.BillingDateUpdateEvent
+import com.glebkrep.simplebudget.feature.updatebilling.logic.BillingDateUpdateState
 import com.glebkrep.simplebudget.model.CalculatorButton
 import java.time.Instant
 import java.time.temporal.ChronoUnit

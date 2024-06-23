@@ -1,4 +1,4 @@
-package com.glebkrep.simplebudget.feature.preferences.vm
+package com.glebkrep.simplebudget.feature.preferences.logic
 
 sealed class PreferencesState {
     data class Display(

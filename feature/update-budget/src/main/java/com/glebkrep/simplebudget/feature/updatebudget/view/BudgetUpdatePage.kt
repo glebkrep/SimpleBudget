@@ -17,8 +17,8 @@ import com.glebkrep.simplebudget.core.ui.components.views.SimpleBudgetViews
 import com.glebkrep.simplebudget.core.ui.theme.DefaultPadding
 import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.feature.update_budget.R
-import com.glebkrep.simplebudget.feature.updatebudget.vm.BudgetUpdateEvent
-import com.glebkrep.simplebudget.feature.updatebudget.vm.BudgetUpdateState
+import com.glebkrep.simplebudget.feature.updatebudget.logic.BudgetUpdateEvent
+import com.glebkrep.simplebudget.feature.updatebudget.logic.BudgetUpdateState
 import com.glebkrep.simplebudget.model.CalculatorButton
 
 @Composable

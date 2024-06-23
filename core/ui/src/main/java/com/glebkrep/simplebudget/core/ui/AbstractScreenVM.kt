@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-abstract class AbstractPageVM<EVENT, STATE, ACTION>(private val defAction: ACTION) : ViewModel(),
+abstract class AbstractScreenVM<EVENT, STATE, ACTION>(private val defAction: ACTION) : ViewModel(),
     EventHandler<EVENT> {
     private val _state: MutableLiveData<STATE> = MutableLiveData()
     val state: LiveData<STATE> = _state
@@ -16,24 +16,24 @@ abstract class AbstractPageVM<EVENT, STATE, ACTION>(private val defAction: ACTIO
     val action: LiveData<ACTION> = _action
 
     protected fun postAction(action: ACTION) {
-        this@AbstractPageVM._action.postValue(action)
+        this@AbstractScreenVM._action.postValue(action)
         viewModelScope.launch {
             delay(POST_ACTION_DELAY)
-            this@AbstractPageVM._action.postValue(defAction)
+            this@AbstractScreenVM._action.postValue(defAction)
         }
     }
 
     protected fun getCurrentState(): STATE? {
-        return this@AbstractPageVM._state.value
+        return this@AbstractScreenVM._state.value
     }
 
     protected fun getCurrentStateNotNull(): STATE {
-        return this@AbstractPageVM._state.value
+        return this@AbstractScreenVM._state.value
             ?: error("Current state is not expected to be null")
     }
 
     protected fun postState(state: STATE) {
-        this@AbstractPageVM._state.postValue(state)
+        this@AbstractScreenVM._state.postValue(state)
     }
 
     internal companion object {

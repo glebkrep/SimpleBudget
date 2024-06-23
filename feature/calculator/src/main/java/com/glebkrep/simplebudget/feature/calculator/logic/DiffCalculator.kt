@@ -1,4 +1,4 @@
-package com.glebkrep.simplebudget.feature.calculator.vm
+package com.glebkrep.simplebudget.feature.calculator.logic
 
 import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToPrettyStringUseCase
 

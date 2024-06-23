@@ -1,4 +1,4 @@
-package com.glebkrep.simplebudget.feature.calculator.vm
+package com.glebkrep.simplebudget.feature.calculator.logic
 
 data class DiffAnimationState(
     val totalDiff: String? = null,

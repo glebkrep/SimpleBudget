@@ -31,7 +31,7 @@ import com.glebkrep.simplebudget.core.ui.theme.DefaultColors
 import com.glebkrep.simplebudget.core.ui.theme.DefaultPadding
 import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.feature.calculator.R
-import com.glebkrep.simplebudget.feature.calculator.vm.DiffAnimationState
+import com.glebkrep.simplebudget.feature.calculator.logic.DiffAnimationState
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable

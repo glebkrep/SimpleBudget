@@ -17,8 +17,8 @@ import com.glebkrep.simplebudget.core.ui.components.views.SimpleBudgetViews
 import com.glebkrep.simplebudget.core.ui.theme.DefaultPadding
 import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.feature.preferences.R
-import com.glebkrep.simplebudget.feature.preferences.vm.PreferencesEvent
-import com.glebkrep.simplebudget.feature.preferences.vm.PreferencesState
+import com.glebkrep.simplebudget.feature.preferences.logic.PreferencesEvent
+import com.glebkrep.simplebudget.feature.preferences.logic.PreferencesState
 
 @Composable
 internal fun PreferencesMainPage(

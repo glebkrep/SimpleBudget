@@ -47,9 +47,8 @@ import com.glebkrep.simplebudget.core.ui.theme.DefaultPadding
 import com.glebkrep.simplebudget.core.ui.theme.DefaultValues
 import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.feature.calculator.R
-import com.glebkrep.simplebudget.feature.calculator.vm.DiffAnimationState
+import com.glebkrep.simplebudget.feature.calculator.logic.DiffAnimationState
 import com.glebkrep.simplebudget.model.UiRecentTransaction
-import kotlinx.collections.immutable.immutableListOf
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.android.awaitFrame
 

@@ -1,4 +1,4 @@
-package com.glebkrep.simplebudget.feature.calculator.vm
+package com.glebkrep.simplebudget.feature.calculator.logic
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +11,7 @@ import com.glebkrep.simplebudget.core.domain.HandleCalculatorDateRelatedEventUse
 import com.glebkrep.simplebudget.core.domain.HandleCalculatorInputUseCase
 import com.glebkrep.simplebudget.core.domain.RemoveRecentTransactionUseCase
 import com.glebkrep.simplebudget.core.domain.converters.ConvertStringToPrettyStringUseCase
-import com.glebkrep.simplebudget.core.ui.AbstractPageVM
+import com.glebkrep.simplebudget.core.ui.AbstractScreenVM
 import com.glebkrep.simplebudget.model.CalculatorButton
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -25,9 +25,9 @@ class CalculatorVM @Inject constructor(
     private val handleCalculatorInputUseCase: HandleCalculatorInputUseCase,
     private val removeRecentTransaction: RemoveRecentTransactionUseCase,
     private val handleCalculatorDateRelatedEventUseCase: HandleCalculatorDateRelatedEventUseCase,
-    prettyStringUseCase: ConvertStringToPrettyStringUseCase
+    private val prettyStringUseCase: ConvertStringToPrettyStringUseCase
 ) :
-    AbstractPageVM<CalculatorEvent, CalculatorScreenState, CalculatorAction>(
+    AbstractScreenVM<CalculatorEvent, CalculatorScreenState, CalculatorAction>(
         CalculatorAction.None
     ) {
     private val _diffAnimationState: MutableLiveData<DiffAnimationState> = MutableLiveData()

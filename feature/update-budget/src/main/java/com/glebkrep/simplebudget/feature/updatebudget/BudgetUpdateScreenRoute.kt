@@ -11,10 +11,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.glebkrep.simplebudget.feature.updatebudget.view.BudgetUpdatePage
-import com.glebkrep.simplebudget.feature.updatebudget.vm.BudgetUpdateAction
-import com.glebkrep.simplebudget.feature.updatebudget.vm.BudgetUpdateEvent
-import com.glebkrep.simplebudget.feature.updatebudget.vm.BudgetUpdateState
-import com.glebkrep.simplebudget.feature.updatebudget.vm.BudgetUpdateVM
+import com.glebkrep.simplebudget.feature.updatebudget.logic.BudgetUpdateAction
+import com.glebkrep.simplebudget.feature.updatebudget.logic.BudgetUpdateEvent
+import com.glebkrep.simplebudget.feature.updatebudget.logic.BudgetUpdateState
+import com.glebkrep.simplebudget.feature.updatebudget.logic.BudgetUpdateVM
 
 @Composable
 fun BudgetUpdateScreenRoute(

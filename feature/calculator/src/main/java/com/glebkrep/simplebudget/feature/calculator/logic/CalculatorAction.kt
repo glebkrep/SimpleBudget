@@ -1,4 +1,4 @@
-package com.glebkrep.simplebudget.feature.calculator.vm
+package com.glebkrep.simplebudget.feature.calculator.logic
 
 sealed class CalculatorAction {
     data object None : CalculatorAction()

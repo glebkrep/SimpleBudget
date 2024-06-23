@@ -1,10 +1,10 @@
-package com.glebkrep.simplebudget.feature.updatebilling.vm
+package com.glebkrep.simplebudget.feature.updatebilling.logic
 
 import androidx.lifecycle.viewModelScope
 import com.glebkrep.simplebudget.core.data.data.models.BudgetDataOperations
 import com.glebkrep.simplebudget.core.data.data.repositories.budgetData.BudgetRepository
 import com.glebkrep.simplebudget.core.domain.CreateUpdatedBudgetDataUseCase
-import com.glebkrep.simplebudget.core.ui.AbstractPageVM
+import com.glebkrep.simplebudget.core.ui.AbstractScreenVM
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ class BillingDateUpdateVM @Inject constructor(
     private val budgetRepository: BudgetRepository,
     private val createUpdatedBudgetDataUseCase: CreateUpdatedBudgetDataUseCase,
 ) :
-    AbstractPageVM<BillingDateUpdateEvent, BillingDateUpdateState, BillingDateUpdateAction>(
+    AbstractScreenVM<BillingDateUpdateEvent, BillingDateUpdateState, BillingDateUpdateAction>(
         BillingDateUpdateAction.None
     ) {
 
@@ -63,5 +63,4 @@ class BillingDateUpdateVM @Inject constructor(
             }
         }
     }
-
 }

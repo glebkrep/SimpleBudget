@@ -1,4 +1,4 @@
-package com.glebkrep.simplebudget.feature.updatebudget.vm
+package com.glebkrep.simplebudget.feature.updatebudget.logic
 
 import com.glebkrep.simplebudget.model.CalculatorButton
 

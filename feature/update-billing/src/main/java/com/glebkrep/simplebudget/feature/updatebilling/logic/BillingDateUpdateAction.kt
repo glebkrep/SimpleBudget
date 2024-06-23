@@ -1,4 +1,4 @@
-package com.glebkrep.simplebudget.feature.updatebilling.vm
+package com.glebkrep.simplebudget.feature.updatebilling.logic
 
 
 sealed class BillingDateUpdateAction {
