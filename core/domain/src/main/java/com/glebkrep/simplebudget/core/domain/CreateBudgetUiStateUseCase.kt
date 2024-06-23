@@ -8,6 +8,7 @@ import com.glebkrep.simplebudget.core.domain.converters.ConvertTimestampToPretty
 import com.glebkrep.simplebudget.model.AppPreferences
 import com.glebkrep.simplebudget.model.BudgetData
 import com.glebkrep.simplebudget.model.UiRecentTransaction
+import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 
 
@@ -56,7 +57,7 @@ class CreateBudgetUiStateUseCase @Inject constructor(
                     it,
                     oldBudgetData.lastBillingUpdateTimestamp
                 )
-            },
+            }.toImmutableList(),
             areCommentsEnabled = preferences.isCommentsEnabled
         )
     }

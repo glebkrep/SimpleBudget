@@ -11,4 +11,5 @@ dependencies {
     api(project(":core:common"))
     api(project(":core:datastore"))
     api(project(":core:database"))
+    api(libs.kotlinx.collections.immutable)
 }

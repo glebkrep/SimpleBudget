@@ -49,6 +49,8 @@ import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.feature.calculator.R
 import com.glebkrep.simplebudget.feature.calculator.vm.DiffAnimationState
 import com.glebkrep.simplebudget.model.UiRecentTransaction
+import kotlinx.collections.immutable.immutableListOf
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.android.awaitFrame
 
 @Composable
@@ -295,7 +297,7 @@ fun CalculatorScreenPreview() {
                     newDailyBudget = "10",
                     oldMoneyLeft = "200",
                     newMoneyLeft = "100",
-                    recentTransactions = listOf(
+                    recentTransactions = persistentListOf(
                         UiRecentTransaction(
                             id = 1,
                             "11 000",

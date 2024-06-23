@@ -32,6 +32,7 @@ import com.glebkrep.simplebudget.core.ui.theme.DefaultPadding
 import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.feature.calculator.R
 import com.glebkrep.simplebudget.feature.calculator.vm.DiffAnimationState
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun CalculatorScreenHeaderView(
@@ -190,7 +191,7 @@ fun CalculatorScreenHeaderViewPreview() {
                 oldTodayBudget = "10",
                 areCommentsEnabled = false,
                 currentInput = "",
-                recentTransactions = listOf()
+                recentTransactions = persistentListOf()
             ),
             diffAnimationState = DiffAnimationState(
                 totalDiff = "+100",

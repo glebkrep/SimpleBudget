@@ -1,6 +1,7 @@
 package com.glebkrep.simplebudget.core.data.data.models
 
 import com.glebkrep.simplebudget.model.UiRecentTransaction
+import kotlinx.collections.immutable.ImmutableList
 
 data class BudgetUiState(
     val currentInput: String,
@@ -18,5 +19,5 @@ data class BudgetUiState(
 
     val areCommentsEnabled: Boolean,
 
-    val recentTransactions: List<UiRecentTransaction>,
+    val recentTransactions: ImmutableList<UiRecentTransaction>,
 )
