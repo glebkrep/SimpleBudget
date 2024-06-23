@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class RemoveRecentTransactionUseCase @Inject constructor(
+class DeleteRecentTransactionUseCase @Inject constructor(
     private val budgetRepository: BudgetRepository,
     private val recentTransactionsRepository: RecentTransactionsRepository,
     private val createUpdatedBudgetDataUseCase: CreateUpdatedBudgetDataUseCase,

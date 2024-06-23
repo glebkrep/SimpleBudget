@@ -8,7 +8,7 @@ import com.glebkrep.simplebudget.core.data.data.models.CalculatorScreenState
 import com.glebkrep.simplebudget.core.domain.usecases.GetCalculatorScreenUiStateUseCase
 import com.glebkrep.simplebudget.core.domain.usecases.HandleCalculatorDateRelatedEventUseCase
 import com.glebkrep.simplebudget.core.domain.usecases.HandleCalculatorInputUseCase
-import com.glebkrep.simplebudget.core.domain.usecases.RemoveRecentTransactionUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.DeleteRecentTransactionUseCase
 import com.glebkrep.simplebudget.core.ui.AbstractScreenVM
 import com.glebkrep.simplebudget.model.CalculatorButton
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class CalculatorVM @Inject constructor(
     private val getCalculatorScreenUiStateUseCase: GetCalculatorScreenUiStateUseCase,
     private val handleCalculatorInputUseCase: HandleCalculatorInputUseCase,
-    private val removeRecentTransaction: RemoveRecentTransactionUseCase,
+    private val removeRecentTransaction: DeleteRecentTransactionUseCase,
     private val handleCalculatorDateRelatedEventUseCase: HandleCalculatorDateRelatedEventUseCase,
 ) :
     AbstractScreenVM<CalculatorEvent, CalculatorScreenState, CalculatorAction>(
