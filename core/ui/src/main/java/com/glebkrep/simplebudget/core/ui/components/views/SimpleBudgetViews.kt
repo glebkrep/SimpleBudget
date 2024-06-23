@@ -221,36 +221,27 @@ object SimpleBudgetViews {
         modifier: Modifier = Modifier,
         onClick: () -> (Unit)
     ) {
-        Column(
-            modifier
+        Card(
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(DefaultPadding.BIG),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            colors = CardDefaults.cardColors().copy(
+                containerColor = cardBackground
+            ), onClick = onClick
         ) {
-            Card(
-                modifier = Modifier
+            Column(
+                Modifier
                     .fillMaxWidth()
-                    .padding(DefaultPadding.BIG),
-                colors = CardDefaults.cardColors().copy(
-                    containerColor = cardBackground
-                )
+                    .padding(vertical = DefaultPadding.EXTRA_LARGE),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = DefaultPadding.EXTRA_LARGE)
-                        .clickable { onClick.invoke() },
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    SimpleBudgetText(
-                        text = text, color = textColor,
-                        maxLines = 4,
-                        textStyle = MaterialTheme.typography.headlineSmall,
-                        textAlign = TextAlign.Center
-                    )
-                }
+                SimpleBudgetText(
+                    text = text, color = textColor,
+                    maxLines = 4,
+                    textStyle = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }
