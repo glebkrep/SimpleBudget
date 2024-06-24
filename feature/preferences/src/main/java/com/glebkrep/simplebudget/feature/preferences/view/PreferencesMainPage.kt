@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -14,18 +12,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import com.glebkrep.simplebudget.core.ui.components.clickableWithVibrationAndSound
 import com.glebkrep.simplebudget.core.ui.components.views.SimpleBudgetViews
 import com.glebkrep.simplebudget.core.ui.theme.DefaultPadding
 import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.feature.preferences.R
-import com.glebkrep.simplebudget.feature.preferences.vm.PreferencesEvent
-import com.glebkrep.simplebudget.feature.preferences.vm.PreferencesState
+import com.glebkrep.simplebudget.feature.preferences.logic.PreferencesEvent
+import com.glebkrep.simplebudget.feature.preferences.logic.PreferencesState
 
 @Composable
-fun PreferencesMainPage(
+internal fun PreferencesMainPage(
     state: PreferencesState.Display,
     onNewEvent: (PreferencesEvent) -> Unit
 ) {
@@ -42,8 +38,8 @@ fun PreferencesMainPage(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = DefaultPadding.BIG_PADDING,
-                    vertical = DefaultPadding.BIGGER_PADDING
+                    horizontal = DefaultPadding.LARGE,
+                    vertical = DefaultPadding.BIG
                 ),
             bigText = state.currentBillingDatePretty,
             smallText = stringResource(R.string.feature_preferences_btn_change_billing),
@@ -55,8 +51,8 @@ fun PreferencesMainPage(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = DefaultPadding.BIG_PADDING,
-                    vertical = DefaultPadding.BIGGER_PADDING
+                    horizontal = DefaultPadding.LARGE,
+                    vertical = DefaultPadding.BIG
                 ),
             bigText = state.currentBudgetPretty,
             smallText = stringResource(R.string.feature_preferences_btn_change_budget),
@@ -71,7 +67,7 @@ fun PreferencesMainPage(
             onCheckedChange = { onNewEvent(PreferencesEvent.EnableCommentsTweak(it)) },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(DefaultPadding.BIG_PADDING)
+                .padding(DefaultPadding.LARGE)
         )
 
     }
@@ -91,7 +87,7 @@ private fun BoxItem(modifier: Modifier, bigText: String, smallText: String, onCl
             .clickableWithVibrationAndSound {
                 onClick.invoke()
             }
-            .padding(DefaultPadding.BIG_PADDING)) {
+            .padding(DefaultPadding.LARGE)) {
             SimpleBudgetViews.SimpleBudgetText(
                 text = bigText,
                 textStyle = MaterialTheme.typography.displaySmall,
@@ -110,7 +106,7 @@ private fun BoxItem(modifier: Modifier, bigText: String, smallText: String, onCl
 
 @Preview
 @Composable
-fun PreferencesMainPagePreview() {
+private fun PreferencesMainPagePreview() {
     SimpleBudgetTheme {
         Column(
             Modifier

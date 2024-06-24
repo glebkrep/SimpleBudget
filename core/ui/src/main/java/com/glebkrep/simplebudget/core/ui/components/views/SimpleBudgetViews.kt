@@ -92,7 +92,7 @@ object SimpleBudgetViews {
         val state = remember { mutableStateOf(isChecked) }
         Row(
             modifier = modifier
-                .padding(vertical = DefaultPadding.DEFAULT_PADDING)
+                .padding(vertical = DefaultPadding.DEFAULT)
                 .clickableWithVibrationAndSound(
                     interactionSource = source,
                     onClick = {
@@ -187,7 +187,7 @@ object SimpleBudgetViews {
                     contentDescription = stringResource(R.string.core_ui_back),
                     modifier = Modifier
                         .constrainAs(backBtn) {
-                            start.linkTo(parent.start, DefaultPadding.DEFAULT_PADDING)
+                            start.linkTo(parent.start, DefaultPadding.DEFAULT)
                             top.linkTo(header.top)
                             bottom.linkTo(header.bottom)
                             width = Dimension.fillToConstraints
@@ -205,9 +205,9 @@ object SimpleBudgetViews {
                 color = textColor,
                 modifier = Modifier
                     .constrainAs(header) {
-                        top.linkTo(parent.top, DefaultPadding.LARGE_PADDING)
-                        start.linkTo(parent.start, DefaultPadding.DEFAULT_PADDING)
-                        end.linkTo(parent.end, DefaultPadding.DEFAULT_PADDING)
+                        top.linkTo(parent.top, DefaultPadding.EXTRA_LARGE)
+                        start.linkTo(parent.start, DefaultPadding.DEFAULT)
+                        end.linkTo(parent.end, DefaultPadding.DEFAULT)
                     }
             )
         }
@@ -221,36 +221,29 @@ object SimpleBudgetViews {
         modifier: Modifier = Modifier,
         onClick: () -> (Unit)
     ) {
-        Column(
-            modifier
+        Card(
+            modifier = modifier
                 .fillMaxWidth()
-                .padding(DefaultPadding.BIGGER_PADDING),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .padding(DefaultPadding.BIG),
+            colors = CardDefaults.cardColors().copy(
+                containerColor = cardBackground
+            ),
+            onClick = onClick
         ) {
-            Card(
-                modifier = Modifier
+            Column(
+                Modifier
                     .fillMaxWidth()
-                    .padding(DefaultPadding.BIGGER_PADDING),
-                colors = CardDefaults.cardColors().copy(
-                    containerColor = cardBackground
-                )
+                    .padding(vertical = DefaultPadding.EXTRA_LARGE),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = DefaultPadding.LARGE_PADDING)
-                        .clickable { onClick.invoke() },
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    SimpleBudgetText(
-                        text = text, color = textColor,
-                        maxLines = 4,
-                        textStyle = MaterialTheme.typography.headlineSmall,
-                        textAlign = TextAlign.Center
-                    )
-                }
+                SimpleBudgetText(
+                    text = text, color = textColor,
+                    maxLines = 4,
+                    textStyle = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(DefaultPadding.BIG)
+                )
             }
         }
     }
@@ -282,7 +275,7 @@ fun SimpleBudgetSwitchPreview() {
             onCheckedChange = {},
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = DefaultPadding.DEFAULT_PADDING)
+                .padding(horizontal = DefaultPadding.DEFAULT)
         )
     }
 }

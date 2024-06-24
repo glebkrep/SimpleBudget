@@ -34,6 +34,7 @@ appcompat = "1.6.1"
 material = "1.12.0"
 uiTestJunit4Android = "1.6.7"
 mockk = "1.13.11"
+kotlinxImmutable = "0.3.7"
 
 [libraries]
 #used
@@ -86,6 +87,7 @@ javax-inject = { module = "javax.inject:javax.inject", version = "1" }
 kaspresso-main = { group = "com.kaspersky.android-components", name = "kaspresso", version.ref = "kaspresso" }
 kaspresso-compose = { group = "com.kaspersky.android-components", name = "kaspresso-compose-support", version.ref = "kaspresso" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+kotlinx-collections-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxImmutable" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
 lint-api = { group = "com.android.tools.lint", name = "lint-api", version.ref = "androidTools" }
 lint-checks = { group = "com.android.tools.lint", name = "lint-checks", version.ref = "androidTools" }

@@ -13,11 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.glebkrep.simplebudget.core.data.data.models.CalculatorEvent
 import com.glebkrep.simplebudget.core.ui.components.views.SimpleBudgetViews
 import com.glebkrep.simplebudget.core.ui.theme.DefaultPadding
 import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.feature.calculator.R
+import com.glebkrep.simplebudget.feature.calculator.logic.CalculatorEvent
 
 @Composable
 fun CalculatorStartNextDayPage(
@@ -39,8 +39,8 @@ fun CalculatorStartNextDayPage(
             Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = DefaultPadding.BIGGER_PADDING,
-                    vertical = DefaultPadding.BIG_PADDING
+                    horizontal = DefaultPadding.BIG,
+                    vertical = DefaultPadding.LARGE
                 ), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             SimpleBudgetViews.SimpleBudgetText(
@@ -59,7 +59,9 @@ fun CalculatorStartNextDayPage(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = DefaultPadding.DEFAULT, vertical = DefaultPadding.BIG)
         ) {
 
             SimpleBudgetViews.SimpleBudgetCardButton(

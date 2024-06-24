@@ -17,7 +17,7 @@ import androidx.compose.ui.text.TextStyle
 import com.glebkrep.simplebudget.core.ui.components.views.SimpleBudgetViews
 
 @Composable
-fun SimpleBudgetAnimatedText(
+internal fun SimpleBudgetAnimatedText(
     doubleValue: String,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.bodyLarge,
@@ -61,9 +61,9 @@ private fun SimpleBudgetAnimatedChar(char: Char, textColor: Color, textStyle: Te
 
 private const val DOT_CODE = 10
 
-fun Char.toIntWithDot() = this.digitToIntOrNull() ?: DOT_CODE
+private fun Char.toIntWithDot() = this.digitToIntOrNull() ?: DOT_CODE
 
-fun Int.toCharWithDot(): Char {
+private fun Int.toCharWithDot(): Char {
     return if (this == DOT_CODE) {
         '.'
     } else {

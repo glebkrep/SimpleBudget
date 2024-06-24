@@ -1,5 +1,6 @@
 package com.glebkrep.simplebudget.core.domain
 
+import com.glebkrep.simplebudget.core.domain.usecases.internal.CreateUpdatedCalculatorInputUseCase
 import com.glebkrep.simplebudget.model.CalculatorButton
 import kotlinx.coroutines.runBlocking
 import org.junit.Test

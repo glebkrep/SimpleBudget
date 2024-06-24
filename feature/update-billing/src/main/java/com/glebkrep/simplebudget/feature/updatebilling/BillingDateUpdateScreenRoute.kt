@@ -11,10 +11,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.glebkrep.simplebudget.feature.updatebilling.view.BillingDateUpdatePage
-import com.glebkrep.simplebudget.feature.updatebilling.vm.BillingDateUpdateAction
-import com.glebkrep.simplebudget.feature.updatebilling.vm.BillingDateUpdateEvent
-import com.glebkrep.simplebudget.feature.updatebilling.vm.BillingDateUpdateState
-import com.glebkrep.simplebudget.feature.updatebilling.vm.BillingDateUpdateVM
+import com.glebkrep.simplebudget.feature.updatebilling.logic.BillingDateUpdateAction
+import com.glebkrep.simplebudget.feature.updatebilling.logic.BillingDateUpdateEvent
+import com.glebkrep.simplebudget.feature.updatebilling.logic.BillingDateUpdateState
+import com.glebkrep.simplebudget.feature.updatebilling.logic.BillingDateUpdateVM
 
 @Composable
 fun BillingDateUpdateScreen(
@@ -47,7 +47,7 @@ fun BillingDateUpdateScreen(
 }
 
 @Composable
-fun BillingDateUpdateScreen(
+internal fun BillingDateUpdateScreen(
     state: BillingDateUpdateState?,
     onEvent: (BillingDateUpdateEvent) -> Unit,
 ) {

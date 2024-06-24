@@ -24,18 +24,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.glebkrep.simplebudget.core.data.data.models.BudgetUiState
-import com.glebkrep.simplebudget.core.data.data.models.CalculatorEvent
+import com.glebkrep.simplebudget.feature.calculator.logic.CalculatorEvent
 import com.glebkrep.simplebudget.core.ui.components.views.SimpleBudgetViews
 import com.glebkrep.simplebudget.core.ui.theme.DefaultColors
 import com.glebkrep.simplebudget.core.ui.theme.DefaultPadding
 import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.feature.calculator.R
-import com.glebkrep.simplebudget.feature.calculator.vm.DiffAnimationState
+import com.glebkrep.simplebudget.feature.calculator.logic.CalculatorScreenState
+import com.glebkrep.simplebudget.feature.calculator.logic.DiffAnimationState
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun CalculatorScreenHeaderView(
-    budgetData: BudgetUiState,
+internal fun CalculatorScreenHeaderView(
+    budgetData: CalculatorScreenState.Default,
     diffAnimationState: DiffAnimationState?,
     onEvent: (CalculatorEvent) -> (Unit),
     modifier: Modifier = Modifier
@@ -45,9 +46,9 @@ fun CalculatorScreenHeaderView(
         modifier = modifier
             .fillMaxWidth()
             .padding(
-                top = DefaultPadding.DEFAULT_PADDING,
-                start = DefaultPadding.DEFAULT_PADDING,
-                end = DefaultPadding.DEFAULT_PADDING
+                top = DefaultPadding.DEFAULT,
+                start = DefaultPadding.DEFAULT,
+                end = DefaultPadding.DEFAULT
             )
     ) {
         ConstraintLayout(modifier = modifier.fillMaxWidth()) {
@@ -60,8 +61,8 @@ fun CalculatorScreenHeaderView(
                 },
                 tint = DefaultColors.LightGrayText,
                 modifier = Modifier.constrainAs(settingsButton) {
-                    end.linkTo(parent.end, DefaultPadding.DEFAULT_PADDING)
-                    top.linkTo(parent.top, DefaultPadding.DEFAULT_PADDING)
+                    end.linkTo(parent.end, DefaultPadding.DEFAULT)
+                    top.linkTo(parent.top, DefaultPadding.DEFAULT)
                 }
             )
             SimpleBudgetViews.SimpleBudgetText(
@@ -71,9 +72,9 @@ fun CalculatorScreenHeaderView(
                 ),
                 color = DefaultColors.LightGrayText,
                 modifier = Modifier.constrainAs(daysBlock) {
-                    start.linkTo(parent.start, DefaultPadding.DEFAULT_PADDING)
+                    start.linkTo(parent.start, DefaultPadding.DEFAULT)
                     top.linkTo(settingsButton.top)
-                    end.linkTo(parent.end, DefaultPadding.DEFAULT_PADDING)
+                    end.linkTo(parent.end, DefaultPadding.DEFAULT)
                     width = Dimension.wrapContent
                 },
                 textStyle = MaterialTheme.typography.bodyLarge
@@ -81,7 +82,7 @@ fun CalculatorScreenHeaderView(
         }
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.padding(vertical = DefaultPadding.DEFAULT_PADDING)
+            modifier = Modifier.padding(vertical = DefaultPadding.DEFAULT)
         ) {
             BudgetText(
                 title = stringResource(R.string.feature_calculator_total),
@@ -106,14 +107,14 @@ fun CalculatorScreenHeaderView(
             )
         }
         HorizontalDivider(
-            modifier = Modifier.padding(top = DefaultPadding.DEFAULT_PADDING),
+            modifier = Modifier.padding(top = DefaultPadding.DEFAULT),
             color = MaterialTheme.colorScheme.onPrimaryContainer
         )
     }
 }
 
 @Composable
-fun BudgetText(
+internal fun BudgetText(
     title: String,
     newBudget: String?,
     oldBudget: String,
@@ -177,10 +178,10 @@ fun BudgetText(
 
 @Composable
 @Preview
-fun CalculatorScreenHeaderViewPreview() {
+private fun CalculatorScreenHeaderViewPreview() {
     SimpleBudgetTheme {
         CalculatorScreenHeaderView(
-            budgetData = BudgetUiState(
+            budgetData = CalculatorScreenState.Default(
                 daysUntilBilling = "5",
                 newMoneyLeft = "100",
                 oldMoneyLeft = "200",
@@ -190,7 +191,7 @@ fun CalculatorScreenHeaderViewPreview() {
                 oldTodayBudget = "10",
                 areCommentsEnabled = false,
                 currentInput = "",
-                recentTransactions = listOf(),
+                recentTransactions = persistentListOf(),
                 totalNumberOfRecentTransactions = 0
             ),
             diffAnimationState = DiffAnimationState(

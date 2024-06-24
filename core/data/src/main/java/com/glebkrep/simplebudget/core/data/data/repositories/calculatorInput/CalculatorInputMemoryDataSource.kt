@@ -22,7 +22,7 @@ class CalculatorInputMemoryDataSource
             "0"
         )
 
-    suspend fun getInput(): Flow<String> {
+    fun getInput(): Flow<String> {
         return calculatorData
     }
 
