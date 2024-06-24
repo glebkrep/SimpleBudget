@@ -1,28 +1,21 @@
 package com.glebkrep.simplebudget.feature.updatebudget.logic
 
 import androidx.lifecycle.viewModelScope
-import com.glebkrep.simplebudget.core.domain.models.BudgetDataOperations
-import com.glebkrep.simplebudget.core.domain.usecases.CreateUpdatedBudgetDataUseCase
-import com.glebkrep.simplebudget.core.domain.usecases.CreateUpdatedCalculatorInputUseCase
 import com.glebkrep.simplebudget.core.domain.toPrettyString
 import com.glebkrep.simplebudget.core.domain.usecases.GetBudgetAndInputUseCase
-import com.glebkrep.simplebudget.core.domain.usecases.UpdateBudgetDataUseCase
-import com.glebkrep.simplebudget.core.domain.usecases.UpdateCalculatorInputUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.UpdateTotalBudgetWithCurrentCalculatorInputUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.UpdateCurrentCalculatorInputWithKeyUseCase
 import com.glebkrep.simplebudget.core.ui.AbstractScreenVM
-import com.glebkrep.simplebudget.model.BudgetData
 import com.glebkrep.simplebudget.model.CalculatorButton
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BudgetUpdateVM @Inject constructor(
     private val getBudgetAndInputUseCase: GetBudgetAndInputUseCase,
-    private val createUpdatedCalculatorInputUseCase: CreateUpdatedCalculatorInputUseCase,
-    private val createUpdatedBudgetDataUseCase: CreateUpdatedBudgetDataUseCase,
-    private val updateBudgetDataUseCase: UpdateBudgetDataUseCase,
-    private val updateCalculatorInputUseCase: UpdateCalculatorInputUseCase
+    private val updateTotalBudgetWithCurrentCalculatorInputUseCase: UpdateTotalBudgetWithCurrentCalculatorInputUseCase,
+    private val updateCurrentCalculatorInputWithKeyUseCase: UpdateCurrentCalculatorInputWithKeyUseCase
 ) :
     AbstractScreenVM<BudgetUpdateEvent, BudgetUpdateState, BudgetUpdateAction>(BudgetUpdateAction.None) {
 
@@ -44,39 +37,26 @@ class BudgetUpdateVM @Inject constructor(
         viewModelScope.launch {
             when (event) {
                 is BudgetUpdateEvent.KeyTap -> {
-                    when (event.key) {
+                    when (event.calculatorButton) {
                         CalculatorButton.ENTER -> {
-                            val data = getBudgetAndInputUseCase().first()
-                            val newBudget = createUpdatedBudgetDataUseCase.invoke(
-                                BudgetDataOperations.NewTotalBudget(data.calculatorInput),
-                                BudgetData(
-                                    todayBudget = data.todayBudget,
-                                    dailyBudget = data.dailyBudget,
-                                    totalLeft = data.totalLeft,
-                                    billingTimestamp = data.billingTimestamp,
-                                    lastLoginTimestamp = data.lastLoginTimestamp,
-                                    lastBillingUpdateTimestamp = data.lastBillingUpdateTimestamp
-                                )
-                            )
-                            updateBudgetDataUseCase.invoke(newBudget)
+                            val newTotalLeft =
+                                updateTotalBudgetWithCurrentCalculatorInputUseCase.invoke()
                             postAction(
                                 BudgetUpdateAction.PostSnackBarAndGoBack(
-                                    "Budget updated: ${newBudget.totalLeft}"
+                                    "Budget updated: $newTotalLeft"
                                 )
                             )
                         }
 
                         else -> {
-                            val newInput = createUpdatedCalculatorInputUseCase(
-                                calculatorInput = getBudgetAndInputUseCase().first().calculatorInput,
-                                newButton = event.key
-                            )
-                            updateCalculatorInputUseCase.invoke(newInput)
+                            updateCurrentCalculatorInputWithKeyUseCase.invoke(event.calculatorButton)
                         }
                     }
                 }
 
-                BudgetUpdateEvent.Back -> postAction(BudgetUpdateAction.GoBack)
+                BudgetUpdateEvent.Back -> {
+                    postAction(BudgetUpdateAction.GoBack)
+                }
             }
         }
     }

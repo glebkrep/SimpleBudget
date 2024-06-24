@@ -3,17 +3,24 @@ package com.glebkrep.simplebudget.core.domain.usecases
 import com.glebkrep.simplebudget.core.common.Dispatcher
 import com.glebkrep.simplebudget.core.common.SimpleBudgetDispatcher
 import com.glebkrep.simplebudget.core.data.data.repositories.calculatorInput.CalculatorInputRepository
+import com.glebkrep.simplebudget.core.domain.usecases.internal.CreateUpdatedCalculatorInputUseCase
+import com.glebkrep.simplebudget.model.CalculatorButton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class UpdateCalculatorInputUseCase @Inject constructor(
+class UpdateCurrentCalculatorInputWithKeyUseCase @Inject internal constructor(
     private val calculatorInputRepository: CalculatorInputRepository,
+    private val createUpdatedCalculatorInputUseCase: CreateUpdatedCalculatorInputUseCase,
     @Dispatcher(SimpleBudgetDispatcher.IO) private val ioDispatcher: CoroutineDispatcher
 ) {
     suspend operator fun invoke(
-        input: String,
+        newButton: CalculatorButton
     ) = withContext(ioDispatcher) {
-        calculatorInputRepository.setCalculatorInput(input)
+        val newInput = createUpdatedCalculatorInputUseCase(
+            calculatorInput = calculatorInputRepository.getCalculatorInputSync(),
+            newButton = newButton
+        )
+        calculatorInputRepository.setCalculatorInput(newInput)
     }
 }

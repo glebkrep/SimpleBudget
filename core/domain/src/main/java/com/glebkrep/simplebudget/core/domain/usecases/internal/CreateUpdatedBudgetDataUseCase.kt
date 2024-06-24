@@ -1,4 +1,4 @@
-package com.glebkrep.simplebudget.core.domain.usecases
+package com.glebkrep.simplebudget.core.domain.usecases.internal
 
 import com.glebkrep.simplebudget.core.domain.dayDiffTo
 import com.glebkrep.simplebudget.core.domain.models.BudgetDataOperations
@@ -7,7 +7,7 @@ import com.glebkrep.simplebudget.core.domain.smartToDouble
 import com.glebkrep.simplebudget.model.BudgetData
 import javax.inject.Inject
 
-class CreateUpdatedBudgetDataUseCase @Inject constructor() {
+internal class CreateUpdatedBudgetDataUseCase @Inject constructor() {
 
     operator fun invoke(
         operation: BudgetDataOperations,

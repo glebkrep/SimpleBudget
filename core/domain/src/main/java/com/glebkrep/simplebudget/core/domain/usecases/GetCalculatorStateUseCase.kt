@@ -11,6 +11,7 @@ import com.glebkrep.simplebudget.core.domain.models.BudgetDataOperations
 import com.glebkrep.simplebudget.core.domain.models.CalculatorState
 import com.glebkrep.simplebudget.core.domain.models.RecentTransaction
 import com.glebkrep.simplebudget.core.domain.models.toRecentTransaction
+import com.glebkrep.simplebudget.core.domain.usecases.internal.CreateUpdatedBudgetDataUseCase
 import com.glebkrep.simplebudget.model.AppPreferences
 import com.glebkrep.simplebudget.model.BudgetData
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,7 +21,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetCalculatorStateUseCase @Inject constructor(
+class GetCalculatorStateUseCase @Inject internal constructor(
     private val budgetRepository: BudgetRepository,
     private val preferencesRepository: PreferencesRepository,
     private val calculatorInputRepository: CalculatorInputRepository,

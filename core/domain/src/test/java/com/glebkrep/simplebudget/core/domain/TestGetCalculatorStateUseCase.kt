@@ -7,7 +7,7 @@ import com.glebkrep.simplebudget.core.data.data.repositories.recentTransactions.
 import com.glebkrep.simplebudget.core.domain.models.CalculatorState
 import com.glebkrep.simplebudget.core.domain.models.RecentTransaction
 import com.glebkrep.simplebudget.core.domain.models.toEntity
-import com.glebkrep.simplebudget.core.domain.usecases.CreateUpdatedBudgetDataUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.internal.CreateUpdatedBudgetDataUseCase
 import com.glebkrep.simplebudget.core.domain.usecases.GetCalculatorStateUseCase
 import com.glebkrep.simplebudget.model.AppPreferences
 import com.glebkrep.simplebudget.model.BudgetData

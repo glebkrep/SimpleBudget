@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class UpdatePreferencesUseCase @Inject constructor(
+class UpdatePreferencesUseCase @Inject internal constructor(
     private val preferencesRepository: PreferencesRepository,
     @Dispatcher(SimpleBudgetDispatcher.IO) private val ioDispatcher: CoroutineDispatcher
 ) {

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
-class GetBudgetAndInputUseCase @Inject constructor(
+class GetBudgetAndInputUseCase @Inject internal constructor(
     private val budgetRepository: BudgetRepository,
     private val inputRepository: CalculatorInputRepository,
     @Dispatcher(SimpleBudgetDispatcher.IO) private val ioDispatcher: CoroutineDispatcher

@@ -9,6 +9,8 @@ import com.glebkrep.simplebudget.core.domain.models.BudgetDataOperations
 import com.glebkrep.simplebudget.core.domain.models.RecentTransaction
 import com.glebkrep.simplebudget.core.domain.models.toEntity
 import com.glebkrep.simplebudget.core.domain.smartToDouble
+import com.glebkrep.simplebudget.core.domain.usecases.internal.CreateUpdatedBudgetDataUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.internal.CreateUpdatedCalculatorInputUseCase
 import com.glebkrep.simplebudget.model.CalculatorButton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
@@ -16,7 +18,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
-class HandleCalculatorInputUseCase @Inject constructor(
+class HandleCalculatorInputUseCase @Inject internal constructor(
     private val calculatorInputRepository: CalculatorInputRepository,
     private val budgetRepository: BudgetRepository,
     private val recentTransactionsRepository: RecentTransactionsRepository,

@@ -1,9 +1,9 @@
-package com.glebkrep.simplebudget.core.domain.usecases
+package com.glebkrep.simplebudget.core.domain.usecases.internal
 
 import com.glebkrep.simplebudget.model.CalculatorButton
 import javax.inject.Inject
 
-class CreateUpdatedCalculatorInputUseCase @Inject constructor(
+internal class CreateUpdatedCalculatorInputUseCase @Inject constructor(
 ) {
     operator fun invoke(
         calculatorInput: String,

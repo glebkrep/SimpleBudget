@@ -5,12 +5,13 @@ import com.glebkrep.simplebudget.core.common.SimpleBudgetDispatcher
 import com.glebkrep.simplebudget.core.data.data.repositories.budgetData.BudgetRepository
 import com.glebkrep.simplebudget.core.data.data.repositories.recentTransactions.RecentTransactionsRepository
 import com.glebkrep.simplebudget.core.domain.models.BudgetDataOperations
+import com.glebkrep.simplebudget.core.domain.usecases.internal.CreateUpdatedBudgetDataUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class DeleteRecentTransactionUseCase @Inject constructor(
+class DeleteRecentTransactionUseCase @Inject internal constructor(
     private val budgetRepository: BudgetRepository,
     private val recentTransactionsRepository: RecentTransactionsRepository,
     private val createUpdatedBudgetDataUseCase: CreateUpdatedBudgetDataUseCase,
