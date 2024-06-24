@@ -3,7 +3,6 @@ package com.glebkrep.simplebudget.feature.calculator.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -24,7 +22,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,7 +31,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -42,8 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.glebkrep.simplebudget.core.data.data.models.BudgetUiState
-import com.glebkrep.simplebudget.core.data.data.models.CalculatorEvent
+import com.glebkrep.simplebudget.feature.calculator.logic.CalculatorEvent
 import com.glebkrep.simplebudget.core.ui.components.views.CalculatorView
 import com.glebkrep.simplebudget.core.ui.components.views.SimpleBudgetViews
 import com.glebkrep.simplebudget.core.ui.theme.DefaultColors
@@ -51,13 +46,15 @@ import com.glebkrep.simplebudget.core.ui.theme.DefaultPadding
 import com.glebkrep.simplebudget.core.ui.theme.DefaultValues
 import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.feature.calculator.R
-import com.glebkrep.simplebudget.feature.calculator.vm.DiffAnimationState
-import com.glebkrep.simplebudget.model.UiRecentTransaction
+import com.glebkrep.simplebudget.feature.calculator.logic.CalculatorScreenState
+import com.glebkrep.simplebudget.feature.calculator.logic.DiffAnimationState
+import com.glebkrep.simplebudget.feature.calculator.logic.UiRecentTransaction
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.android.awaitFrame
 
 @Composable
-fun CalculatorMainPage(
-    budgetUiState: BudgetUiState,
+internal fun CalculatorMainPage(
+    budgetUiState: CalculatorScreenState.Default,
     diffAnimationState: DiffAnimationState?,
     onEvent: (CalculatorEvent) -> (Unit)
 ) {
@@ -67,9 +64,9 @@ fun CalculatorMainPage(
         mutableIntStateOf(0)
     }
 
-    LaunchedEffect(budgetUiState.recentTransactions) {
+    LaunchedEffect(budgetUiState.totalNumberOfRecentTransactions) {
         awaitFrame()
-        val newListSize = budgetUiState.recentTransactions.size
+        val newListSize = budgetUiState.totalNumberOfRecentTransactions
         if (lastDrawnListSize > newListSize) {
             lastDrawnListSize = newListSize
             return@LaunchedEffect
@@ -118,8 +115,8 @@ fun CalculatorMainPage(
             state = listState
         ) {
             items(
-                budgetUiState.recentTransactions,
-                { listItem: UiRecentTransaction -> listItem.id }) { item ->
+                items = budgetUiState.recentTransactions,
+                key = { listItem: UiRecentTransaction -> listItem.id }) { item ->
                 RecentTransactionView(recentTransaction = item, index = item.id) {
                     onEvent.invoke(it)
                 }
@@ -155,7 +152,7 @@ fun CalculatorMainPage(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RecentTransactionView(
+internal fun RecentTransactionView(
     recentTransaction: UiRecentTransaction,
     index: Int,
     onEvent: (CalculatorEvent) -> Unit
@@ -171,12 +168,12 @@ fun RecentTransactionView(
             onEvent.invoke(CalculatorEvent.DeleteRecent(index))
         }
     }
-    //todo rework list item size not to use constant
+
     val cardModifier = Modifier
         .fillMaxWidth()
         .padding(
-            horizontal = DefaultPadding.BIGGER_PADDING,
-            vertical = DefaultPadding.BIGGER_PADDING
+            horizontal = DefaultPadding.BIG,
+            vertical = DefaultPadding.BIG
         )
         .height(DefaultValues.LIST_ITEM_SIZE)
 
@@ -185,14 +182,14 @@ fun RecentTransactionView(
         enableDismissFromEndToStart = true,
         enableDismissFromStartToEnd = false,
         backgroundContent = {
-            Card(modifier = cardModifier.padding(DefaultPadding.SMALL_PADDING)) {
+            Card(modifier = cardModifier.padding(DefaultPadding.SMALL)) {
                 Row(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(DefaultColors.BadRed)
                         .padding(
-                            horizontal = DefaultPadding.BIG_PADDING,
-                            vertical = DefaultPadding.BIGGER_PADDING
+                            horizontal = DefaultPadding.LARGE,
+                            vertical = DefaultPadding.BIG
                         ),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -215,8 +212,8 @@ fun RecentTransactionView(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(
-                            horizontal = DefaultPadding.BIG_PADDING,
-                            vertical = DefaultPadding.SMALL_PADDING
+                            horizontal = DefaultPadding.LARGE,
+                            vertical = DefaultPadding.SMALL
                         )
                 ) {
                     val (commentAndDate, value) = createRefs()
@@ -249,13 +246,13 @@ fun RecentTransactionView(
                     }
                     Column(modifier = Modifier.constrainAs(commentAndDate) {
                         start.linkTo(parent.start)
-                        end.linkTo(value.start, margin = DefaultPadding.BIG_PADDING)
+                        end.linkTo(value.start, margin = DefaultPadding.LARGE)
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
                         width = Dimension.fillToConstraints
                     }) {
                         SimpleBudgetViews.SimpleBudgetText(
-                            text = recentTransaction.comment ?: "",
+                            text = recentTransaction.comment.orEmpty(),
                             color = commentColor,
                             textStyle = MaterialTheme.typography.titleLarge
                         )
@@ -286,11 +283,11 @@ fun RecentTransactionView(
 
 @Preview(showBackground = true)
 @Composable
-fun CalculatorScreenPreview() {
+private fun CalculatorScreenPreview() {
     SimpleBudgetTheme {
         Column(Modifier.fillMaxSize()) {
             CalculatorMainPage(
-                budgetUiState = BudgetUiState(
+                budgetUiState = CalculatorScreenState.Default(
                     currentInput = "123",
                     daysUntilBilling = "123",
                     oldTodayBudget = "10",
@@ -299,7 +296,7 @@ fun CalculatorScreenPreview() {
                     newDailyBudget = "10",
                     oldMoneyLeft = "200",
                     newMoneyLeft = "100",
-                    recentTransactions = listOf(
+                    recentTransactions = persistentListOf(
                         UiRecentTransaction(
                             id = 1,
                             "11 000",
@@ -328,6 +325,7 @@ fun CalculatorScreenPreview() {
                             "20:12 April, 10 2024"
                         ),
                     ),
+                    totalNumberOfRecentTransactions = 5,
                     areCommentsEnabled = true
                 ),
                 diffAnimationState = null,

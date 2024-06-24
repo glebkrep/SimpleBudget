@@ -30,9 +30,7 @@ class PreferencesDataStoreDataSource @Inject constructor(
         withContext(ioDispatcher) {
             preferencesDataDatastore.updateData { prefs ->
                 prefs.toBuilder().apply {
-                    appPreferences.isCommentsEnabled?.let {
-                        setAreCommentsEnabled(it)
-                    }
+                    setAreCommentsEnabled(appPreferences.isCommentsEnabled)
                 }.build()
             }
         }

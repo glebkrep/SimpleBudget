@@ -1,7 +1,6 @@
 package com.glebkrep.simplebudget.feature.calculator.view
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,14 +14,14 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.glebkrep.simplebudget.core.data.data.models.CalculatorEvent
 import com.glebkrep.simplebudget.core.ui.components.views.SimpleBudgetViews
 import com.glebkrep.simplebudget.core.ui.theme.DefaultPadding
 import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.feature.calculator.R
+import com.glebkrep.simplebudget.feature.calculator.logic.CalculatorEvent
 
 @Composable
-fun CalculatorBadBillingDatePage(
+internal fun CalculatorBadBillingDatePage(
     remainingBudget: String,
     onEvent: (CalculatorEvent) -> (Unit),
 ) {
@@ -48,8 +47,8 @@ fun CalculatorBadBillingDatePage(
             Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = DefaultPadding.BIGGER_PADDING,
-                    vertical = DefaultPadding.BIG_PADDING
+                    horizontal = DefaultPadding.BIG,
+                    vertical = DefaultPadding.LARGE
                 ), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             SimpleBudgetViews.SimpleBudgetText(
@@ -75,7 +74,7 @@ fun CalculatorBadBillingDatePage(
             SimpleBudgetViews.SimpleBudgetCardButton(
                 text = stringResource(R.string.feature_calculator_btn_change_billing_date),
                 cardBackground = MaterialTheme.colorScheme.primary,
-                modifier = Modifier,
+                modifier = Modifier.padding(horizontal = DefaultPadding.EXTRA_LARGE),
                 onClick = {
                     onEvent.invoke(CalculatorEvent.OnSettingsClicked)
                 },
@@ -88,7 +87,7 @@ fun CalculatorBadBillingDatePage(
 
 @Composable
 @Preview
-fun CalculatorBadBillingDateScreenPreview() {
+private fun CalculatorBadBillingDateScreenPreview() {
     SimpleBudgetTheme {
         CalculatorBadBillingDatePage(
             remainingBudget = "1245.05",
@@ -99,7 +98,7 @@ fun CalculatorBadBillingDateScreenPreview() {
 
 @Composable
 @Preview
-fun CalculatorBadBillingDateNothingSavedScreenPreview() {
+private fun CalculatorBadBillingDateNothingSavedScreenPreview() {
     SimpleBudgetTheme {
         CalculatorBadBillingDatePage(
             remainingBudget = "0",

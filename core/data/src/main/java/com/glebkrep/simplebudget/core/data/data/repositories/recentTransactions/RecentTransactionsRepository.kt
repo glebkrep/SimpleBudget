@@ -4,7 +4,9 @@ import com.glebkrep.simplebudget.core.database.recentTransaction.RecentTransacti
 import kotlinx.coroutines.flow.Flow
 
 interface RecentTransactionsRepository {
-    suspend fun getRecentTransactionsFlow(): Flow<List<RecentTransactionEntity>>
+    fun getRecentTransactions(): Flow<List<RecentTransactionEntity>>
+
+    fun getTotalNumberOfRecentTransactionsFlow(): Flow<Int>
 
     suspend fun getTransactionById(id: Int): RecentTransactionEntity?
 

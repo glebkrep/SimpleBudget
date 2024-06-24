@@ -11,10 +11,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.glebkrep.simplebudget.feature.preferences.view.PreferencesMainPage
-import com.glebkrep.simplebudget.feature.preferences.vm.PreferencesAction
-import com.glebkrep.simplebudget.feature.preferences.vm.PreferencesEvent
-import com.glebkrep.simplebudget.feature.preferences.vm.PreferencesState
-import com.glebkrep.simplebudget.feature.preferences.vm.PreferencesVM
+import com.glebkrep.simplebudget.feature.preferences.logic.PreferencesAction
+import com.glebkrep.simplebudget.feature.preferences.logic.PreferencesEvent
+import com.glebkrep.simplebudget.feature.preferences.logic.PreferencesState
+import com.glebkrep.simplebudget.feature.preferences.logic.PreferencesVM
 
 @Composable
 fun PreferencesScreenRoute(
@@ -42,7 +42,7 @@ fun PreferencesScreenRoute(
 }
 
 @Composable
-fun PreferencesScreen(
+internal fun PreferencesScreen(
     state: PreferencesState?,
     onEvent: (PreferencesEvent) -> (Unit),
 ) {

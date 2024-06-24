@@ -1,14 +1,19 @@
+import org.apache.commons.compress.harmony.pack200.PackingUtils.config
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.simplebudget.android.application)
     alias(libs.plugins.simplebudget.android.application.compose)
     alias(libs.plugins.simplebudget.android.hilt)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
     defaultConfig {
         applicationId = "com.glebkrep.simplebudget"
-        versionCode = 3
-        versionName = "0.1.2"
+        versionCode = 4
+        versionName = "0.1.3"
         testInstrumentationRunner =
             "com.glebkrep.simplebudget.core.testing.SimpleBudgetTestRunner"
         vectorDrawables {
@@ -16,6 +21,19 @@ android {
         }
     }
 
+
+
+    signingConfigs {
+        create("release") {
+            val keystorePropertiesFile = rootProject.file("keystore.properties")
+            val keystoreProperties = Properties()
+            keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+            storeFile = file(keystoreProperties["storeFile"].toString())
+            storePassword = keystoreProperties["storePassword"].toString()
+            keyAlias = keystoreProperties["keyAlias"].toString()
+            keyPassword = keystoreProperties["keyPassword"].toString()
+        }
+    }
     buildTypes {
         buildTypes {
             release {
@@ -24,6 +42,15 @@ android {
                     getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro"
                 )
+                signingConfig = signingConfigs.getByName("release")
+            }
+            debug {
+                isMinifyEnabled = false
+                proguardFiles(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+                )
+                applicationIdSuffix = ".debug"
             }
         }
     }
@@ -39,6 +66,12 @@ android {
         }
     }
     namespace = "com.glebkrep.simplebudget"
+}
+
+tasks.register("getVersion") {
+    doLast {
+        println("v" + android.defaultConfig.versionName + "code" + android.defaultConfig.versionCode)
+    }
 }
 
 dependencies {
@@ -60,5 +93,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.splashscreen)
+
+    implementation(libs.androidx.profileinstaller)
+    "baselineProfile"(project(":baselineprofile"))
 }
 

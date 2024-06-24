@@ -14,21 +14,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.glebkrep.simplebudget.core.ui.components.views.CalculatorButtonView
 import com.glebkrep.simplebudget.core.ui.components.views.SimpleBudgetViews
 import com.glebkrep.simplebudget.core.ui.theme.DefaultPadding
+import com.glebkrep.simplebudget.core.ui.theme.DefaultValues
 import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.feature.update_billing.R
-import com.glebkrep.simplebudget.feature.updatebilling.vm.BillingDateUpdateEvent
-import com.glebkrep.simplebudget.feature.updatebilling.vm.BillingDateUpdateState
+import com.glebkrep.simplebudget.feature.updatebilling.logic.BillingDateUpdateEvent
+import com.glebkrep.simplebudget.feature.updatebilling.logic.BillingDateUpdateState
 import com.glebkrep.simplebudget.model.CalculatorButton
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BillingDateUpdatePage(
+internal fun BillingDateUpdatePage(
     state: BillingDateUpdateState.DatePicker,
     onEvent: (BillingDateUpdateEvent) -> (Unit)
 ) {
@@ -56,14 +56,14 @@ fun BillingDateUpdatePage(
             })
         SimpleBudgetDatePicker(
             state = datePickerState,
-            modifier = Modifier.padding(horizontal = DefaultPadding.BIG_PADDING)
+            modifier = Modifier.padding(horizontal = DefaultPadding.LARGE)
         )
         CalculatorButtonView(
             key = CalculatorButton.SAVE_CHANGE,
             isButtonEnabled = true,
             modifier = Modifier
-                .padding(horizontal = DefaultPadding.BIG_PADDING)
-                .height(64.dp),
+                .padding(horizontal = DefaultPadding.LARGE)
+                .height(DefaultValues.SAVE_BUTTON_SIZE),
             onClick = {
                 if (selectedTime != null) {
                     if (selectedTime != state.currentBillingDate) {
@@ -79,7 +79,7 @@ fun BillingDateUpdatePage(
 
 @Composable
 @Preview
-fun BillingDateUpdatePagePreview() {
+private fun BillingDateUpdatePagePreview() {
     SimpleBudgetTheme {
         BillingDateUpdatePage(
             state = BillingDateUpdateState.DatePicker(

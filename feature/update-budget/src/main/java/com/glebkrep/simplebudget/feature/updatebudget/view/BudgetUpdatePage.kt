@@ -3,10 +3,7 @@ package com.glebkrep.simplebudget.feature.updatebudget.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -20,12 +17,12 @@ import com.glebkrep.simplebudget.core.ui.components.views.SimpleBudgetViews
 import com.glebkrep.simplebudget.core.ui.theme.DefaultPadding
 import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.feature.update_budget.R
-import com.glebkrep.simplebudget.feature.updatebudget.vm.BudgetUpdateEvent
-import com.glebkrep.simplebudget.feature.updatebudget.vm.BudgetUpdateState
+import com.glebkrep.simplebudget.feature.updatebudget.logic.BudgetUpdateEvent
+import com.glebkrep.simplebudget.feature.updatebudget.logic.BudgetUpdateState
 import com.glebkrep.simplebudget.model.CalculatorButton
 
 @Composable
-fun BudgetUpdatePage(
+internal fun BudgetUpdatePage(
     state: BudgetUpdateState.BudgetInput,
     onEvent: (BudgetUpdateEvent) -> (Unit)
 ) {
@@ -48,9 +45,9 @@ fun BudgetUpdatePage(
             onBackClick = { onEvent.invoke(BudgetUpdateEvent.Back) }
         )
         Column(modifier = Modifier.constrainAs(currentBudgetBlock) {
-            top.linkTo(header.bottom, DefaultPadding.BIG_PADDING)
-            start.linkTo(parent.start, DefaultPadding.BIG_PADDING)
-            end.linkTo(parent.end, DefaultPadding.BIG_PADDING)
+            top.linkTo(header.bottom, DefaultPadding.LARGE)
+            start.linkTo(parent.start, DefaultPadding.LARGE)
+            end.linkTo(parent.end, DefaultPadding.LARGE)
             width = Dimension.fillToConstraints
         }) {
             SimpleBudgetViews.SimpleBudgetText(
@@ -69,16 +66,16 @@ fun BudgetUpdatePage(
             )
             SimpleBudgetViews.SimpleBudgetText(
                 text = stringResource(R.string.feature_update_budget_btn_save),
-                modifier = Modifier.padding(top = DefaultPadding.BIG_PADDING),
+                modifier = Modifier.padding(top = DefaultPadding.LARGE),
                 textStyle = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
 
         HorizontalDivider(modifier = Modifier.constrainAs(divider) {
-            top.linkTo(currentBudgetBlock.bottom, DefaultPadding.BIG_PADDING)
-            start.linkTo(parent.start, DefaultPadding.BIG_PADDING)
-            end.linkTo(parent.end, DefaultPadding.BIG_PADDING)
+            top.linkTo(currentBudgetBlock.bottom, DefaultPadding.LARGE)
+            start.linkTo(parent.start, DefaultPadding.LARGE)
+            end.linkTo(parent.end, DefaultPadding.LARGE)
             width = Dimension.fillToConstraints
         })
 
@@ -110,7 +107,7 @@ fun BudgetUpdatePage(
 
 @Composable
 @Preview
-fun BudgetUpdatePagePreview() {
+private fun BudgetUpdatePagePreview() {
     SimpleBudgetTheme {
         BudgetUpdatePage(state = BudgetUpdateState.BudgetInput(
             currentInput = "123.33",

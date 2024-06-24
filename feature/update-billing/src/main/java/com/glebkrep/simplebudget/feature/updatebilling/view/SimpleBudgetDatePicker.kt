@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SimpleBudgetDatePicker(
+internal fun SimpleBudgetDatePicker(
     state: DatePickerState,
     modifier: Modifier = Modifier,
 ) {

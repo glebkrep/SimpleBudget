@@ -1,0 +1,67 @@
+name: Code quality check
+run-name: Check with android lint, detekt and unit tests
+on: [ push ]
+jobs:
+  Linters:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-disabled: true
+
+      - name: Generate keystore.properties
+        run: |
+          cat <<EOF > keystore.properties
+          EOF
+
+      - name: Lint
+        shell: bash
+        run: ./gradlew lint
+
+      - name: Detekt
+        shell: bash
+        run: ./gradlew detektDebug reportMerge --continue
+
+      - name: Publish Lint and Detekt reports
+        uses: Juuxel/publish-checkstyle-report@v1
+        if: ${{ failure() }}
+        with:
+          # required: The glob paths to report XML files as a multiline string
+          # The format below works for the Gradle Checkstyle plugin with default configurations
+          reports: |
+            build/reports/detekt/merge.xml
+            **/build/reports/lint-results-debug.xml
+
+  Unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-disabled: true
+
+      - name: Generate keystore.properties
+        run: |
+          cat <<EOF > keystore.properties
+          EOF
+
+      - name: Unit tests
+        shell: bash
+        run: ./gradlew test

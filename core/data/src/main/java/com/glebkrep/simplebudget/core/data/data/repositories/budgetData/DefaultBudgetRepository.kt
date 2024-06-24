@@ -15,9 +15,8 @@ internal class DefaultBudgetRepository @Inject constructor(
     @Suppress("UnusedPrivateProperty")
     @Dispatcher(SimpleBudgetDispatcher.IO) private val ioDispatcher: CoroutineDispatcher
 ) : BudgetRepository {
-    override suspend fun getBudgetData(): Flow<BudgetData> = withContext(ioDispatcher) {
+    override fun getBudgetData(): Flow<BudgetData> =
         budgetDataStoreDataSource.getBudgetData().flowOn(ioDispatcher)
-    }
 
     override suspend fun setBudgetData(budgetData: BudgetData): Unit = withContext(ioDispatcher) {
         budgetDataStoreDataSource.setBudgetData(

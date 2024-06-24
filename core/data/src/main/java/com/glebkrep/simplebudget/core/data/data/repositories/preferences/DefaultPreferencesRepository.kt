@@ -14,7 +14,7 @@ class DefaultPreferencesRepository @Inject constructor(
     private val preferencesDataStoreDataSource: PreferencesDataStoreDataSource,
     @Dispatcher(SimpleBudgetDispatcher.IO) private val ioDispatcher: CoroutineDispatcher
 ) : PreferencesRepository {
-    override suspend fun getPreferences(): Flow<AppPreferences> =
+    override fun getPreferences(): Flow<AppPreferences> =
         preferencesDataStoreDataSource.getPreferences().flowOn(ioDispatcher)
 
     override suspend fun setPreferences(appPreferences: AppPreferences) {
