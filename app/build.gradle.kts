@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.simplebudget.android.application)
     alias(libs.plugins.simplebudget.android.application.compose)
     alias(libs.plugins.simplebudget.android.hilt)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -92,5 +93,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.splashscreen)
+
+    implementation(libs.androidx.profileinstaller)
+    "baselineProfile"(project(":baselineprofile"))
 }
 
