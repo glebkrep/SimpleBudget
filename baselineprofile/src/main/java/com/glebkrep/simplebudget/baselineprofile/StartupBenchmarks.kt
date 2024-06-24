@@ -7,6 +7,10 @@ import androidx.benchmark.macro.StartupTimingMetric
 import androidx.benchmark.macro.junit4.MacrobenchmarkRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.Direction
+import androidx.test.uiautomator.Until
 
 import org.junit.Rule
 import org.junit.Test
@@ -48,9 +52,10 @@ class StartupBenchmarks {
         benchmark(CompilationMode.Partial(BaselineProfileMode.Require))
 
     private fun benchmark(compilationMode: CompilationMode) {
-        // This example works only with the variant with application id `com.glebkrep.simplebudget`."
+        // The application id for the running build variant is read from the instrumentation arguments.
         rule.measureRepeated(
-            packageName = "com.glebkrep.simplebudget",
+            packageName = InstrumentationRegistry.getArguments().getString("targetAppId")
+                ?: error("targetAppId not passed as instrumentation runner arg"),
             metrics = listOf(StartupTimingMetric()),
             compilationMode = compilationMode,
             startupMode = StartupMode.COLD,
@@ -60,15 +65,16 @@ class StartupBenchmarks {
             },
             measureBlock = {
                 startActivityAndWait()
-
-                // TODO Add interactions to wait for when your app is fully drawn.
-                // The app is fully drawn when Activity.reportFullyDrawn is called.
-                // For Jetpack Compose, you can use ReportDrawn, ReportDrawnWhen and ReportDrawnAfter
-                // from the AndroidX Activity library.
-
-                // Check the UiAutomator documentation for more information on how to
-                // interact with the app.
-                // https://d.android.com/training/testing/other-components/ui-automator
+                device.findObject(By.text("3")).apply {
+                    clickAndWait(Until.newWindow(), 400)
+                    clickAndWait(Until.newWindow(), 400)
+                }
+                device.findObject(By.text("enter")).apply {
+                    clickAndWait(Until.newWindow(), 400)
+                }
+                device.findObject(By.hasChild(By.text("33"))).apply {
+                    this.swipe(Direction.LEFT, 0.9f, 300)
+                }
             }
         )
     }

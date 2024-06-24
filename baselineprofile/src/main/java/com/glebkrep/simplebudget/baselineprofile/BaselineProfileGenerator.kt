@@ -3,6 +3,11 @@ package com.glebkrep.simplebudget.baselineprofile
 import androidx.benchmark.macro.junit4.BaselineProfileRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.Direction
+import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.Until
 
 import org.junit.Rule
 import org.junit.Test
@@ -42,7 +47,8 @@ class BaselineProfileGenerator {
     fun generate() {
         // This example works only with the variant with application id `com.glebkrep.simplebudget`."
         rule.collect(
-            packageName = "com.glebkrep.simplebudget",
+            packageName = InstrumentationRegistry.getArguments().getString("targetAppId")
+                ?: error("targetAppId not passed as instrumentation runner arg"),
 
             // See: https://d.android.com/topic/performance/baselineprofiles/dex-layout-optimizations
             includeInStartupProfile = true
@@ -54,14 +60,16 @@ class BaselineProfileGenerator {
             pressHome()
             startActivityAndWait()
 
-            // TODO Write more interactions to optimize advanced journeys of your app.
-            // For example:
-            // 1. Wait until the content is asynchronously loaded
-            // 2. Scroll the feed content
-            // 3. Navigate to detail screen
-
-            // Check UiAutomator documentation for more information how to interact with the app.
-            // https://d.android.com/training/testing/other-components/ui-automator
+            device.findObject(By.text("3")).apply {
+                clickAndWait(Until.newWindow(), 400)
+                clickAndWait(Until.newWindow(), 400)
+            }
+            device.findObject(By.text("enter")).apply {
+                clickAndWait(Until.newWindow(), 400)
+            }
+            device.findObject(By.hasChild(By.text("33"))).apply {
+                this.swipe(Direction.LEFT, 0.9f, 300)
+            }
         }
     }
 }

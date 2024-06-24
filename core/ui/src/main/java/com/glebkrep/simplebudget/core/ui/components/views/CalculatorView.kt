@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -260,7 +261,9 @@ private fun CalculatorButtonsView(
                 CalculatorButtonView(
                     key = it.first,
                     isButtonEnabled = it.second,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .testTag("calculator:calculator-view:${it.first.text}"),
                     onClick = {
                         onButtonClicked.invoke(it.first)
                     })
@@ -275,7 +278,9 @@ private fun CalculatorButtonsView(
                 CalculatorButtonView(
                     key = it.first,
                     isButtonEnabled = it.second,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .testTag("calculator:calculator-view:${it.first.text}"),
                     onClick = {
                         onButtonClicked.invoke(it.first)
                     })
@@ -290,7 +295,9 @@ private fun CalculatorButtonsView(
                 CalculatorButtonView(
                     key = it.first,
                     isButtonEnabled = it.second,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .testTag("calculator:calculator-view:${it.first.text}"),
                     onClick = {
                         onButtonClicked.invoke(it.first)
                     })
@@ -311,7 +318,9 @@ private fun CalculatorButtonsView(
             CalculatorButtonView(
                 key = enterButton.first,
                 isButtonEnabled = enterButton.second,
-                modifier = Modifier.weight(3f),
+                modifier = Modifier
+                    .weight(3f)
+                    .testTag("calculator:calculator-view:enter"),
                 onClick = {
                     onEnterClicked.invoke()
                 })
