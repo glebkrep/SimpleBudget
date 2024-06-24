@@ -17,6 +17,7 @@ plugins {
     alias(libs.plugins.protobuf) apply false
     alias(libs.plugins.jetbrainsKotlinAndroid) apply false
     alias(libs.plugins.detekt) apply false
+    alias(libs.plugins.baselineprofile) apply false
 }
 
 val reportMerge by tasks.registering(io.gitlab.arturbosch.detekt.report.ReportMergeTask::class) {
