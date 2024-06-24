@@ -4,6 +4,8 @@
 # Simple Budget for Android
 
 [![Code quality check](https://github.com/glebkrep/SimpleBudget/actions/workflows/check-build.yml/badge.svg)](https://github.com/glebkrep/SimpleBudget/actions/workflows/check-build.yml)
+![Latest Release](https://img.shields.io/github/v/release/glebkrep/simplebudget)
+
 
 Simple Budget is a budget application for Android. It allows you to track your expenses, and see
 your remaining balance equally divided for each day. It is simple and easy to use
