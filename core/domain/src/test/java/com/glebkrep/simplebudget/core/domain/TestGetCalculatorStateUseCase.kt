@@ -1,14 +1,14 @@
 package com.glebkrep.simplebudget.core.domain
 
-import com.glebkrep.simplebudget.core.data.data.models.CalculatorScreenState
 import com.glebkrep.simplebudget.core.data.data.repositories.budgetData.BudgetRepository
 import com.glebkrep.simplebudget.core.data.data.repositories.calculatorInput.CalculatorInputRepository
 import com.glebkrep.simplebudget.core.data.data.repositories.preferences.PreferencesRepository
 import com.glebkrep.simplebudget.core.data.data.repositories.recentTransactions.RecentTransactionsRepository
-import com.glebkrep.simplebudget.core.database.recentTransaction.RecentTransactionEntity
-import com.glebkrep.simplebudget.core.domain.usecases.CreateBudgetUiStateUseCase
+import com.glebkrep.simplebudget.core.domain.models.CalculatorState
+import com.glebkrep.simplebudget.core.domain.models.RecentTransaction
+import com.glebkrep.simplebudget.core.domain.models.toEntity
 import com.glebkrep.simplebudget.core.domain.usecases.CreateUpdatedBudgetDataUseCase
-import com.glebkrep.simplebudget.core.domain.usecases.GetCalculatorScreenUiStateUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.GetCalculatorStateUseCase
 import com.glebkrep.simplebudget.model.AppPreferences
 import com.glebkrep.simplebudget.model.BudgetData
 import io.mockk.coEvery
@@ -26,7 +26,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
 
-class TestGetCalculatorScreenUiStateUseCase {
+class TestGetCalculatorStateUseCase {
 
     @Suppress("LongParameterList", "SameParameterValue")
     private fun getGetCalculatorScreenUiStateUseCase(
@@ -36,7 +36,7 @@ class TestGetCalculatorScreenUiStateUseCase {
         totalBudget: Double,
         billingTime: Instant,
         lastLoginTime: Instant
-    ): GetCalculatorScreenUiStateUseCase {
+    ): GetCalculatorStateUseCase {
         val budgetData = BudgetData(
             todayBudget = todayBudget,
             dailyBudget = dailyBudget,
@@ -60,12 +60,12 @@ class TestGetCalculatorScreenUiStateUseCase {
         coEvery { recentTransactionRepository.getRecentTransactions() } returns flow {
             emit(
                 listOf(
-                    RecentTransactionEntity(
+                    RecentTransaction(
                         date = System.currentTimeMillis(),
                         sum = 1.0,
                         isPlusOperation = false,
                         comment = null
-                    )
+                    ).toEntity()
                 )
             )
         }
@@ -78,11 +78,10 @@ class TestGetCalculatorScreenUiStateUseCase {
             emit(AppPreferences(isCommentsEnabled = true))
         }
 
-        return GetCalculatorScreenUiStateUseCase(
+        return GetCalculatorStateUseCase(
             budgetRepository = budgetRepository,
             calculatorInputRepository = calculatorInputRepository,
             recentTransactionsRepository = recentTransactionRepository,
-            createBudgetUiStateUseCase = CreateBudgetUiStateUseCase(),
             createUpdatedBudgetDataUseCase = CreateUpdatedBudgetDataUseCase(),
             defaultDispatcher = Dispatchers.Default,
             preferencesRepository = preferenceRepository
@@ -108,13 +107,17 @@ class TestGetCalculatorScreenUiStateUseCase {
             currentTimestamp = currentTime.toEpochMilli()
         ).first()
 
-        assertIs<CalculatorScreenState.AskedToUpdateDailyOrTodayBudget>(result)
-        assertEquals("10", result.dailyFromTo.first)
-        assertEquals("12.5", result.dailyFromTo.second)
-        assertEquals("10", result.todayFromTo.first)
-        assertEquals("15", result.todayFromTo.second)
-        assertEquals("2", result.daysLeft)
-        assertEquals("25", result.budgetLeft)
+        assertIs<CalculatorState.NeedToTransferTodayRemainder>(result)
+        assertEquals("10", result.budgetData.dailyBudget.toPrettyString())
+        assertEquals("12.5", result.dailyOption.dailyBudget.toPrettyString())
+        assertEquals("10", result.budgetData.dailyBudget.toPrettyString())
+        assertEquals("15", result.todayOption.todayBudget.toPrettyString())
+        assertEquals(
+            "2",
+            (currentTime.toEpochMilli()
+                .dayDiffTo(result.budgetData.billingTimestamp) + 1).toString()
+        )
+        assertEquals("25", result.budgetData.totalLeft.toPrettyString())
     }
 
     @Test
@@ -136,13 +139,19 @@ class TestGetCalculatorScreenUiStateUseCase {
             currentTimestamp = currentTime.toEpochMilli()
         ).first()
 
-        assertIs<CalculatorScreenState.AskedToUpdateDailyOrTodayBudget>(result)
-        assertEquals("10", result.dailyFromTo.first)
-        assertEquals("25", result.dailyFromTo.second)
-        assertEquals("10", result.todayFromTo.first)
-        assertEquals("25", result.todayFromTo.second)
-        assertEquals("1", result.daysLeft)
-        assertEquals("25", result.budgetLeft)
+        assertIs<CalculatorState.NeedToTransferTodayRemainder>(
+            result
+        )
+        assertEquals("10", result.budgetData.dailyBudget.toPrettyString())
+        assertEquals("25", result.dailyOption.dailyBudget.toPrettyString())
+        assertEquals("10", result.budgetData.dailyBudget.toPrettyString())
+        assertEquals("25", result.todayOption.todayBudget.toPrettyString())
+        assertEquals(
+            "1",
+            (currentTime.toEpochMilli()
+                .dayDiffTo(result.budgetData.billingTimestamp) + 1).toString()
+        )
+        assertEquals("25", result.budgetData.totalLeft.toPrettyString())
     }
 
     @Test
@@ -165,8 +174,10 @@ class TestGetCalculatorScreenUiStateUseCase {
         ).first()
 
         println(result.toString())
-        assertIs<CalculatorScreenState.BadBillingDate>(result)
-        assertEquals("25", result.budgetLeft)
+        assertIs<CalculatorState.InvalidBillingDate>(
+            result
+        )
+        assertEquals("25", result.budgetData.totalLeft.toPrettyString())
     }
 
     @Test
@@ -189,8 +200,10 @@ class TestGetCalculatorScreenUiStateUseCase {
         ).first()
 
         println(result.toString())
-        assertIs<CalculatorScreenState.BadBillingDate>(result)
-        assertEquals("25", result.budgetLeft)
+        assertIs<CalculatorState.InvalidBillingDate>(
+            result
+        )
+        assertEquals("25", result.budgetData.totalLeft.toPrettyString())
     }
 
     @Test
@@ -215,8 +228,10 @@ class TestGetCalculatorScreenUiStateUseCase {
         ).first()
 
         println(result.toString())
-        assertIs<CalculatorScreenState.Default>(result)
-        assertEquals(calculatorInput, result.budgetUiState.currentInput)
+        assertIs<CalculatorState.Default>(
+            result
+        )
+        assertEquals(calculatorInput, result.currentInput)
     }
 
     @Test
@@ -241,11 +256,13 @@ class TestGetCalculatorScreenUiStateUseCase {
         ).first()
 
         println(result.toString())
-        assertIs<CalculatorScreenState.Default>(result)
-        assertEquals(calculatorInput, result.budgetUiState.currentInput)
+        assertIs<CalculatorState.Default>(
+            result
+        )
+        assertEquals(calculatorInput, result.currentInput)
         assertEquals(
             BigDecimal(10000025.0).toPlainString(),
-            result.budgetUiState.newMoneyLeft
+            result.budgetDataPreview?.totalLeft?.toPrettyString()
         )
     }
 
@@ -271,11 +288,13 @@ class TestGetCalculatorScreenUiStateUseCase {
         ).first()
 
         println(result.toString())
-        assertIs<CalculatorScreenState.Default>(result)
-        assertEquals(calculatorInput, result.budgetUiState.currentInput)
+        assertIs<CalculatorState.Default>(
+            result
+        )
+        assertEquals(calculatorInput, result.currentInput)
         assertEquals(
             "0",
-            result.budgetUiState.newMoneyLeft
+            result.budgetDataPreview?.totalLeft?.toPrettyString()
         )
     }
 
@@ -323,8 +342,14 @@ class TestGetCalculatorScreenUiStateUseCase {
             currentTimestamp = currentTime.toEpochMilli()
         ).first()
 
-        assertIs<CalculatorScreenState.AskedToStartNewDay>(result)
-        assertEquals("1", result.daysLeft)
-        assertEquals("25", result.budgetLeft)
+        assertIs<CalculatorState.NeedToStartNewDay>(
+            result
+        )
+        assertEquals(
+            "1",
+            (currentTime.toEpochMilli()
+                .dayDiffTo(result.budgetData.billingTimestamp) + 1).toString()
+        )
+        assertEquals("25", result.budgetData.totalLeft.toPrettyString())
     }
 }

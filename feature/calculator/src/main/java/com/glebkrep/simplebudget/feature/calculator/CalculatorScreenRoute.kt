@@ -12,15 +12,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.testTag
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.glebkrep.simplebudget.core.data.data.models.CalculatorEvent
-import com.glebkrep.simplebudget.core.data.data.models.CalculatorScreenState
 import com.glebkrep.simplebudget.core.ui.components.ComposeUtils.performClickVibration
 import com.glebkrep.simplebudget.feature.calculator.view.CalculatorBadBillingDatePage
 import com.glebkrep.simplebudget.feature.calculator.view.CalculatorChooseIncreasePage
 import com.glebkrep.simplebudget.feature.calculator.view.CalculatorMainPage
 import com.glebkrep.simplebudget.feature.calculator.logic.CalculatorAction
+import com.glebkrep.simplebudget.feature.calculator.logic.CalculatorEvent
+import com.glebkrep.simplebudget.feature.calculator.logic.CalculatorScreenState
 import com.glebkrep.simplebudget.feature.calculator.logic.CalculatorVM
 import com.glebkrep.simplebudget.feature.calculator.logic.DiffAnimationState
+import com.glebkrep.simplebudget.feature.calculator.view.CalculatorStartNextDayPage
 
 @Composable
 fun CalculatorScreenRoute(
@@ -69,7 +70,7 @@ internal fun CalculatorScreen(
         when (state) {
             is CalculatorScreenState.Default -> {
                 CalculatorMainPage(
-                    budgetUiState = state.budgetUiState,
+                    budgetUiState = state,
                     diffAnimationState = animationData,
                 ) {
                     oneEvent.invoke(it)
@@ -86,6 +87,16 @@ internal fun CalculatorScreen(
                     oneEvent.invoke(it)
                 }
             }
+
+            is CalculatorScreenState.AskedToStartNewDay -> {
+                CalculatorStartNextDayPage(
+                    budgetLeft = state.budgetLeft,
+                    daysLeft = state.daysLeft
+                ) {
+                    oneEvent.invoke(it)
+                }
+            }
+
 
             is CalculatorScreenState.BadBillingDate -> {
                 CalculatorBadBillingDatePage(

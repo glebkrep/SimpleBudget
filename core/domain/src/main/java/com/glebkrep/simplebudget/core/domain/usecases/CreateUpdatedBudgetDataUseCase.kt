@@ -1,7 +1,7 @@
 package com.glebkrep.simplebudget.core.domain.usecases
 
-import com.glebkrep.simplebudget.core.data.data.models.BudgetDataOperations
 import com.glebkrep.simplebudget.core.domain.dayDiffTo
+import com.glebkrep.simplebudget.core.domain.models.BudgetDataOperations
 import com.glebkrep.simplebudget.core.domain.rounded
 import com.glebkrep.simplebudget.core.domain.smartToDouble
 import com.glebkrep.simplebudget.model.BudgetData

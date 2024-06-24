@@ -1,4 +1,4 @@
-package com.glebkrep.simplebudget.core.data.data.models
+package com.glebkrep.simplebudget.feature.calculator.logic
 
 import com.glebkrep.simplebudget.model.CalculatorButton
 

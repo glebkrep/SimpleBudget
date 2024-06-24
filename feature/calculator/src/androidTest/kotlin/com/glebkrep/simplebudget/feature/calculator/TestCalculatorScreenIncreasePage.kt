@@ -1,19 +1,14 @@
 package com.glebkrep.simplebudget.feature.calculator
 
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.glebkrep.simplebudget.core.data.data.models.CalculatorScreenState
 import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
-import com.glebkrep.simplebudget.feature.calculator.screen.KaspressoCalculatorScreenBadBillingPage
+import com.glebkrep.simplebudget.feature.calculator.logic.CalculatorScreenState
 import com.glebkrep.simplebudget.feature.calculator.screen.KaspressoCalculatorScreenIncreasePage
 import com.kaspersky.components.composesupport.config.withComposeSupport
 import com.kaspersky.kaspresso.kaspresso.Kaspresso
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import io.github.kakaocup.compose.node.element.ComposeScreen
-import io.github.kakaocup.kakao.common.utilities.getResourceString
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -1,4 +1,4 @@
-package com.glebkrep.simplebudget.core.data.data.models
+package com.glebkrep.simplebudget.core.domain.models
 
 sealed interface BudgetDataOperations {
     data class NewBillingDate(val newBillingTimestamp: Long) : BudgetDataOperations

@@ -2,9 +2,9 @@ package com.glebkrep.simplebudget.core.domain.usecases
 
 import com.glebkrep.simplebudget.core.common.Dispatcher
 import com.glebkrep.simplebudget.core.common.SimpleBudgetDispatcher
-import com.glebkrep.simplebudget.core.data.data.models.BudgetDataOperations
 import com.glebkrep.simplebudget.core.data.data.repositories.budgetData.BudgetRepository
 import com.glebkrep.simplebudget.core.data.data.repositories.recentTransactions.RecentTransactionsRepository
+import com.glebkrep.simplebudget.core.domain.models.BudgetDataOperations
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext

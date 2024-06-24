@@ -7,8 +7,8 @@ android {
 }
 
 dependencies {
-    api(project(":core:data"))
     api(project(":core:model"))
+    implementation(project(":core:data"))
     implementation(libs.javax.inject)
     testImplementation(project(":core:testing"))
     testImplementation(libs.mockk)

@@ -1,4 +1,4 @@
-package com.glebkrep.simplebudget.model
+package com.glebkrep.simplebudget.feature.calculator.logic
 
 data class UiRecentTransaction(
     val id: Int,

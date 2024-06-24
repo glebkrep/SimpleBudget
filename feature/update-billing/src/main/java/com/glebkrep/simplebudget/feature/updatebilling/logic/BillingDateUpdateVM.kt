@@ -1,10 +1,12 @@
 package com.glebkrep.simplebudget.feature.updatebilling.logic
 
 import androidx.lifecycle.viewModelScope
-import com.glebkrep.simplebudget.core.data.data.models.BudgetDataOperations
-import com.glebkrep.simplebudget.core.data.data.repositories.budgetData.BudgetRepository
+import com.glebkrep.simplebudget.core.domain.models.BudgetDataOperations
 import com.glebkrep.simplebudget.core.domain.usecases.CreateUpdatedBudgetDataUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.GetBudgetAndPreferencesUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.UpdateBudgetDataUseCase
 import com.glebkrep.simplebudget.core.ui.AbstractScreenVM
+import com.glebkrep.simplebudget.model.BudgetData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -15,8 +17,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BillingDateUpdateVM @Inject constructor(
-    private val budgetRepository: BudgetRepository,
     private val createUpdatedBudgetDataUseCase: CreateUpdatedBudgetDataUseCase,
+    private val getBudgetAndPreferencesUseCase: GetBudgetAndPreferencesUseCase,
+    private val updateBudgetDataUseCase: UpdateBudgetDataUseCase,
 ) :
     AbstractScreenVM<BillingDateUpdateEvent, BillingDateUpdateState, BillingDateUpdateAction>(
         BillingDateUpdateAction.None
@@ -24,7 +27,7 @@ class BillingDateUpdateVM @Inject constructor(
 
     init {
         viewModelScope.launch {
-            budgetRepository.getBudgetData().collect {
+            getBudgetAndPreferencesUseCase().collect {
                 val currentYear: Int = Year.now().value
                 postState(
                     BillingDateUpdateState.DatePicker(
@@ -48,12 +51,19 @@ class BillingDateUpdateVM @Inject constructor(
         viewModelScope.launch {
             when (event) {
                 is BillingDateUpdateEvent.OnNewBillingDateDate -> {
-                    val oldBudget = budgetRepository.getBudgetData().first()
+                    val oldBudget = getBudgetAndPreferencesUseCase().first()
                     val newBudget = createUpdatedBudgetDataUseCase.invoke(
                         BudgetDataOperations.NewBillingDate(event.newVal),
-                        oldBudget
+                        BudgetData(
+                            todayBudget = oldBudget.todayBudget,
+                            dailyBudget = oldBudget.dailyBudget,
+                            totalLeft = oldBudget.totalLeft,
+                            billingTimestamp = oldBudget.billingTimestamp,
+                            lastLoginTimestamp = oldBudget.lastLoginTimestamp,
+                            lastBillingUpdateTimestamp = oldBudget.lastBillingUpdateTimestamp
+                        )
                     )
-                    budgetRepository.setBudgetData(newBudget)
+                    updateBudgetDataUseCase(newBudget)
                     postAction(BillingDateUpdateAction.PostSnackBarAndGoBack("Billing date updated!"))
                 }
 

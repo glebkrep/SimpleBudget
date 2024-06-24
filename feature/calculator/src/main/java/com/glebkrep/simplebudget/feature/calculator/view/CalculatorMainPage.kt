@@ -38,8 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.glebkrep.simplebudget.core.data.data.models.BudgetUiState
-import com.glebkrep.simplebudget.core.data.data.models.CalculatorEvent
+import com.glebkrep.simplebudget.feature.calculator.logic.CalculatorEvent
 import com.glebkrep.simplebudget.core.ui.components.views.CalculatorView
 import com.glebkrep.simplebudget.core.ui.components.views.SimpleBudgetViews
 import com.glebkrep.simplebudget.core.ui.theme.DefaultColors
@@ -47,14 +46,15 @@ import com.glebkrep.simplebudget.core.ui.theme.DefaultPadding
 import com.glebkrep.simplebudget.core.ui.theme.DefaultValues
 import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
 import com.glebkrep.simplebudget.feature.calculator.R
+import com.glebkrep.simplebudget.feature.calculator.logic.CalculatorScreenState
 import com.glebkrep.simplebudget.feature.calculator.logic.DiffAnimationState
-import com.glebkrep.simplebudget.model.UiRecentTransaction
+import com.glebkrep.simplebudget.feature.calculator.logic.UiRecentTransaction
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.android.awaitFrame
 
 @Composable
 internal fun CalculatorMainPage(
-    budgetUiState: BudgetUiState,
+    budgetUiState: CalculatorScreenState.Default,
     diffAnimationState: DiffAnimationState?,
     onEvent: (CalculatorEvent) -> (Unit)
 ) {
@@ -287,7 +287,7 @@ private fun CalculatorScreenPreview() {
     SimpleBudgetTheme {
         Column(Modifier.fillMaxSize()) {
             CalculatorMainPage(
-                budgetUiState = BudgetUiState(
+                budgetUiState = CalculatorScreenState.Default(
                     currentInput = "123",
                     daysUntilBilling = "123",
                     oldTodayBudget = "10",

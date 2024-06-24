@@ -1,44 +1,42 @@
 package com.glebkrep.simplebudget.feature.updatebudget.logic
 
 import androidx.lifecycle.viewModelScope
-import com.glebkrep.simplebudget.core.data.data.models.BudgetDataOperations
-import com.glebkrep.simplebudget.core.data.data.repositories.budgetData.BudgetRepository
-import com.glebkrep.simplebudget.core.data.data.repositories.calculatorInput.CalculatorInputRepository
+import com.glebkrep.simplebudget.core.domain.models.BudgetDataOperations
 import com.glebkrep.simplebudget.core.domain.usecases.CreateUpdatedBudgetDataUseCase
 import com.glebkrep.simplebudget.core.domain.usecases.CreateUpdatedCalculatorInputUseCase
 import com.glebkrep.simplebudget.core.domain.toPrettyString
+import com.glebkrep.simplebudget.core.domain.usecases.GetBudgetAndInputUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.UpdateBudgetDataUseCase
+import com.glebkrep.simplebudget.core.domain.usecases.UpdateCalculatorInputUseCase
 import com.glebkrep.simplebudget.core.ui.AbstractScreenVM
+import com.glebkrep.simplebudget.model.BudgetData
 import com.glebkrep.simplebudget.model.CalculatorButton
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class BudgetUpdateVM @Inject constructor(
-    private val budgetRepository: BudgetRepository,
-    private val calculatorInputRepository: CalculatorInputRepository,
+    private val getBudgetAndInputUseCase: GetBudgetAndInputUseCase,
     private val createUpdatedCalculatorInputUseCase: CreateUpdatedCalculatorInputUseCase,
     private val createUpdatedBudgetDataUseCase: CreateUpdatedBudgetDataUseCase,
+    private val updateBudgetDataUseCase: UpdateBudgetDataUseCase,
+    private val updateCalculatorInputUseCase: UpdateCalculatorInputUseCase
 ) :
     AbstractScreenVM<BudgetUpdateEvent, BudgetUpdateState, BudgetUpdateAction>(BudgetUpdateAction.None) {
 
     init {
         viewModelScope.launch {
-            combine(
-                budgetRepository.getBudgetData(),
-                calculatorInputRepository.getCalculatorInput()
-            ) { budgetData, calculatorInput ->
-                val oldBudget = budgetData.totalLeft.toPrettyString()
+            getBudgetAndInputUseCase().collect {
+                val oldBudget = it.totalLeft.toPrettyString()
                 postState(
                     BudgetUpdateState.BudgetInput(
-                        currentInput = calculatorInput,
+                        currentInput = it.calculatorInput,
                         currentBudget = oldBudget,
                     )
                 )
-            }.collect()
+            }
         }
     }
 
@@ -48,13 +46,19 @@ class BudgetUpdateVM @Inject constructor(
                 is BudgetUpdateEvent.KeyTap -> {
                     when (event.key) {
                         CalculatorButton.ENTER -> {
-                            val oldBudget = budgetRepository.getBudgetData().first()
-                            val newInput = calculatorInputRepository.getCalculatorInputSync()
+                            val data = getBudgetAndInputUseCase().first()
                             val newBudget = createUpdatedBudgetDataUseCase.invoke(
-                                BudgetDataOperations.NewTotalBudget(newInput),
-                                oldBudget
+                                BudgetDataOperations.NewTotalBudget(data.calculatorInput),
+                                BudgetData(
+                                    todayBudget = data.todayBudget,
+                                    dailyBudget = data.dailyBudget,
+                                    totalLeft = data.totalLeft,
+                                    billingTimestamp = data.billingTimestamp,
+                                    lastLoginTimestamp = data.lastLoginTimestamp,
+                                    lastBillingUpdateTimestamp = data.lastBillingUpdateTimestamp
+                                )
                             )
-                            budgetRepository.setBudgetData(newBudget)
+                            updateBudgetDataUseCase.invoke(newBudget)
                             postAction(
                                 BudgetUpdateAction.PostSnackBarAndGoBack(
                                     "Budget updated: ${newBudget.totalLeft}"
@@ -64,10 +68,10 @@ class BudgetUpdateVM @Inject constructor(
 
                         else -> {
                             val newInput = createUpdatedCalculatorInputUseCase(
-                                calculatorInput = calculatorInputRepository.getCalculatorInputSync(),
+                                calculatorInput = getBudgetAndInputUseCase().first().calculatorInput,
                                 newButton = event.key
                             )
-                            calculatorInputRepository.setCalculatorInput(newInput)
+                            updateCalculatorInputUseCase.invoke(newInput)
                         }
                     }
                 }

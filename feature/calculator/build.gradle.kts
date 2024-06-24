@@ -10,4 +10,5 @@ android {
 
 dependencies {
     implementation(project(":core:domain"))
+    api(libs.kotlinx.collections.immutable)
 }

@@ -1,6 +1,6 @@
 package com.glebkrep.simplebudget.core.domain
 
-import com.glebkrep.simplebudget.core.data.data.models.BudgetDataOperations
+import com.glebkrep.simplebudget.core.domain.models.BudgetDataOperations
 import com.glebkrep.simplebudget.core.domain.usecases.CreateUpdatedBudgetDataUseCase
 import com.glebkrep.simplebudget.model.BudgetData
 import kotlinx.coroutines.runBlocking

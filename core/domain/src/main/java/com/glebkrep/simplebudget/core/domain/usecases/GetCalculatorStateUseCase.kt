@@ -2,50 +2,51 @@ package com.glebkrep.simplebudget.core.domain.usecases
 
 import com.glebkrep.simplebudget.core.common.Dispatcher
 import com.glebkrep.simplebudget.core.common.SimpleBudgetDispatcher
-import com.glebkrep.simplebudget.core.data.data.models.BudgetDataOperations
-import com.glebkrep.simplebudget.core.data.data.models.CalculatorScreenState
 import com.glebkrep.simplebudget.core.data.data.repositories.budgetData.BudgetRepository
 import com.glebkrep.simplebudget.core.data.data.repositories.calculatorInput.CalculatorInputRepository
 import com.glebkrep.simplebudget.core.data.data.repositories.preferences.PreferencesRepository
 import com.glebkrep.simplebudget.core.data.data.repositories.recentTransactions.RecentTransactionsRepository
-import com.glebkrep.simplebudget.core.database.recentTransaction.RecentTransactionEntity
 import com.glebkrep.simplebudget.core.domain.dayDiffTo
-import com.glebkrep.simplebudget.core.domain.toPrettyString
+import com.glebkrep.simplebudget.core.domain.models.BudgetDataOperations
+import com.glebkrep.simplebudget.core.domain.models.CalculatorState
+import com.glebkrep.simplebudget.core.domain.models.RecentTransaction
+import com.glebkrep.simplebudget.core.domain.models.toRecentTransaction
 import com.glebkrep.simplebudget.model.AppPreferences
 import com.glebkrep.simplebudget.model.BudgetData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetCalculatorScreenUiStateUseCase @Inject constructor(
+class GetCalculatorStateUseCase @Inject constructor(
     private val budgetRepository: BudgetRepository,
     private val preferencesRepository: PreferencesRepository,
     private val calculatorInputRepository: CalculatorInputRepository,
     private val recentTransactionsRepository: RecentTransactionsRepository,
-    private val createBudgetUiStateUseCase: CreateBudgetUiStateUseCase,
     private val createUpdatedBudgetDataUseCase: CreateUpdatedBudgetDataUseCase,
     @Dispatcher(SimpleBudgetDispatcher.Default) private val defaultDispatcher: CoroutineDispatcher
 ) {
 
     operator fun invoke(
         currentTimestamp: Long = System.currentTimeMillis()
-    ): Flow<CalculatorScreenState?> = combine(
+    ): Flow<CalculatorState?> = combine(
         calculatorInputRepository.getCalculatorInput(),
         budgetRepository.getBudgetData(),
         preferencesRepository.getPreferences(),
-        recentTransactionsRepository.getRecentTransactions(),
+        recentTransactionsRepository.getRecentTransactions()
+            .map { recentTransactionsList -> recentTransactionsList.map { it.toRecentTransaction() } },
         recentTransactionsRepository.getTotalNumberOfRecentTransactionsFlow(),
     ) { calculatorInput, budgetData, preferences, recentTransactions, numberOfTransactions ->
         return@combine when {
 
             budgetData.billingTimestamp.dayDiffTo(currentTimestamp) > 0 -> {
-                suggestUpdateBillingDate(budgetData = budgetData)
+                budgetData.suggestUpdateBillingDate()
             }
 
             currentTimestamp.dayDiffTo(budgetData.lastLoginTimestamp) > 0 -> {
-                forceBudgetUpdate(budgetData = budgetData)
+                budgetData.updateBudgetNow()
                 null
             }
 
@@ -60,24 +61,28 @@ class GetCalculatorScreenUiStateUseCase @Inject constructor(
             }
 
             else -> {
-                suggestIncreaseDailyOrTotal(
-                    budgetData = budgetData,
-                    currentTimestamp = currentTimestamp
-                )
+                if (budgetData.todayBudget == 0.0) {
+                    CalculatorState.NeedToStartNewDay(
+                        _budgetData = budgetData,
+                    )
+                } else {
+                    budgetData.suggestIncreaseDailyOrTotal()
+                }
             }
         }
-    }.flowOn(defaultDispatcher)
+    }
+        .flowOn(defaultDispatcher)
 
-    private fun suggestUpdateBillingDate(budgetData: BudgetData): CalculatorScreenState.BadBillingDate {
-        return CalculatorScreenState.BadBillingDate(
-            budgetData.totalLeft.toPrettyString(),
+    private fun BudgetData.suggestUpdateBillingDate(): CalculatorState.InvalidBillingDate {
+        return CalculatorState.InvalidBillingDate(
+            _budgetData = this,
         )
     }
 
-    private suspend fun forceBudgetUpdate(budgetData: BudgetData) {
+    private suspend fun BudgetData.updateBudgetNow() {
         val newBudgetData = createUpdatedBudgetDataUseCase(
-            operation = BudgetDataOperations.NewTotalBudget(budgetData.totalLeft.toString()),
-            budgetData = budgetData
+            operation = BudgetDataOperations.NewTotalBudget(this.totalLeft.toString()),
+            budgetData = this
         )
         budgetRepository.setBudgetData(newBudgetData)
     }
@@ -85,59 +90,40 @@ class GetCalculatorScreenUiStateUseCase @Inject constructor(
     private fun nothing(
         budgetData: BudgetData,
         calculatorInput: String,
-        recentTransactions: List<RecentTransactionEntity>,
+        recentTransactions: List<RecentTransaction>,
         numberOfRecentTransactions: Int,
         preferences: AppPreferences
-    ): CalculatorScreenState.Default {
+    ): CalculatorState.Default {
         val newBudgeData = createUpdatedBudgetDataUseCase(
             operation = BudgetDataOperations.HandleCalculatorInput(
                 calculatorInput
             ),
             budgetData = budgetData
         )
-        val newUiState = createBudgetUiStateUseCase(
-            oldBudgetData = budgetData,
-            calculatorInput = calculatorInput,
-            recentTransaction = recentTransactions,
-            newBudgetData = newBudgeData,
-            preferences = preferences,
-            numberOfRecentTransactions = numberOfRecentTransactions
-        )
-        return CalculatorScreenState.Default(
-            newUiState
+
+        return CalculatorState.Default(
+            _budgetData = budgetData,
+            budgetDataPreview = if (newBudgeData == budgetData) null else newBudgeData,
+            currentInput = calculatorInput,
+            areCommentsEnabled = preferences.isCommentsEnabled,
+            totalNumberOfRecentTransactions = numberOfRecentTransactions,
+            recentTransactions = recentTransactions
         )
     }
 
-    private fun suggestIncreaseDailyOrTotal(
-        budgetData: BudgetData,
-        currentTimestamp: Long
-    ): CalculatorScreenState {
-        val daysLeft = currentTimestamp.dayDiffTo(budgetData.billingTimestamp) + 1
-        if (budgetData.todayBudget == 0.0) {
-            return CalculatorScreenState.AskedToStartNewDay(
-                budgetLeft = budgetData.totalLeft.toPrettyString(),
-                daysLeft = daysLeft.toString()
-            )
-        }
+    private fun BudgetData.suggestIncreaseDailyOrTotal(): CalculatorState.NeedToTransferTodayRemainder {
         val budgetDataIncreaseDaily = createUpdatedBudgetDataUseCase.invoke(
             operation = BudgetDataOperations.TransferLeftoverTodayToDaily,
-            budgetData = budgetData
+            budgetData = this
         )
         val budgetDataIncreaseToday = createUpdatedBudgetDataUseCase.invoke(
             operation = BudgetDataOperations.TransferLeftoverTodayToToday,
-            budgetData = budgetData
+            budgetData = this
         )
-        return CalculatorScreenState.AskedToUpdateDailyOrTodayBudget(
-            dailyFromTo = Pair(
-                first = budgetData.dailyBudget.toPrettyString(),
-                second = budgetDataIncreaseDaily.dailyBudget.toPrettyString()
-            ),
-            todayFromTo = Pair(
-                first = budgetData.dailyBudget.toPrettyString(),
-                second = budgetDataIncreaseToday.todayBudget.toPrettyString()
-            ),
-            budgetLeft = budgetData.totalLeft.toPrettyString(),
-            daysLeft = (daysLeft).toString()
+        return CalculatorState.NeedToTransferTodayRemainder(
+            dailyOption = budgetDataIncreaseDaily,
+            todayOption = budgetDataIncreaseToday,
+            _budgetData = this
         )
     }
 

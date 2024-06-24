@@ -2,11 +2,12 @@ package com.glebkrep.simplebudget.core.domain.usecases
 
 import com.glebkrep.simplebudget.core.common.Dispatcher
 import com.glebkrep.simplebudget.core.common.SimpleBudgetDispatcher
-import com.glebkrep.simplebudget.core.data.data.models.BudgetDataOperations
 import com.glebkrep.simplebudget.core.data.data.repositories.budgetData.BudgetRepository
 import com.glebkrep.simplebudget.core.data.data.repositories.calculatorInput.CalculatorInputRepository
 import com.glebkrep.simplebudget.core.data.data.repositories.recentTransactions.RecentTransactionsRepository
-import com.glebkrep.simplebudget.core.database.recentTransaction.RecentTransactionEntity
+import com.glebkrep.simplebudget.core.domain.models.BudgetDataOperations
+import com.glebkrep.simplebudget.core.domain.models.RecentTransaction
+import com.glebkrep.simplebudget.core.domain.models.toEntity
 import com.glebkrep.simplebudget.core.domain.smartToDouble
 import com.glebkrep.simplebudget.model.CalculatorButton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -63,12 +64,12 @@ class HandleCalculatorInputUseCase @Inject constructor(
     ) {
         val currentBudgetData = budgetRepository.getBudgetData().first()
         recentTransactionsRepository.addRecent(
-            RecentTransactionEntity(
+            RecentTransaction(
                 date = System.currentTimeMillis(),
                 sum = currentInput.smartToDouble(),
                 isPlusOperation = currentInput.contains("+"),
                 comment = comment
-            )
+            ).toEntity()
         )
         val newBudgetData = createUpdatedBudgetDataUseCase(
             operation = BudgetDataOperations.HandleCalculatorInput(

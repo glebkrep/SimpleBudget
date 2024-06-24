@@ -4,8 +4,8 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.glebkrep.simplebudget.core.data.data.models.CalculatorScreenState
 import com.glebkrep.simplebudget.core.ui.theme.SimpleBudgetTheme
+import com.glebkrep.simplebudget.feature.calculator.logic.CalculatorScreenState
 import com.glebkrep.simplebudget.feature.calculator.screen.KaspressoCalculatorScreenBadBillingPage
 import com.kaspersky.components.composesupport.config.withComposeSupport
 import com.kaspersky.kaspresso.kaspresso.Kaspresso

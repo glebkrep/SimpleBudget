@@ -3,9 +3,8 @@ package com.glebkrep.simplebudget.feature.calculator.logic
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.glebkrep.simplebudget.core.data.data.models.CalculatorEvent
-import com.glebkrep.simplebudget.core.data.data.models.CalculatorScreenState
-import com.glebkrep.simplebudget.core.domain.usecases.GetCalculatorScreenUiStateUseCase
+import com.glebkrep.simplebudget.core.domain.models.BudgetDataOperations
+import com.glebkrep.simplebudget.core.domain.usecases.GetCalculatorStateUseCase
 import com.glebkrep.simplebudget.core.domain.usecases.HandleCalculatorDateRelatedEventUseCase
 import com.glebkrep.simplebudget.core.domain.usecases.HandleCalculatorInputUseCase
 import com.glebkrep.simplebudget.core.domain.usecases.DeleteRecentTransactionUseCase
@@ -19,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CalculatorVM @Inject constructor(
-    private val getCalculatorScreenUiStateUseCase: GetCalculatorScreenUiStateUseCase,
+    private val getCalculatorStateUseCase: GetCalculatorStateUseCase,
     private val handleCalculatorInputUseCase: HandleCalculatorInputUseCase,
     private val removeRecentTransaction: DeleteRecentTransactionUseCase,
     private val handleCalculatorDateRelatedEventUseCase: HandleCalculatorDateRelatedEventUseCase,
@@ -33,20 +32,22 @@ class CalculatorVM @Inject constructor(
     init {
         viewModelScope.launch {
             val diffCalculator = DiffCalculator()
-            getCalculatorScreenUiStateUseCase().collect { data ->
-                data?.let {
-                    if (it is CalculatorScreenState.Default) {
-                        postAnimationState(
-                            diffCalculator.getDiff(
-                                totalBudget = it.budgetUiState.oldMoneyLeft,
-                                dailyBudget = it.budgetUiState.oldDailyBudget,
-                                todayBudget = it.budgetUiState.oldTodayBudget
+            getCalculatorStateUseCase()
+                .mapToCalculatorScreenState()
+                .collect { data ->
+                    data?.let {
+                        if (it is CalculatorScreenState.Default) {
+                            postAnimationState(
+                                diffCalculator.getDiff(
+                                    totalBudget = it.oldMoneyLeft,
+                                    dailyBudget = it.oldDailyBudget,
+                                    todayBudget = it.oldTodayBudget
+                                )
                             )
-                        )
+                        }
+                        postState(it)
                     }
-                    postState(it)
                 }
-            }
         }
     }
 
@@ -72,10 +73,17 @@ class CalculatorVM @Inject constructor(
                     handleCalculatorInputUseCase(CalculatorButton.SAVE_CHANGE, event.comment)
                 }
 
-                is CalculatorEvent.SelectIncreaseDaily,
+                is CalculatorEvent.SelectIncreaseDaily -> {
+                    handleCalculatorDateRelatedEventUseCase(
+                        operation = BudgetDataOperations.TransferLeftoverTodayToDaily
+                    )
+                }
+
                 is CalculatorEvent.SelectIncreaseToday,
                 is CalculatorEvent.SelectStartNextDay -> {
-                    handleCalculatorDateRelatedEventUseCase(event)
+                    handleCalculatorDateRelatedEventUseCase(
+                        operation = BudgetDataOperations.TransferLeftoverTodayToToday
+                    )
                 }
 
                 CalculatorEvent.OnSettingsClicked -> {
