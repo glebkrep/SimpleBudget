@@ -12,8 +12,8 @@ plugins {
 android {
     defaultConfig {
         applicationId = "com.glebkrep.simplebudget"
-        versionCode = 4
-        versionName = "0.1.3"
+        versionCode = 5
+        versionName = "0.1.4"
         testInstrumentationRunner =
             "com.glebkrep.simplebudget.core.testing.SimpleBudgetTestRunner"
         vectorDrawables {
