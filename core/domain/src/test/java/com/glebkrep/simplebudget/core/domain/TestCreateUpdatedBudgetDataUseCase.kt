@@ -438,6 +438,60 @@ class TestCreateUpdatedBudgetDataUseCase {
     }
 
     @Test
+    fun `handle calculator input plus 5`() = runBlocking {
+        val useCase = CreateUpdatedBudgetDataUseCase()
+        val currentTime = Instant.now()
+        val billingTimeStamp = currentTime
+            .plus(1, ChronoUnit.DAYS)
+        val budgetData = BudgetData(
+            todayBudget = 10.0,
+            dailyBudget = 5.0,
+            totalLeft = 15.0,
+            billingTimestamp = billingTimeStamp.toEpochMilli(),
+            lastLoginTimestamp = 0L,
+            lastBillingUpdateTimestamp = 0L
+        )
+        val calculatorInput = "+1"
+        val operation = BudgetDataOperations.HandleCalculatorInput(calculatorInput)
+
+        val result = useCase.invoke(
+            operation = operation,
+            budgetData = budgetData
+        )
+
+        assertEquals(16.0, result.totalLeft)
+        assertEquals(6.0, result.dailyBudget)
+        assertEquals(10.0, result.todayBudget)
+    }
+
+    @Test
+    fun `handle calculator input plus 6`() = runBlocking {
+        val useCase = CreateUpdatedBudgetDataUseCase()
+        val currentTime = Instant.now()
+        val billingTimeStamp = currentTime
+            .plus(2, ChronoUnit.DAYS)
+        val budgetData = BudgetData(
+            todayBudget = 10.0,
+            dailyBudget = 5.0,
+            totalLeft = 20.0,
+            billingTimestamp = billingTimeStamp.toEpochMilli(),
+            lastLoginTimestamp = 0L,
+            lastBillingUpdateTimestamp = 0L
+        )
+        val calculatorInput = "+1"
+        val operation = BudgetDataOperations.HandleCalculatorInput(calculatorInput)
+
+        val result = useCase.invoke(
+            operation = operation,
+            budgetData = budgetData
+        )
+
+        assertEquals(21.0, result.totalLeft)
+        assertEquals(5.5, result.dailyBudget)
+        assertEquals(10.0, result.todayBudget)
+    }
+
+    @Test
     fun `handle calculator input minus 1`() = runBlocking {
         val useCase = CreateUpdatedBudgetDataUseCase()
         val currentTime = Instant.now()
