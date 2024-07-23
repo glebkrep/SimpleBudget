@@ -115,18 +115,32 @@ internal class CreateUpdatedBudgetDataUseCase @Inject constructor() {
     private fun BudgetData.handlePlusCalculatorInput(
         calculatorInput: Double
     ): BudgetData {
-        return if (this.dailyBudget < this.todayBudget + calculatorInput) {
-            val newBudgetData = setNewBudget(this.totalLeft + calculatorInput)
-            this.copy(
-                totalLeft = newBudgetData.totalLeft,
-                todayBudget = newBudgetData.todayBudget,
-                dailyBudget = newBudgetData.dailyBudget
-            )
-        } else {
-            this.copy(
-                todayBudget = this.todayBudget + calculatorInput,
-                totalLeft = this.totalLeft + calculatorInput
-            )
+        return when {
+            this.todayBudget > this.dailyBudget -> {
+                val daysToBilling = System.currentTimeMillis().dayDiffTo(this.billingTimestamp)
+                val newDailyBudget = this.dailyBudget + (calculatorInput / (daysToBilling)).rounded
+
+                this.copy(
+                    dailyBudget = newDailyBudget,
+                    totalLeft = this.totalLeft + calculatorInput,
+                )
+            }
+
+            this.dailyBudget < this.todayBudget + calculatorInput -> {
+                val newBudgetData = setNewBudget(this.totalLeft + calculatorInput)
+                this.copy(
+                    totalLeft = newBudgetData.totalLeft,
+                    todayBudget = newBudgetData.todayBudget,
+                    dailyBudget = newBudgetData.dailyBudget
+                )
+            }
+
+            else -> {
+                this.copy(
+                    todayBudget = this.todayBudget + calculatorInput,
+                    totalLeft = this.totalLeft + calculatorInput
+                )
+            }
         }
     }
 
