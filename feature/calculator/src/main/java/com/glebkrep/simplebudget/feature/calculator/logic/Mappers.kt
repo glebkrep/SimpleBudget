@@ -53,8 +53,8 @@ private fun CalculatorState.toCalculatorScreenState(): CalculatorScreenState {
                 currentInput = currentInput,
                 daysUntilBilling = (System.currentTimeMillis()
                     .dayDiffTo(budgetData.billingTimestamp) + 1).toString(),
-                oldTodayBudget = budgetData.totalLeft.toPrettyString(),
-                newTodayBudget = budgetDataPreview?.totalLeft?.toPrettyString(),
+                oldTodayBudget = budgetData.todayBudget.toPrettyString(),
+                newTodayBudget = budgetDataPreview?.todayBudget?.toPrettyString(),
                 oldDailyBudget = budgetData.dailyBudget.toPrettyString(),
                 newDailyBudget = budgetDataPreview?.dailyBudget?.toPrettyString(),
                 oldMoneyLeft = budgetData.totalLeft.toPrettyString(),
