@@ -31,7 +31,7 @@ private fun CalculatorState.toCalculatorScreenState(): CalculatorScreenState {
                     dailyOption.dailyBudget.toPrettyString()
                 ),
                 todayFromTo = Pair(
-                    budgetData.totalLeft.toPrettyString(),
+                    budgetData.todayBudget.toPrettyString(),
                     todayOption.todayBudget.toPrettyString()
                 ),
                 budgetLeft = budgetData.totalLeft.toPrettyString(),
